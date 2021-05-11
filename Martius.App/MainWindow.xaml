@@ -5,8 +5,109 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Martius.App"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="Martius" Height="350" Width="525">
+    <Grid x:Name="OuterGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" Height="20" VerticalAlignment="Top">
+            <MenuItem Header="Настройки" />
+        </Menu>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Договоры">
+                <Grid x:Name="LeaseGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0"
+                           Grid.Column="0"
+                           Content="0,0" />
+                    <Label Grid.Row="0"
+                           Grid.Column="1"
+                           Content="0,1" />
+                    <Label Grid.Row="0"
+                           Grid.Column="2"
+                           Content="0,2" />
+                    <Label Grid.Row="1"
+                           Grid.Column="0"
+                           Content="1,0" />
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Content="1,1" />
+                    <Label Grid.Row="1"
+                           Grid.Column="2"
+                           Content="1,2" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Арендаторы">
+                <Grid x:Name="TenantGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0"
+                           Grid.Column="0"
+                           Content="0,0" />
+                    <Label Grid.Row="0"
+                           Grid.Column="1"
+                           Content="0,1" />
+                    <Label Grid.Row="0"
+                           Grid.Column="2"
+                           Content="0,2" />
+                    <Label Grid.Row="1"
+                           Grid.Column="0"
+                           Content="1,0" />
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Content="1,1" />
+                    <Label Grid.Row="1"
+                           Grid.Column="2"
+                           Content="1,2" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Помещения">
+                <Grid x:Name="PropertyGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0"
+                           Grid.Column="0"
+                           Content="0,0" />
+                    <Label Grid.Row="0"
+                           Grid.Column="1"
+                           Content="0,1" />
+                    <Label Grid.Row="0"
+                           Grid.Column="2"
+                           Content="0,2" />
+                    <Label Grid.Row="1"
+                           Grid.Column="0"
+                           Content="1,0" />
+                    <Label Grid.Row="1"
+                           Grid.Column="1"
+                           Content="1,1" />
+                    <Label Grid.Row="1"
+                           Grid.Column="2"
+                           Content="1,2" />
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
