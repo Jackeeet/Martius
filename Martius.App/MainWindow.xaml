@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Martius.App"
         mc:Ignorable="d"
-        Title="Martius" Height="350" Width="525">
+        Title="Martius" Height="600" Width="800" WindowStartupLocation="CenterScreen">
     <Grid x:Name="OuterGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
@@ -16,96 +16,138 @@
         </Menu>
         <TabControl Grid.Row="1">
             <TabItem Header="Договоры">
-                <Grid x:Name="LeaseGrid">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
+                <Grid x:Name="LeaseOuterGrid">
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="10*" />
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0"
-                           Grid.Column="0"
-                           Content="0,0" />
-                    <Label Grid.Row="0"
-                           Grid.Column="1"
-                           Content="0,1" />
-                    <Label Grid.Row="0"
-                           Grid.Column="2"
-                           Content="0,2" />
-                    <Label Grid.Row="1"
-                           Grid.Column="0"
-                           Content="1,0" />
-                    <Label Grid.Row="1"
-                           Grid.Column="1"
-                           Content="1,1" />
-                    <Label Grid.Row="1"
-                           Grid.Column="2"
-                           Content="1,2" />
+                    <Border BorderThickness="0,0,0,1" BorderBrush="Black">
+                        <DockPanel Grid.Row="0">
+                            <Label DockPanel.Dock="Left"
+                                   Content="Договоры" Width="80" Margin="10,5" Height="25" VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center" />
+                            <TextBox x:Name="LeaseSearchBox" DockPanel.Dock="Left"
+                                     Width="80" Margin="10,5" Height="25" />
+                            <Button x:Name="LeaseSearchButton" DockPanel.Dock="Left" Margin="10,5" Height="25"
+                                    Content="Поиск" Click="LeaseSearchButton_Click" />
+                            <Button x:Name="NewLeaseButton" Width="125"
+                                    Content="Новый договор" Margin="10,5" Height="25" HorizontalAlignment="Right"
+                                    Click="NewLeaseButton_Click" />
+                        </DockPanel>
+                    </Border>
+                    <Grid x:Name="LeaseInnerGrid" Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+                        <Border BorderThickness="0,0,1,0" BorderBrush="Black">
+                            <StackPanel Grid.Column="0">
+                                <CheckBox x:Name="CurrentChBox" Content="текущие" IsChecked="True"
+                                          Checked="CurrentChBox_Checked" />
+                                <CheckBox x:Name="ExpiredChBox" Content="истекшие" IsChecked="True"
+                                          Checked="ExpiredChBox_Checked" />
+                                <Label Content="Дата начала" />
+                                <DatePicker x:Name="LeaseStartDate" />
+                                <Label Content="Дата окончания" />
+                                <DatePicker x:Name="LeaseEndDate" />
+                                <Label Content="Арендатор" />
+                                <ComboBox x:Name="LeaseTenantCBox" />
+                                <Label Content="Город" />
+                                <ComboBox x:Name="LeaseCityCBox" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Арендаторы">
-                <Grid x:Name="TenantGrid">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
+                <Grid x:Name="TenantOuterGrid">
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="10*" />
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0"
-                           Grid.Column="0"
-                           Content="0,0" />
-                    <Label Grid.Row="0"
-                           Grid.Column="1"
-                           Content="0,1" />
-                    <Label Grid.Row="0"
-                           Grid.Column="2"
-                           Content="0,2" />
-                    <Label Grid.Row="1"
-                           Grid.Column="0"
-                           Content="1,0" />
-                    <Label Grid.Row="1"
-                           Grid.Column="1"
-                           Content="1,1" />
-                    <Label Grid.Row="1"
-                           Grid.Column="2"
-                           Content="1,2" />
+                    <Border BorderThickness="0,0,0,1" BorderBrush="Black">
+                        <DockPanel Grid.Row="0">
+                            <Label DockPanel.Dock="Left"
+                                   Content="Арендаторы" Width="80" Margin="10,5" Height="25" VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center" />
+                            <TextBox x:Name="TenantSearchBox" DockPanel.Dock="Left"
+                                     Width="80" Margin="10,5" Height="25" />
+                            <Button x:Name="TenantSearchButton" DockPanel.Dock="Left" Margin="10,5" Height="25"
+                                    Content="Поиск" Click="TenantSearchButton_Click" />
+                            <Button x:Name="NewTenantButton"
+                                    Width="125"
+                                    Content="Новый арендатор" Margin="10,5" Height="25" HorizontalAlignment="Right"
+                                    Click="NewTenantButton_Click" />
+                        </DockPanel>
+                    </Border>
                 </Grid>
             </TabItem>
             <TabItem Header="Помещения">
-                <Grid x:Name="PropertyGrid">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
+                <Grid x:Name="PropertyOuterGrid">
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="10*" />
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0"
-                           Grid.Column="0"
-                           Content="0,0" />
-                    <Label Grid.Row="0"
-                           Grid.Column="1"
-                           Content="0,1" />
-                    <Label Grid.Row="0"
-                           Grid.Column="2"
-                           Content="0,2" />
-                    <Label Grid.Row="1"
-                           Grid.Column="0"
-                           Content="1,0" />
-                    <Label Grid.Row="1"
-                           Grid.Column="1"
-                           Content="1,1" />
-                    <Label Grid.Row="1"
-                           Grid.Column="2"
-                           Content="1,2" />
+                    <Border BorderThickness="0,0,0,1" BorderBrush="Black">
+                        <DockPanel Grid.Row="0">
+                            <Label DockPanel.Dock="Left"
+                                   Content="Помещения" Width="80" Margin="10,5" Height="25" VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" HorizontalContentAlignment="Center"
+                                   VerticalContentAlignment="Center" />
+                            <TextBox x:Name="PropertySearchBox" DockPanel.Dock="Left"
+                                     Width="80" Margin="10,5" Height="25" />
+                            <Button x:Name="PropertySearchButton" DockPanel.Dock="Left" Margin="10,5" Height="25"
+                                    Content="Поиск" Click="PropertySearchButton_Click" />
+                            <Button x:Name="NewPropertyButton"
+                                    Width="125"
+                                    Content="Новое помещение" Margin="10,5" Height="25" HorizontalAlignment="Right"
+                                    Click="NewPropertyButton_Click" />
+                        </DockPanel>
+                    </Border>
+                    <Grid x:Name="PropertyInnerGrid" Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+                        <Border BorderThickness="0,0,1,0" BorderBrush="Black">
+                            <StackPanel Grid.Column="0">
+                                <CheckBox x:Name="RentedChBox" Content="сданные" IsChecked="True"
+                                          Checked="RentedChBox_Checked" />
+                                <CheckBox x:Name="AvailableChBox" Content="свободные" IsChecked="True"
+                                          Checked="AvailableChBox_Checked" />
+                                <Label Content="Тип помещения" />
+                                <CheckBox x:Name="ResidentialChBox" Content="жилые" IsChecked="True"
+                                          Checked="ResidentialChBox_Checked" />
+                                <CheckBox x:Name="NonResidentialChBox" Content="нежилые" IsChecked="True"
+                                          Checked="NonResidentialChBox_Checked" />
+                                <CheckBox x:Name="FurnishedChBox" Content="с мебелью" IsChecked="True"
+                                          Checked="FurnishedChBox_Checked" />
+                                <CheckBox x:Name="ParkingChBox" Content="с парковкой" IsChecked="True"
+                                          Checked="ParkingChBox_Checked" />
+                                <Label Content="Город" />
+                                <ComboBox x:Name="PropertyCityCBox" />
+                                <Label Content="Общая площадь" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="От" />
+                                    <TextBox x:Name="MinAreaTextBox" Width="25"
+                                             TextChanged="MinAreaTextBox_TextChanged" />
+                                    <Label Content="до" />
+                                    <TextBox x:Name="MaxAreaTextBox" Width="25"
+                                             TextChanged="MaxAreaTextBox_TextChanged" />
+                                    <Label Content="кв.м." />
+                                </StackPanel>
+                                <Label Content="Количество комнат" />
+                                <RadioButton x:Name="Rooms1Button" Content="1" IsChecked="True"
+                                             Checked="Rooms1Button_Checked" />
+                                <RadioButton x:Name="Rooms2Button" Content="2" Checked="Rooms2Button_Checked" />
+                                <RadioButton x:Name="Rooms3Button" Content="3" Checked="Rooms3Button_Checked" />
+                                <RadioButton x:Name="Rooms4RButton" Content="4" Checked="Rooms4RButton_Checked" />
+                                <RadioButton x:Name="Rooms5RButton" Content="5+" Checked="Rooms5RButton_Checked" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
                 </Grid>
             </TabItem>
         </TabControl>

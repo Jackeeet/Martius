@@ -1,0 +1,31 @@
+﻿<Window x:Class="Martius.App.AddLeaseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Martius.App"
+        mc:Ignorable="d"
+        Title="Новый договор" Height="390" Width="300" ShowInTaskbar="False" WindowStyle="ToolWindow"
+        ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+    <StackPanel>
+        <Label Content="Помещение" Margin="5,5,5,0" />
+        <ComboBox Margin="5,5,5,0" />
+        <Label Content="Арендатор" Margin="5,5,5,0" />
+        <ComboBox Margin="5,5,5,0" />
+        <Label Content="Дата начала аренды" Margin="5,5,5,0" />
+        <DatePicker Margin="5,5,5,0" />
+        <Label Content="Дата окончания аренды" Margin="5,5,5,0" />
+        <DatePicker Margin="5,5,5,0" />
+        <Label Content="Месячная стоимость аренды" Margin="5,5,5,0" />
+        <StackPanel Orientation="Horizontal" Margin="5,5,5,5">
+            <TextBox IsReadOnly="True" Width="50" Margin="5,5,5,0" />
+            <Label Content="руб." Margin="5,5,5,0" />
+            <TextBox IsReadOnly="True" Width="50" Margin="5,5,0,0" />
+            <Label Content="коп." Margin="5,5,5,0" />
+        </StackPanel>
+        <DockPanel Margin="5">
+            <Button DockPanel.Dock="Right" Content="Сохранить" IsDefault="True" Width="65" Margin="5" />
+            <Button Content="Отмена" IsCancel="True" Width="65" Margin="5" HorizontalAlignment="Right" />
+        </DockPanel>
+    </StackPanel>
+</Window>
