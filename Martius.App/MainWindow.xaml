@@ -57,6 +57,9 @@
                                 <ComboBox x:Name="LeaseCityCBox" />
                             </StackPanel>
                         </Border>
+                        <ListView x:Name="LeaseListView" Grid.Column="1" Background="#FFB1FFED">
+                            <ListViewItem Height="59"></ListViewItem>
+                        </ListView>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -82,6 +85,9 @@
                                     Click="NewTenantButton_Click" />
                         </DockPanel>
                     </Border>
+                    <ListView x:Name="TenantListView" Grid.Row="1" Background="#FFFCD496">
+                        <ListViewItem Height="59"></ListViewItem>
+                    </ListView>
                 </Grid>
             </TabItem>
             <TabItem Header="Помещения">
@@ -147,6 +153,9 @@
                                 <RadioButton x:Name="Rooms5RButton" Content="5+" Checked="Rooms5RButton_Checked" />
                             </StackPanel>
                         </Border>
+                        <ListView x:Name="PropertyListView" Grid.Column="1" Background="#FFB1C6FF">
+                            <ListViewItem Height="59"></ListViewItem>
+                        </ListView>
                     </Grid>
                 </Grid>
             </TabItem>

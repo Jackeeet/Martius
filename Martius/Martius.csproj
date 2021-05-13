@@ -46,10 +46,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Infrastructure\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LibTesting|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\LibTesting\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Content Include="Data\MartiusDB.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -72,16 +80,20 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\ConnectionConfig.cs" />
+    <Compile Include="Infrastructure\EmptyDbTableException.cs" />
     <Compile Include="Infrastructure\Entity.cs" />
-    <Compile Include="Infrastructure\LeaseRepository.cs" />
-    <Compile Include="Infrastructure\PropertyRepository.cs" />
-    <Compile Include="Infrastructure\TenantRepository.cs" />
-    <Compile Include="Models\Address.cs" />
-    <Compile Include="Models\ILease.cs" />
-    <Compile Include="Models\Lease.cs" />
-    <Compile Include="Models\Person.cs" />
-    <Compile Include="Models\RealProperty.cs" />
-    <Compile Include="Models\Tenant.cs" />
+    <Compile Include="Domain\DataManager.cs" />
+    <Compile Include="Domain\Address.cs" />
+    <Compile Include="Domain\ILease.cs" />
+    <Compile Include="Domain\Lease.cs" />
+    <Compile Include="Domain\Person.cs" />
+    <Compile Include="Domain\RealProperty.cs" />
+    <Compile Include="Domain\Tenant.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

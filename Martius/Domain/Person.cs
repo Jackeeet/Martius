@@ -1,6 +1,6 @@
 using System;
 
-namespace Martius.Models
+namespace Martius.Domain
 {
     public class Person
     {

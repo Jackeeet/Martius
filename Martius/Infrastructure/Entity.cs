@@ -9,7 +9,7 @@ namespace Martius.Infrastructure
             Id = id;
         }
 
-        public TId Id { get; }
+        public readonly TId Id;
 
         protected bool Equals(Entity<TId> other)
         {

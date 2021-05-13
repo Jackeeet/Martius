@@ -1,4 +1,4 @@
-namespace Martius.Models
+namespace Martius.Domain
 {
     public interface ILease
     {

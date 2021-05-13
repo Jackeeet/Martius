@@ -1,18 +1,20 @@
 using System;
 
-namespace Martius.Models
+namespace Martius.Domain
 {
     public class Lease : ILease
     {
+        public readonly int Id;
         public readonly RealProperty RealProperty;
         public readonly Tenant Tenant;
         public readonly decimal MonthlyPrice;
         public readonly DateTime StartDate;
         public readonly DateTime EndDate;
 
-        public Lease(RealProperty realProperty, Tenant tenant, decimal monthlyPrice, DateTime startDate,
+        public Lease(int id, RealProperty realProperty, Tenant tenant, decimal monthlyPrice, DateTime startDate,
             DateTime endDate)
         {
+            Id = id;
             RealProperty = realProperty;
             Tenant = tenant;
             MonthlyPrice = monthlyPrice;

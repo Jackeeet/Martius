@@ -1,6 +1,6 @@
 using Martius.Infrastructure;
 
-namespace Martius.Models
+namespace Martius.Domain
 {
     public class Tenant : Entity<int>
     {
