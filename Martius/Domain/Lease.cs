@@ -1,10 +1,10 @@
 using System;
+using Martius.Infrastructure;
 
 namespace Martius.Domain
 {
-    public class Lease : ILease
+    public class Lease : Entity<int>, ILease
     {
-        public readonly int Id;
         public readonly RealProperty RealProperty;
         public readonly Tenant Tenant;
         public readonly decimal MonthlyPrice;
@@ -12,9 +12,8 @@ namespace Martius.Domain
         public readonly DateTime EndDate;
 
         public Lease(int id, RealProperty realProperty, Tenant tenant, decimal monthlyPrice, DateTime startDate,
-            DateTime endDate)
+            DateTime endDate) : base(id)
         {
-            Id = id;
             RealProperty = realProperty;
             Tenant = tenant;
             MonthlyPrice = monthlyPrice;

@@ -4,22 +4,31 @@ namespace Martius.Domain
 {
     public class Address
     {
+        private readonly int _buildingNumber;
+        private readonly string _buildingExtra;
         public readonly string City;
         public readonly string Street;
-        public readonly string Building;
+        public string Building => _buildingNumber.ToString() + _buildingExtra;
         public readonly int? ApartmentNumber;
 
-        public Address(string city, string street, string building, int? apartmentNumber)
+        public Address(string city, string street, int buildNumber, int? apartmentNumber, string buildExtra = null)
         {
             City = city;
             Street = street;
-            Building = building;
             ApartmentNumber = apartmentNumber;
+            _buildingNumber = buildNumber;
+            _buildingExtra = buildExtra;
         }
+
+        public string ToSqlString()
+        {
+            return $"N'{City}', N'{Street}', {_buildingNumber}, N'{_buildingExtra}', {ApartmentNumber}";
+        }
+        
 
         public override string ToString()
         {
-            var result = $"{City},  Ул. {Street}, д. {Building}";
+            var result = $"{City}, Ул. {Street}, д. {Building}";
             return ApartmentNumber == null ? result : result + $", кв. {ApartmentNumber}";
         }
 

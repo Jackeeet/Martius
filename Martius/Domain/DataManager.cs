@@ -1,16 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Runtime.CompilerServices;
 using Martius.Data;
 using Martius.Infrastructure;
 
+[assembly: InternalsVisibleTo("LibTestProject")]
+
 namespace Martius.Domain
 {
-    public static class DataManager
+    internal static class DataManager
     {
         private static readonly string connectionString = ConnectionConfig.ConnectionString;
+        //private static readonly string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\\..\\..\\..\\Martius\\Data\\MartiusDB.mdf;Integrated Security=True";
 
-        public static List<RealProperty> GetAllRealProperties()
+        internal static List<RealProperty> GetAllRealProperties()
         {
             var result = new List<RealProperty>();
             var connection = new SqlConnection(connectionString);
@@ -55,11 +59,12 @@ namespace Martius.Domain
             var res = (bool) reader["residential"];
             var furn = (bool) reader["furnished"];
             var park = (bool) reader["has_parking"];
-            var property = new RealProperty(id, address, roomCount, area, res, furn, park);
+            var price = (decimal) reader["monthly_price"];
+            var property = new RealProperty(id, address, roomCount, area, res, furn, park, price);
             return property;
         }
 
-        public static List<Tenant> GetAllTenants()
+        internal static List<Tenant> GetAllTenants()
         {
             var result = new List<Tenant>();
             var connection = new SqlConnection(connectionString);
@@ -105,7 +110,7 @@ namespace Martius.Domain
             return tenant;
         }
 
-        public static List<Lease> GetAllLeases()
+        internal static List<Lease> GetAllLeases()
         {
             var result = new List<Lease>();
             var connection = new SqlConnection(connectionString);
@@ -155,7 +160,7 @@ namespace Martius.Domain
             return lease;
         }
 
-        public static RealProperty GetPropertyById(int propId)
+        internal static RealProperty GetPropertyById(int propId)
         {
             RealProperty property = null;
             var connection = new SqlConnection(connectionString);
@@ -183,7 +188,7 @@ namespace Martius.Domain
             return property;
         }
 
-        public static Tenant GetTenantById(int tenantId)
+        internal static Tenant GetTenantById(int tenantId)
         {
             Tenant tenant = null;
             var connection = new SqlConnection(connectionString);
@@ -211,7 +216,7 @@ namespace Martius.Domain
             return tenant;
         }
 
-        public static Lease GetLeaseById(int leaseId)
+        internal static Lease GetLeaseById(int leaseId)
         {
             Lease lease = null;
             var connection = new SqlConnection(connectionString);
@@ -245,9 +250,10 @@ namespace Martius.Domain
         {
             var city = reader["city"].ToString();
             var street = reader["street"].ToString();
-            var building = reader["building"].ToString();
+            var building = (int) reader["building"];
+            var buildExtra = reader["building_extra"].ToString();
             var aptNumber = (int?) reader["apt_number"];
-            return new Address(city, street, building, aptNumber);
+            return new Address(city, street, building, aptNumber, buildExtra);
         }
 
         private static Person GetPerson(SqlDataReader reader)
@@ -257,6 +263,38 @@ namespace Martius.Domain
             var patronym = reader["patronym"].ToString();
             var dobString = reader["dob"].ToString();
             return new Person(surname, name, patronym, DateTime.Parse(dobString));
+        }
+
+        internal static void AddProperty(RealProperty prop)
+        {
+            var connection = new SqlConnection(connectionString);
+            var com =
+                $"insert into property(city, street, building, building_extra, apt_number, room_count, area, residential, furnished, has_parking, monthly_price)" +
+                $"values ({prop.ToSqlString()})";
+            using (connection)
+            {
+                var command = new SqlCommand(com, connection);
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+                catch (SqlException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+        }
+
+        internal static void AddTenant(Tenant tenant)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void AddLease(Lease lease)
+        {
+            throw new NotImplementedException();
         }
     }
 }
