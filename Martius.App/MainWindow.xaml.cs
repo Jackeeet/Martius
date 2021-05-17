@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using Martius.Domain;
+﻿using Martius.AppLogic;
 
 namespace Martius.App
 {
@@ -10,12 +7,20 @@ namespace Martius.App
     /// </summary>
     public partial class MainWindow
     {
+        private readonly LeaseService _leaseService;
+        private readonly TenantService _tenantService;
+        private readonly PropertyService _propertyService;
+
+
         public MainWindow()
         {
+            _leaseService = new LeaseService();
+            _tenantService = new TenantService();
+            _propertyService = new PropertyService();
             InitializeComponent();
-            LeaseTab.Content = new LeaseControl();
-            TenantTab.Content = new TenantControl();
-            PropertyTab.Content = new PropertyControl();
+            LeaseTab.Content = new LeaseControl(_leaseService, _tenantService, _propertyService);
+            TenantTab.Content = new TenantControl(_tenantService);
+            PropertyTab.Content = new PropertyControl(_propertyService);
         }
     }
 }

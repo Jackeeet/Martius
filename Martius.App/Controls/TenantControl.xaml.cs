@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Martius.AppLogic;
+using Martius.Domain;
 
 namespace Martius.App
 {
@@ -20,12 +22,16 @@ namespace Martius.App
     /// </summary>
     public partial class TenantControl : UserControl
     {
+        private AddTenantWindow _newTenantWindow;
+        private readonly List<Tenant> _allTenants;
+        private readonly TenantService _tenantService;
 
-        private AddTenantWindow _newTenant;
-
-        public TenantControl()
+        public TenantControl(TenantService tenantService)
         {
+            _tenantService = tenantService;
+            _allTenants = _tenantService.AllTenants;
             InitializeComponent();
+            TenantListView.ItemsSource = _allTenants;
         }
 
         private void TenantSearchButton_Click(object sender, RoutedEventArgs e)
@@ -34,8 +40,13 @@ namespace Martius.App
 
         private void NewTenantButton_Click(object sender, RoutedEventArgs e)
         {
-            _newTenant = new AddTenantWindow();
-            _newTenant.ShowDialog();
+            _newTenantWindow = new AddTenantWindow(_tenantService);
+            _newTenantWindow.ShowDialog();
+            if (_newTenantWindow.CreatedTenant != null)
+            {
+                _allTenants.Add(_newTenantWindow.CreatedTenant);
+                TenantListView.Items.Refresh();
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using Martius.AppLogic;
+using static Martius.Infrastructure.CastUtils;
 
 namespace Martius.App
 {
@@ -11,33 +12,26 @@ namespace Martius.App
     /// </summary>
     public partial class PropertyControl : UserControl
     {
-        private AddPropertyWindow _newProp;
+        private readonly PropertyService _propertyService;
+        private AddPropertyWindow _newPropWindow;
+        private readonly List<RealProperty> _allProps;
 
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        private List<RealProperty> _properties;
-        private readonly PropertyService _propertyService = new PropertyService();
+        private bool _residential = true;
+        private bool _nonResidential = true;
+        private bool _furnished = true;
+        private bool _notFurnished = true;
+        private bool _parking = true;
+        private bool _noParking = true;
 
-        public PropertyControl()
+        public PropertyControl(PropertyService propertyService)
         {
+            _propertyService = propertyService;
+            _allProps = _propertyService.AllProperties;
             InitializeComponent();
-            RefreshItemList();
+            PropertyListView.ItemsSource = _allProps;
+            PropertyCityCBox.ItemsSource = _propertyService.AllCities;
         }
 
-        private void RefreshItemList()
-        {
-            PropertyListView.Items.Clear();
-            _properties = _propertyService.GetAllProperties();
-            foreach (var prop in _properties)
-                PropertyListView.Items.Add(GenerateListItem(prop));
-        }
-
-        private ListViewItem GenerateListItem(RealProperty property)
-        {
-            return new ListViewItem
-            {
-                Content = property.ToString()
-            };
-        }
 
         private void PropertySearchButton_Click(object sender, RoutedEventArgs e)
         {
@@ -45,33 +39,44 @@ namespace Martius.App
 
         private void NewPropertyButton_Click(object sender, RoutedEventArgs e)
         {
-            _newProp = new AddPropertyWindow(_propertyService);
-            _newProp.ShowDialog();
-            if (_newProp.InputResult)
-                RefreshItemList();
+            _newPropWindow = new AddPropertyWindow(_propertyService);
+            _newPropWindow.ShowDialog();
+            if (_newPropWindow.CreatedProperty != null)
+            {
+                _allProps.Add(_newPropWindow.CreatedProperty);
+                PropertyListView.Items.Refresh();
+            }
         }
 
-        private void RentedChBox_Checked(object sender, RoutedEventArgs e)
+        private void RentedChBox_OnClick(object sender, RoutedEventArgs e)
         {
         }
 
-        private void AvailableChBox_Checked(object sender, RoutedEventArgs e)
+        private void AvailableChBox_OnClick(object sender, RoutedEventArgs e)
         {
         }
 
-        private void ResidentialChBox_Checked(object sender, RoutedEventArgs e)
+        private void ResidentialChBox_OnClick(object sender, RoutedEventArgs e)
         {
         }
 
-        private void NonResidentialChBox_Checked(object sender, RoutedEventArgs e)
+        private void NonResidentialChBox_OnClick(object sender, RoutedEventArgs e)
         {
         }
 
-        private void FurnishedChBox_Checked(object sender, RoutedEventArgs e)
+        private void FurnishedChBox_OnClick(object sender, RoutedEventArgs e)
         {
         }
 
-        private void ParkingChBox_Checked(object sender, RoutedEventArgs e)
+        private void NotFurnishedChBox_OnClick(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void ParkingChBox_OnClick(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void NoParkingChBox_OnClick(object sender, RoutedEventArgs e)
         {
         }
 
@@ -100,6 +105,10 @@ namespace Martius.App
         }
 
         private void Rooms5RButton_Checked(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void PropertyCityCBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
         }
     }

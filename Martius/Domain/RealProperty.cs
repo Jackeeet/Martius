@@ -1,12 +1,12 @@
 using System;
 using System.Globalization;
-using System.Text;
-using Martius.Infrastructure;
 
 namespace Martius.Domain
 {
-    public class RealProperty : Entity<int>
+    public class RealProperty : IDataEntity
     {
+        public int Id { get; }
+
         public Address Address { get; }
         public int RoomCount { get; set; }
         public double Area { get; set; }
@@ -24,20 +24,13 @@ namespace Martius.Domain
             var furn = Convert.ToByte(IsFurnished);
             var park = Convert.ToByte(HasParking);
             var price = MonthlyPrice.ToString(CultureInfo.InvariantCulture);
-            var sb = new StringBuilder();
-            sb.Append(Address.ToSqlString() + ", ");
-            sb.Append($"{RoomCount}, {area}, {res}, {furn}, {park}, {price}");
-            return sb.ToString();
-        }
-
-        internal RealProperty(int id, Address address) : base(id)
-        {
-            Address = address;
+            return $"{Address.ToSqlString()}, {RoomCount}, {area}, {res}, {furn}, {park}, {price}";
         }
 
         public RealProperty(int id, Address address, int roomCount, double area, bool isRes, bool isFurn,
-            bool hasPark, decimal price) : base(id)
+            bool hasPark, decimal price)
         {
+            Id = id;
             Address = address;
             RoomCount = roomCount;
             Area = area;
@@ -47,16 +40,41 @@ namespace Martius.Domain
             MonthlyPrice = price;
         }
 
+        protected bool Equals(RealProperty other)
+        {
+            return Id == other.Id && Equals(Address, other.Address);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((RealProperty) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (Id * 397) ^ (Address != null ? Address.GetHashCode() : 0);
+            }
+        }
+
         public override string ToString()
         {
-            return $"{base.ToString()}," +
-                   $" {nameof(Address)}: {Address}," +
-                   $" {nameof(RoomCount)}: {RoomCount}, " +
-                   $"{nameof(Area)}: {Area}," +
-                   $" {nameof(IsResidential)}: {IsResidential}," +
-                   $" {nameof(IsFurnished)}: {IsFurnished}," +
-                   $" {nameof(HasParking)}: {HasParking}," +
-                   $" {nameof(MonthlyPrice)}: {MonthlyPrice}";
+            return
+                $"{nameof(Id)}: {Id}," +
+                $" {nameof(Address)}: {Address}, " +
+                $"{nameof(RoomCount)}: {RoomCount}, " +
+                $"{nameof(Area)}: {Area}, " +
+                $"{nameof(IsResidential)}: " +
+                $"{IsResidential}, " +
+                $"{nameof(IsFurnished)}: " +
+                $"{IsFurnished}," +
+                $" {nameof(HasParking)}:" +
+                $" {HasParking}, " +
+                $"{nameof(MonthlyPrice)}: {MonthlyPrice}";
         }
     }
 }

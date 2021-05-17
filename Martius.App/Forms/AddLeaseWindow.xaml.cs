@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Martius.AppLogic;
+using Martius.Domain;
 
 namespace Martius.App
 {
@@ -19,9 +11,51 @@ namespace Martius.App
     /// </summary>
     public partial class AddLeaseWindow : Window
     {
-        public AddLeaseWindow()
+        private readonly LeaseService _leaseService;
+        private readonly TenantService _tenantService;
+        private readonly PropertyService _propertyService;
+        public Lease CreatedLease { get; private set; }
+
+        public AddLeaseWindow(LeaseService leaseService, TenantService tenantService, PropertyService propertyService)
         {
+            _leaseService = leaseService;
+            _tenantService = tenantService;
+            _propertyService = propertyService;
             InitializeComponent();
+            PropertyCBox.ItemsSource = _propertyService.AllProperties;
+            TenantCBox.ItemsSource = _tenantService.AllTenants;
+        }
+
+        private void SaveButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var property = (RealProperty) PropertyCBox.SelectedItem;
+            var tenant = (Tenant) TenantCBox.SelectedItem;
+
+            var startDate = StartDatePicker.SelectedDate.GetValueOrDefault();
+            var endDate = EndDatePicker.SelectedDate.GetValueOrDefault();
+
+            // todo add discount check;
+            var price = property.MonthlyPrice;
+
+            CreatedLease = _leaseService.SaveLease(property, tenant, price, startDate, endDate);
+            Close();
+        }
+
+        private void PropertyCBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            var property = (RealProperty) PropertyCBox.SelectedItem;
+            var rub = Math.Truncate(property.MonthlyPrice);
+            var dec = property.MonthlyPrice % 1.0m;
+            RubBox.Text = rub.ToString(CultureInfo.InvariantCulture);
+            DecimalBox.Text = dec.ToString(CultureInfo.InvariantCulture);
+        }
+
+        private void TenantCBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+        }
+
+        private void DiscountChBox_Checked(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

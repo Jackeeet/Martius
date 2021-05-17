@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Martius.AppLogic;
+using Martius.Domain;
 
 namespace Martius.App
 {
@@ -9,8 +10,7 @@ namespace Martius.App
     public partial class AddPropertyWindow : Window
     {
         private readonly PropertyService _propertyService;
-
-        public bool InputResult { get; private set; }
+        public RealProperty CreatedProperty { get; private set; }
 
         public AddPropertyWindow(PropertyService propertyService)
         {
@@ -30,9 +30,9 @@ namespace Martius.App
             var furn = FurnChBox.IsChecked ?? false;
             var park = ParkChBox.IsChecked ?? false;
             var price = $"{RubBox.Text}.{DecimalBox.Text}";
-            _propertyService.SaveProperty(
+
+            CreatedProperty = _propertyService.SaveProperty(
                 city, street, building, apartment, roomCount, area, res, furn, park, price);
-            InputResult = true;
             Close();
         }
     }

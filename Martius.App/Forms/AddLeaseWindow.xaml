@@ -5,27 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Martius.App"
         mc:Ignorable="d"
-        Title="Новый договор" Height="390" Width="300" ShowInTaskbar="False" WindowStyle="ToolWindow"
+        Title="Новый договор" Height="420" Width="300" ShowInTaskbar="False" WindowStyle="ToolWindow"
         ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <StackPanel>
         <Label Content="Помещение" Margin="5,5,5,0" />
-        <ComboBox Margin="5,5,5,0" />
+        <ComboBox x:Name="PropertyCBox" Margin="5,5,5,0" SelectionChanged="PropertyCBox_SelectionChanged" />
         <Label Content="Арендатор" Margin="5,5,5,0" />
-        <ComboBox Margin="5,5,5,0" />
+        <ComboBox x:Name="TenantCBox" Margin="5,5,5,0" SelectionChanged="TenantCBox_SelectionChanged" />
         <Label Content="Дата начала аренды" Margin="5,5,5,0" />
-        <DatePicker Margin="5,5,5,0" />
+        <DatePicker x:Name="StartDatePicker" Margin="5,5,5,0" />
         <Label Content="Дата окончания аренды" Margin="5,5,5,0" />
-        <DatePicker Margin="5,5,5,0" />
+        <DatePicker x:Name="EndDatePicker" Margin="5,5,5,0" />
         <Label Content="Месячная стоимость аренды" Margin="5,5,5,0" />
         <StackPanel Orientation="Horizontal" Margin="5,5,5,5">
-            <TextBox IsReadOnly="True" Width="50" Margin="5,5,5,0" />
+            <TextBox x:Name="RubBox" IsReadOnly="True" Width="50" Margin="5,5,5,0" />
             <Label Content="руб." Margin="5,5,5,0" />
-            <TextBox IsReadOnly="True" Width="50" Margin="5,5,0,0" />
+            <TextBox x:Name="DecimalBox" IsReadOnly="True" Width="50" Margin="5,5,0,0" />
             <Label Content="коп." Margin="5,5,5,0" />
         </StackPanel>
+        <CheckBox x:Name="DiscountChBox" Content="Применить скидку" Margin="5" IsEnabled="False" Checked="DiscountChBox_Checked"/>
         <DockPanel Margin="5">
-            <Button DockPanel.Dock="Right" Content="Сохранить" IsDefault="True" Width="65" Margin="5" />
-            <Button Content="Отмена" IsCancel="True" Width="65" Margin="5" HorizontalAlignment="Right" />
+            <Button x:Name="SaveButton" DockPanel.Dock="Right" Content="Сохранить" IsDefault="True" Width="65"
+                    Margin="5" Click="SaveButton_OnClick"/>
+            <Button x:Name="CancelButton" Content="Отмена" IsCancel="True" Width="65" Margin="5"
+                    HorizontalAlignment="Right" />
         </DockPanel>
     </StackPanel>
 </Window>

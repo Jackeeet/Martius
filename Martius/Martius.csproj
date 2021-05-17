@@ -26,6 +26,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -71,18 +72,18 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppLogic\LeaseService.cs" />
+    <Compile Include="AppLogic\TenantService.cs" />
     <Compile Include="Data\ConnectionConfig.cs" />
     <Compile Include="Domain\DataManager.cs" />
-    <Compile Include="Infrastructure\EmptyDbTableException.cs" />
-    <Compile Include="Infrastructure\Entity.cs" />
+    <Compile Include="Domain\IDataEntity.cs" />
     <Compile Include="Domain\Address.cs" />
-    <Compile Include="Domain\ILease.cs" />
     <Compile Include="Domain\Lease.cs" />
     <Compile Include="Domain\Person.cs" />
     <Compile Include="Domain\RealProperty.cs" />
     <Compile Include="Domain\Tenant.cs" />
     <Compile Include="AppLogic\PropertyService.cs" />
-    <Compile Include="Infrastructure\ParseUtilities.cs" />
+    <Compile Include="Infrastructure\CastUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

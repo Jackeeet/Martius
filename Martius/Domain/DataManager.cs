@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Runtime.CompilerServices;
 using Martius.Data;
 using Martius.Infrastructure;
+using static Martius.Infrastructure.CastUtils;
 
 [assembly: InternalsVisibleTo("LibTestProject")]
 
@@ -36,8 +37,6 @@ namespace Martius.Domain
                 }
             }
 
-            if (result.Count == 0)
-                throw new EmptyDbTableException();
             return result;
         }
 
@@ -86,8 +85,6 @@ namespace Martius.Domain
                 }
             }
 
-            if (result.Count == 0)
-                throw new EmptyDbTableException();
             return result;
         }
 
@@ -132,8 +129,6 @@ namespace Martius.Domain
                 }
             }
 
-            if (result.Count == 0)
-                throw new EmptyDbTableException();
             return result;
         }
 
@@ -252,7 +247,7 @@ namespace Martius.Domain
             var street = reader["street"].ToString();
             var building = (int) reader["building"];
             var buildExtra = reader["building_extra"].ToString();
-            var aptNumber = (int?) reader["apt_number"];
+            var aptNumber = ToNullableInt(reader["apt_number"].ToString());
             return new Address(city, street, building, aptNumber, buildExtra);
         }
 
@@ -269,8 +264,8 @@ namespace Martius.Domain
         {
             var connection = new SqlConnection(connectionString);
             var com =
-                $"insert into property(city, street, building, building_extra, apt_number, room_count, area, residential, furnished, has_parking, monthly_price)" +
-                $"values ({prop.ToSqlString()})";
+                "insert into property(city, street, building, building_extra, apt_number, room_count, area, residential, furnished, has_parking, monthly_price)" +
+                $" values ({prop.ToSqlString()})";
             using (connection)
             {
                 var command = new SqlCommand(com, connection);
@@ -289,12 +284,43 @@ namespace Martius.Domain
 
         internal static void AddTenant(Tenant tenant)
         {
-            throw new NotImplementedException();
+            var connection = new SqlConnection(connectionString);
+            var com = "insert into tenant(surname, name, patronym, dob, phone, passport)" +
+                      $" values ({tenant.ToSqlString()})";
+            using (connection)
+            {
+                var command = new SqlCommand(com, connection);
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+                catch (SqlException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
         }
 
         internal static void AddLease(Lease lease)
         {
-            throw new NotImplementedException();
+            var connection = new SqlConnection(connectionString);
+            var com = "insert into lease(property_id, tenant_id, monthly_price, start_date, end_date)" +
+                      $" values ({lease.ToSqlString()})";
+            {
+                var command = new SqlCommand(com, connection);
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+                catch (SqlException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
         }
     }
 }
