@@ -10,7 +10,7 @@ namespace Martius.App
     public partial class AddPropertyWindow : Window
     {
         private readonly PropertyService _propertyService;
-        public RealProperty CreatedProperty { get; private set; }
+        public Property CreatedProperty { get; private set; }
 
         public AddPropertyWindow(PropertyService propertyService)
         {

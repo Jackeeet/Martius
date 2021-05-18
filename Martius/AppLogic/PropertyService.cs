@@ -8,12 +8,12 @@ namespace Martius.AppLogic
 {
     public class PropertyService
     {
-        public readonly List<RealProperty> AllProperties;
+        public readonly List<Property> AllProperties;
         public int MaxId { get; private set; }
 
         public PropertyService()
         {
-            AllProperties = DataManager.GetAllRealProperties();
+            AllProperties = PropertyDataManager.GetAllProperties();
             var lastIndex = AllProperties.Count - 1;
             MaxId = lastIndex == -1 ? 0 : AllProperties[lastIndex].Id;
         }
@@ -32,7 +32,7 @@ namespace Martius.AppLogic
 
         public List<int> AllIds => AllProperties.Select(p => p.Id).ToList();
 
-        public RealProperty SaveProperty(string city, string street, string buildNumber, string apartmentNumber,
+        public Property SaveProperty(string city, string street, string buildNumber, string apartmentNumber,
             string roomData, string areaData, bool isRes, bool isFurn, bool hasPark, string priceData,
             string buildExtra = null)
         {
@@ -44,10 +44,11 @@ namespace Martius.AppLogic
             var roomCount = int.Parse(roomData);
             var area = double.Parse(areaData, CultureInfo.InvariantCulture);
             decimal.TryParse(priceData, NumberStyles.Any, CultureInfo.InvariantCulture, out var price);
-            var property = new RealProperty(
+            var property = new Property(
                 MaxId + 1, address, roomCount, area, isRes, isFurn, hasPark, price);
 
-            DataManager.AddProperty(property);
+            PropertyDataManager.AddProperty(property);
+            AllProperties.Add(property);
             MaxId = property.Id;
             return property;
         }

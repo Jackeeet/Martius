@@ -11,17 +11,18 @@ namespace Martius.AppLogic
 
         public LeaseService()
         {
-            AllLeases = DataManager.GetAllLeases();
+            AllLeases = LeaseDataManager.GetAllLeases();
             var lastIndex = AllLeases.Count - 1;
             MaxId = lastIndex == -1 ? 0 : AllLeases[lastIndex].Id;
         }
 
-        public Lease SaveLease(RealProperty property, Tenant tenant, decimal price,
+        public Lease SaveLease(Property property, Tenant tenant, decimal price,
             DateTime startDate, DateTime endDate)
         {
             var lease = new Lease(MaxId + 1, property, tenant, price, startDate, endDate);
 
-            DataManager.AddLease(lease);
+            LeaseDataManager.AddLease(lease);
+            AllLeases.Add(lease);
             MaxId = lease.Id;
             return lease;
         }

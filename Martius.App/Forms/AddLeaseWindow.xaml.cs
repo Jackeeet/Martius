@@ -28,7 +28,7 @@ namespace Martius.App
 
         private void SaveButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var property = (RealProperty) PropertyCBox.SelectedItem;
+            var property = (Property) PropertyCBox.SelectedItem;
             var tenant = (Tenant) TenantCBox.SelectedItem;
 
             var startDate = StartDatePicker.SelectedDate.GetValueOrDefault();
@@ -43,7 +43,7 @@ namespace Martius.App
 
         private void PropertyCBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            var property = (RealProperty) PropertyCBox.SelectedItem;
+            var property = (Property) PropertyCBox.SelectedItem;
             var rub = Math.Truncate(property.MonthlyPrice);
             var dec = property.MonthlyPrice % 1.0m;
             RubBox.Text = rub.ToString(CultureInfo.InvariantCulture);

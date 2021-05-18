@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Martius.AppLogic;
 using Martius.Domain;
+using static System.String;
 
 namespace Martius.App
 {
@@ -25,6 +19,8 @@ namespace Martius.App
         private AddTenantWindow _newTenantWindow;
         private readonly List<Tenant> _allTenants;
         private readonly TenantService _tenantService;
+        private GridViewColumnHeader _sortColumn;
+        private SortAdorner _sortAdorner;
 
         public TenantControl(TenantService tenantService)
         {
@@ -32,10 +28,17 @@ namespace Martius.App
             _allTenants = _tenantService.AllTenants;
             InitializeComponent();
             TenantListView.ItemsSource = _allTenants;
+
+            var view = (CollectionView) CollectionViewSource.GetDefaultView(TenantListView.ItemsSource);
+            view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+            view.Filter = TenantFilter;
         }
 
-        private void TenantSearchButton_Click(object sender, RoutedEventArgs e)
+        private bool TenantFilter(object obj)
         {
+            var searchTerm = SearchBox.Text;
+            return IsNullOrEmpty(searchTerm) ||
+                   ((Tenant) obj).FullName.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private void NewTenantButton_Click(object sender, RoutedEventArgs e)
@@ -43,10 +46,34 @@ namespace Martius.App
             _newTenantWindow = new AddTenantWindow(_tenantService);
             _newTenantWindow.ShowDialog();
             if (_newTenantWindow.CreatedTenant != null)
-            {
-                _allTenants.Add(_newTenantWindow.CreatedTenant);
                 TenantListView.Items.Refresh();
+        }
+
+        private void ColumnHeader_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is GridViewColumnHeader column)
+            {
+                var sortCriteria = column.Tag.ToString();
+                if (_sortColumn != null)
+                {
+                    AdornerLayer.GetAdornerLayer(_sortColumn)?.Remove(_sortAdorner);
+                    TenantListView.Items.SortDescriptions.Clear();
+                }
+
+                var newSortDirection = ListSortDirection.Ascending;
+                if (_sortColumn == column && _sortAdorner.SortDirection == newSortDirection)
+                    newSortDirection = ListSortDirection.Descending;
+
+                _sortColumn = column;
+                _sortAdorner = new SortAdorner(_sortColumn, newSortDirection);
+                AdornerLayer.GetAdornerLayer(_sortColumn)?.Add(_sortAdorner);
+                TenantListView.Items.SortDescriptions.Add(new SortDescription(sortCriteria, newSortDirection));
             }
+        }
+
+        private void TenantSearchBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            CollectionViewSource.GetDefaultView(TenantListView.ItemsSource).Refresh();
         }
     }
 }

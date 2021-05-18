@@ -74,13 +74,16 @@
   <ItemGroup>
     <Compile Include="AppLogic\LeaseService.cs" />
     <Compile Include="AppLogic\TenantService.cs" />
-    <Compile Include="Data\ConnectionConfig.cs" />
-    <Compile Include="Domain\DataManager.cs" />
+    <Compile Include="Domain\Data\ConnectionConfig.cs" />
+    <Compile Include="Domain\Data\DataManager.cs" />
+    <Compile Include="Domain\Data\LeaseDataManager.cs" />
+    <Compile Include="Domain\Data\PropertyDataManager.cs" />
+    <Compile Include="Domain\Data\TenantDataManager.cs" />
     <Compile Include="Domain\IDataEntity.cs" />
     <Compile Include="Domain\Address.cs" />
     <Compile Include="Domain\Lease.cs" />
     <Compile Include="Domain\Person.cs" />
-    <Compile Include="Domain\RealProperty.cs" />
+    <Compile Include="Domain\Property.cs" />
     <Compile Include="Domain\Tenant.cs" />
     <Compile Include="AppLogic\PropertyService.cs" />
     <Compile Include="Infrastructure\CastUtils.cs" />
@@ -90,11 +93,8 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\MartiusDB.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\MartiusDB_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="Domain\Data\MartiusDB.mdf" />
+    <Content Include="Domain\Data\MartiusDB_log.ldf">
       <DependentUpon>MartiusDB.mdf</DependentUpon>
     </Content>
   </ItemGroup>

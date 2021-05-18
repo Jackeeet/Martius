@@ -1,6 +1,3 @@
-using System;
-using System.Text;
-
 namespace Martius.Domain
 {
     public class Tenant : IDataEntity
@@ -10,6 +7,8 @@ namespace Martius.Domain
         public Person PersonInfo { get; set; }
         public string PhoneNumber { get; set; }
         public string PassportNumber { get; set; }
+
+        public string FullName => $"{PersonInfo.Surname} {PersonInfo.Name} {PersonInfo.Patronym}";
 
         public Tenant(int id, Person personInfo, string phoneNumber, string passportNumber)
         {

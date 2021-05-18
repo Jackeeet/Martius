@@ -7,17 +7,20 @@ namespace Martius.Domain
     public class Lease : IDataEntity
     {
         public int Id { get; }
-        public readonly RealProperty RealProperty;
+        public readonly Property Property;
         public readonly Tenant Tenant;
-        public readonly decimal MonthlyPrice;
-        public readonly DateTime StartDate;
-        public readonly DateTime EndDate;
+        public decimal MonthlyPrice { get; }
+        public DateTime StartDate { get; }
+        public DateTime EndDate { get; }
 
-        public Lease(int id, RealProperty realProperty, Tenant tenant, decimal monthlyPrice, DateTime startDate,
+        public Address Address => Property.Address;
+        public string TenantName => Tenant.FullName;
+
+        public Lease(int id, Property property, Tenant tenant, decimal monthlyPrice, DateTime startDate,
             DateTime endDate)
         {
             Id = id;
-            RealProperty = realProperty;
+            Property = property;
             Tenant = tenant;
             MonthlyPrice = monthlyPrice;
             StartDate = startDate;
@@ -26,7 +29,7 @@ namespace Martius.Domain
 
         protected bool Equals(Lease other)
         {
-            return RealProperty.Equals(other.RealProperty) && Tenant.Equals(other.Tenant) &&
+            return Property.Equals(other.Property) && Tenant.Equals(other.Tenant) &&
                    MonthlyPrice == other.MonthlyPrice && StartDate.Equals(other.StartDate) &&
                    EndDate.Equals(other.EndDate) && Id == other.Id;
         }
@@ -43,7 +46,7 @@ namespace Martius.Domain
         {
             unchecked
             {
-                var hashCode = RealProperty.GetHashCode();
+                var hashCode = Property.GetHashCode();
                 hashCode = (hashCode * 397) ^ Tenant.GetHashCode();
                 hashCode = (hashCode * 397) ^ MonthlyPrice.GetHashCode();
                 hashCode = (hashCode * 397) ^ StartDate.GetHashCode();
@@ -55,7 +58,7 @@ namespace Martius.Domain
 
         public string ToSqlString()
         {
-            var propId = RealProperty.Id;
+            var propId = Property.Id;
             var tenantId = Tenant.Id;
             var price = MonthlyPrice.ToString(CultureInfo.InvariantCulture);
             return $"{propId}, {tenantId}, {price}, " +
@@ -65,7 +68,7 @@ namespace Martius.Domain
         public override string ToString()
         {
             return $"{nameof(Id)}: {Id}," +
-                   $" {nameof(RealProperty)}: {RealProperty}, " +
+                   $" {nameof(Property)}: {Property}, " +
                    $"{nameof(Tenant)}: {Tenant}, " +
                    $"{nameof(MonthlyPrice)}: {MonthlyPrice}, " +
                    $"{nameof(StartDate)}: {StartDate}, " +

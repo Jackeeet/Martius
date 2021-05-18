@@ -11,23 +11,53 @@
             <RowDefinition Height="1*" MinHeight="40" MaxHeight="60" />
             <RowDefinition Height="10*" />
         </Grid.RowDefinitions>
-        <Border BorderThickness="0,0,0,1" BorderBrush="Black">
-            <DockPanel Grid.Row="0">
-                <Label DockPanel.Dock="Left"
-                       Content="Арендаторы" Width="80" Margin="10,5" Height="25" VerticalAlignment="Center"
-                       HorizontalAlignment="Center" HorizontalContentAlignment="Center"
-                       VerticalContentAlignment="Center" />
-                <TextBox x:Name="TenantSearchBox" DockPanel.Dock="Left"
-                         Width="75" Margin="10,5" Height="25" Padding="0, 2, 0, 2" />
-                <Button x:Name="TenantSearchButton" DockPanel.Dock="Left" Margin="10,5" Height="25"
-                        Width="75"
-                        Content="Поиск" Click="TenantSearchButton_Click" />
-                <Button x:Name="NewTenantButton"
-                        Width="125"
-                        Content="Новый арендатор" Margin="10,5" Height="25" HorizontalAlignment="Right"
-                        Click="NewTenantButton_Click" />
-            </DockPanel>
-        </Border>
-        <ListView x:Name="TenantListView" Grid.Row="1" Background="#FFFCD496" />
+        <DockPanel Grid.Row="0">
+            <Label DockPanel.Dock="Left"
+                   Content="Арендаторы" Width="80" Margin="10,5" Height="25" VerticalAlignment="Center"
+                   HorizontalAlignment="Center" HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center" />
+            <Label DockPanel.Dock="Left"
+                   Content="Поиск по ФИО:" Margin="10, 5, 0, 5" Height="25" VerticalAlignment="Center"
+                   HorizontalAlignment="Center" HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center" />
+            <TextBox x:Name="SearchBox" DockPanel.Dock="Left"
+                     Width="150" Margin="0,5, 10, 5" Height="25" Padding="0, 2, 0, 2"
+                     TextChanged="TenantSearchBox_OnTextChanged" />
+            <Button x:Name="NewTenantButton"
+                    Width="125"
+                    Content="Новый арендатор" Margin="10,5" Height="25" HorizontalAlignment="Right"
+                    Click="NewTenantButton_Click" />
+        </DockPanel>
+        <ListView x:Name="TenantListView" Grid.Row="1">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Height" Value="50" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="50" DisplayMemberBinding="{Binding Id}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="Id" Click="ColumnHeader_OnClick">№</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn Width="250" DisplayMemberBinding="{Binding FullName}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="FullName" Click="ColumnHeader_OnClick">Фио</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn Width="100" DisplayMemberBinding="{Binding PhoneNumber}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="PhoneNumber" Click="ColumnHeader_OnClick">Номер телефона</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn Width="100" DisplayMemberBinding="{Binding PassportNumber}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="PassportNumber" Click="ColumnHeader_OnClick">Номер паспорта</GridViewColumnHeader>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </UserControl>

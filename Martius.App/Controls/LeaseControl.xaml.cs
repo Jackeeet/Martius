@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using Martius.AppLogic;
 using Martius.Domain;
 
@@ -16,6 +19,8 @@ namespace Martius.App
         private readonly PropertyService _propertyService;
         private AddLeaseWindow _newLeaseWindow;
         private readonly List<Lease> _allLeases;
+        private GridViewColumnHeader _sortColumn;
+        private SortAdorner _sortAdorner;
 
         public LeaseControl(LeaseService leaseService, TenantService tenantService, PropertyService propertyService)
         {
@@ -24,13 +29,13 @@ namespace Martius.App
             _propertyService = propertyService;
             _allLeases = _leaseService.AllLeases;
             InitializeComponent();
+
             LeaseListView.ItemsSource = _allLeases;
             TenantCBox.ItemsSource = _tenantService.AllPeople;
             CityCBox.ItemsSource = _propertyService.AllCities;
-        }
 
-        private void LeaseSearchButton_Click(object sender, RoutedEventArgs e)
-        {
+            var view = (CollectionView) CollectionViewSource.GetDefaultView(LeaseListView.ItemsSource);
+            view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
         }
 
         private void NewLeaseButton_Click(object sender, RoutedEventArgs e)
@@ -38,10 +43,7 @@ namespace Martius.App
             _newLeaseWindow = new AddLeaseWindow(_leaseService, _tenantService, _propertyService);
             _newLeaseWindow.ShowDialog();
             if (_newLeaseWindow.CreatedLease != null)
-            {
-                _allLeases.Add(_newLeaseWindow.CreatedLease);
                 LeaseListView.Items.Refresh();
-            }
         }
 
         private void CurrentChBox_Checked(object sender, RoutedEventArgs e)
@@ -50,6 +52,28 @@ namespace Martius.App
 
         private void ExpiredChBox_Checked(object sender, RoutedEventArgs e)
         {
+        }
+
+        private void ColumnHeader_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (sender is GridViewColumnHeader column)
+            {
+                var sortCriteria = column.Tag.ToString();
+                if (_sortColumn != null)
+                {
+                    AdornerLayer.GetAdornerLayer(_sortColumn)?.Remove(_sortAdorner);
+                    LeaseListView.Items.SortDescriptions.Clear();
+                }
+
+                var newSortDirection = ListSortDirection.Ascending;
+                if (_sortColumn == column && _sortAdorner.SortDirection == newSortDirection)
+                    newSortDirection = ListSortDirection.Descending;
+
+                _sortColumn = column;
+                _sortAdorner = new SortAdorner(_sortColumn, newSortDirection);
+                AdornerLayer.GetAdornerLayer(_sortColumn)?.Add(_sortAdorner);
+                LeaseListView.Items.SortDescriptions.Add(new SortDescription(sortCriteria, newSortDirection));
+            }
         }
     }
 }

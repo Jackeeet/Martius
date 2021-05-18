@@ -3,18 +3,15 @@ using System.Globalization;
 
 namespace Martius.Domain
 {
-    public class RealProperty : IDataEntity
+    public class Property : IDataEntity
     {
         public int Id { get; }
-
         public Address Address { get; }
         public int RoomCount { get; set; }
         public double Area { get; set; }
         public bool IsResidential { get; set; }
         public bool IsFurnished { get; set; }
-
         public bool HasParking { get; set; }
-
         public decimal MonthlyPrice { get; set; }
 
         public string ToSqlString()
@@ -27,7 +24,7 @@ namespace Martius.Domain
             return $"{Address.ToSqlString()}, {RoomCount}, {area}, {res}, {furn}, {park}, {price}";
         }
 
-        public RealProperty(int id, Address address, int roomCount, double area, bool isRes, bool isFurn,
+        public Property(int id, Address address, int roomCount, double area, bool isRes, bool isFurn,
             bool hasPark, decimal price)
         {
             Id = id;
@@ -40,7 +37,7 @@ namespace Martius.Domain
             MonthlyPrice = price;
         }
 
-        protected bool Equals(RealProperty other)
+        protected bool Equals(Property other)
         {
             return Id == other.Id && Equals(Address, other.Address);
         }
@@ -50,7 +47,7 @@ namespace Martius.Domain
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((RealProperty) obj);
+            return Equals((Property) obj);
         }
 
         public override int GetHashCode()
