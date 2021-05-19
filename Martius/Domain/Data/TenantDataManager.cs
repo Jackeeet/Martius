@@ -1,32 +1,31 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("LibTestProject")]
 
 namespace Martius.Domain
 {
     internal class TenantDataManager : DataManager
     {
-        internal List<Tenant> GetAllTenants() =>
-            GetAllEntities("tenant", BuildTenant).Cast<Tenant>().ToList();
+        private string _tableName = "tenant";
+        private string _tableColumns = "surname, name, patronym, dob, phone, passport";
 
-        internal Tenant GetTenantById(int tenantId) =>
-            GetEntityById(tenantId, "tenant", BuildTenant) as Tenant;
+        internal List<Tenant> GetAllTenants() => GetAllEntities(_tableName, BuildEntity).Cast<Tenant>().ToList();
 
-        internal void AddTenant(Tenant tenant)
-        {
-            var tableDesc = "insert into tenant(surname, name, patronym, dob, phone, passport)";
-            AddEntity(tenant, tableDesc);
-        }
+        internal Tenant GetTenantById(int tenantId) => GetEntityById(tenantId, _tableName, BuildEntity) as Tenant;
 
-        private static Tenant BuildTenant(SqlDataReader reader)
+        internal void AddTenant(Tenant tenant) => AddEntity(tenant, _tableName, _tableColumns);
+
+        protected override IDataEntity BuildEntity(SqlDataReader reader)
         {
             var id = reader.GetInt32(0);
             var person = GetPerson(reader);
             var passport = reader.IsDBNull(5) ? null : reader.GetString(5);
             var phone = reader.IsDBNull(6) ? null : reader.GetString(6);
 
-            var tenant = new Tenant(id, person, phone, passport);
-            return tenant;
+            return new Tenant(id, person, phone, passport);
         }
 
         private static Person GetPerson(SqlDataReader reader)

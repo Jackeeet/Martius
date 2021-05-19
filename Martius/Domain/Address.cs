@@ -2,7 +2,7 @@ using System;
 
 namespace Martius.Domain
 {
-    public class Address
+    public class Address : IComparable
     {
         private readonly int _buildingNumber;
         private readonly string _buildingExtra;
@@ -24,7 +24,7 @@ namespace Martius.Domain
         {
             return $"N'{City}', N'{Street}', {_buildingNumber}, N'{_buildingExtra}', {ApartmentNumber}";
         }
-        
+
 
         public override string ToString()
         {
@@ -58,6 +58,20 @@ namespace Martius.Domain
                 hashCode = (hashCode * 397) ^ ApartmentNumber.GetHashCode();
                 return hashCode;
             }
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null)
+                return 1;
+
+            if (obj is Address otherAddress)
+            {
+                // todo implement actual comparison
+                return string.Compare(this.City, otherAddress.City, StringComparison.Ordinal);
+            }
+            else
+                throw new ArgumentException("obj is not an Address");
         }
     }
 }

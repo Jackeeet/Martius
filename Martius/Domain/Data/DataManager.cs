@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("LibTestProject")]
+using System.Text;
 
 namespace Martius.Domain
 {
-    internal class DataManager
+    internal abstract class DataManager
     {
         protected readonly string ConnectionString;
 
@@ -15,6 +13,8 @@ namespace Martius.Domain
         {
             ConnectionString = connectionString;
         }
+
+        protected abstract IDataEntity BuildEntity(SqlDataReader reader);
 
         private protected List<IDataEntity> GetAllEntities(
             string table, Func<SqlDataReader, IDataEntity> entityBuilder)
@@ -44,7 +44,7 @@ namespace Martius.Domain
             return result;
         }
 
-        private protected  IDataEntity GetEntityById(
+        private protected IDataEntity GetEntityById(
             int id, string table, Func<SqlDataReader, IDataEntity> entityBuilder)
         {
             IDataEntity entity = null;
@@ -75,10 +75,10 @@ namespace Martius.Domain
             return entity;
         }
 
-        private protected  void AddEntity(IDataEntity entity, string tableDesc)
+        private protected void AddEntity(IDataEntity entity, string table, string columns)
         {
             var connection = new SqlConnection(ConnectionString);
-            var com = tableDesc + $" values ({entity.ToSqlString()})";
+            var com = $"insert into {table}({columns}) values ({entity.ToSqlString()})";
             using (connection)
             {
                 var command = new SqlCommand(com, connection);
@@ -94,7 +94,42 @@ namespace Martius.Domain
             }
         }
 
-        private protected  void DeleteEntityById(int id, string table)
+        private protected void UpdateEntity(IDataEntity entity, string table, string columns)
+        {
+            var com = $"update {table} " +
+                      GetUpdateString(entity, columns) +
+                      $"where id = {entity.Id}";
+            var connection = new SqlConnection(ConnectionString);
+            using (connection)
+            {
+                var command = new SqlCommand(com, connection);
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (SqlException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+        }
+
+        private static string GetUpdateString(IDataEntity entity, string columns)
+        {
+            var separator = new[] {", "};
+            var columnNames = columns.Split(separator, StringSplitOptions.None);
+            var values = entity.ToSqlString().Split(separator, StringSplitOptions.None);
+
+            var sb = new StringBuilder("set ");
+            var length = columnNames.Length;
+            for (int i = 0; i < length; i++)
+                sb.Append($"{columnNames[i]} = {values[i]}, ");
+            sb.Remove(sb.Length - 2, 2);
+            return sb.ToString();
+        }
+
+        private protected void DeleteById(int id, string table)
         {
             var com = $"delete from {table} where id = {id}";
             var connection = new SqlConnection(ConnectionString);

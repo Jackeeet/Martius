@@ -1,27 +1,28 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using static Martius.Infrastructure.CastUtils;
+
+[assembly: InternalsVisibleTo("LibTestProject")]
 
 namespace Martius.Domain
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     internal class PropertyDataManager : DataManager
     {
-        internal List<Property> GetAllProperties() =>
-            GetAllEntities("property", BuildProperty).Cast<Property>().ToList();
+        private string _tableName = "property";
 
-        internal Property GetPropertyById(int propId) =>
-            GetEntityById(propId, "property", BuildProperty) as Property;
+        private string _tableColumns =
+            "city, street, building, building_extra, apt_number, " +
+            "room_count, area, residential, furnished, has_parking, monthly_price";
 
-        internal void AddProperty(Property prop)
-        {
-            var tableDesc =
-                "insert into property(city, street, building, building_extra, apt_number, room_count, area, residential, furnished, has_parking, monthly_price)";
-            AddEntity(prop, tableDesc);
-        }
+        internal List<Property> GetAllProperties() => GetAllEntities(_tableName, BuildEntity).Cast<Property>().ToList();
 
-        private static Property BuildProperty(SqlDataReader reader)
+        internal Property GetPropertyById(int propId) => GetEntityById(propId, _tableName, BuildEntity) as Property;
+
+        internal void AddProperty(Property prop) => AddEntity(prop, _tableName, _tableColumns);
+
+        protected override IDataEntity BuildEntity(SqlDataReader reader)
         {
             var id = reader.GetInt32(0);
             var address = GetAddress(reader);
@@ -31,8 +32,7 @@ namespace Martius.Domain
             var furn = reader.GetBoolean(8);
             var park = reader.GetBoolean(9);
             var price = reader.GetDecimal(10);
-            var property = new Property(id, address, roomCount, area, res, furn, park, price);
-            return property;
+            return new Property(id, address, roomCount, area, res, furn, park, price);
         }
 
         private static Address GetAddress(SqlDataReader reader)

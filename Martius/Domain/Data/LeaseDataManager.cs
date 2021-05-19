@@ -2,28 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("LibTestProject")]
 
 namespace Martius.Domain
 {
     internal class LeaseDataManager : DataManager
     {
-        protected internal LeaseDataManager(string connectionString) : base(connectionString)
-        {
-        }
+        private string _tableName = "lease";
+        private string _tableColumns = "property_id, tenant_id, monthly_price, start_date, end_date";
 
-        internal List<Lease> GetAllLeases() =>
-            GetAllEntities("lease", BuildLease).Cast<Lease>().ToList();
+        internal List<Lease> GetAllLeases() => GetAllEntities(_tableName, BuildEntity).Cast<Lease>().ToList();
 
-        internal Lease GetLeaseById(int leaseId) =>
-            GetEntityById(leaseId, "lease", BuildLease) as Lease;
+        internal Lease GetLeaseById(int leaseId) => GetEntityById(leaseId, _tableName, BuildEntity) as Lease;
 
-        internal void AddLease(Lease lease)
-        {
-            var tableDesc = "insert into lease(property_id, tenant_id, monthly_price, start_date, end_date)";
-            AddEntity(lease, tableDesc);
-        }
+        internal void AddLease(Lease lease) => AddEntity(lease, _tableName, _tableColumns);
 
-        private Lease BuildLease(SqlDataReader reader)
+        protected override IDataEntity BuildEntity(SqlDataReader reader)
         {
             var id = reader.GetInt32(0);
             var propId = reader.GetInt32(1);
@@ -35,12 +31,12 @@ namespace Martius.Domain
             var prop = new PropertyDataManager(ConnectionString).GetPropertyById(propId);
             var tenant = new TenantDataManager(ConnectionString).GetTenantById(tenantId);
 
-            var lease = new Lease(id, prop, tenant, monthlyPrice, startDate, endDate);
-            return lease;
+            return new Lease(id, prop, tenant, monthlyPrice, startDate, endDate);
         }
 
         internal int GetPropertyLeaseCount(int propId, int tId)
         {
+            // todo prop check should probably be more elaborate, check reqs
             var count = 0;
             var connection = new SqlConnection(ConnectionString);
             var com = $"select count(id) from lease where property_id = {propId} and tenant_id = {tId}";
@@ -59,6 +55,10 @@ namespace Martius.Domain
             }
 
             return count;
+        }
+
+        protected internal LeaseDataManager(string connectionString) : base(connectionString)
+        {
         }
     }
 }
