@@ -8,13 +8,13 @@ namespace Martius.Domain
     // ReSharper disable once ClassNeverInstantiated.Global
     internal class PropertyDataManager : DataManager
     {
-        internal static List<Property> GetAllProperties() =>
+        internal List<Property> GetAllProperties() =>
             GetAllEntities("property", BuildProperty).Cast<Property>().ToList();
 
-        internal static Property GetPropertyById(int propId) =>
+        internal Property GetPropertyById(int propId) =>
             GetEntityById(propId, "property", BuildProperty) as Property;
 
-        internal static void AddProperty(Property prop)
+        internal void AddProperty(Property prop)
         {
             var tableDesc =
                 "insert into property(city, street, building, building_extra, apt_number, room_count, area, residential, furnished, has_parking, monthly_price)";
@@ -43,6 +43,10 @@ namespace Martius.Domain
             var buildExtra = reader.IsDBNull(11) ? null : reader.GetString(11);
             var aptNumber = reader.IsDBNull(4) ? null : ToNullableInt(reader.GetInt32(4).ToString());
             return new Address(city, street, building, aptNumber, buildExtra);
+        }
+
+        protected internal PropertyDataManager(string connectionString) : base(connectionString)
+        {
         }
     }
 }

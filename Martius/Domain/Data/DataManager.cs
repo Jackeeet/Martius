@@ -9,13 +9,18 @@ namespace Martius.Domain
 {
     internal class DataManager
     {
-        private static readonly string connectionString = ConnectionConfig.ConnectionString;
+        protected readonly string ConnectionString;
 
-        private protected static List<IDataEntity> GetAllEntities(
+        protected DataManager(string connectionString)
+        {
+            ConnectionString = connectionString;
+        }
+
+        private protected List<IDataEntity> GetAllEntities(
             string table, Func<SqlDataReader, IDataEntity> entityBuilder)
         {
             var result = new List<IDataEntity>();
-            var connection = new SqlConnection(connectionString);
+            var connection = new SqlConnection(ConnectionString);
             var comString = $"select * from {table}";
             using (connection)
             {
@@ -39,12 +44,12 @@ namespace Martius.Domain
             return result;
         }
 
-        private protected static IDataEntity GetEntityById(
+        private protected  IDataEntity GetEntityById(
             int id, string table, Func<SqlDataReader, IDataEntity> entityBuilder)
         {
             IDataEntity entity = null;
             var cmd = $"select * from {table} where id = {id}";
-            var connection = new SqlConnection(connectionString);
+            var connection = new SqlConnection(ConnectionString);
             using (connection)
             {
                 var command = new SqlCommand(cmd, connection);
@@ -70,9 +75,9 @@ namespace Martius.Domain
             return entity;
         }
 
-        private protected static void AddEntity(IDataEntity entity, string tableDesc)
+        private protected  void AddEntity(IDataEntity entity, string tableDesc)
         {
-            var connection = new SqlConnection(connectionString);
+            var connection = new SqlConnection(ConnectionString);
             var com = tableDesc + $" values ({entity.ToSqlString()})";
             using (connection)
             {
@@ -89,10 +94,10 @@ namespace Martius.Domain
             }
         }
 
-        private protected static void DeleteEntityById(int id, string table)
+        private protected  void DeleteEntityById(int id, string table)
         {
             var com = $"delete from {table} where id = {id}";
-            var connection = new SqlConnection(connectionString);
+            var connection = new SqlConnection(ConnectionString);
             using (connection)
             {
                 var command = new SqlCommand(com, connection);

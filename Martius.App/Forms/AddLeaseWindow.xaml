@@ -23,7 +23,7 @@
             <TextBox x:Name="DecimalBox" IsReadOnly="True" Width="50" Margin="5,5,0,0" />
             <Label Content="коп." Margin="5,5,5,0" />
         </StackPanel>
-        <CheckBox x:Name="DiscountChBox" Content="Применить скидку" Margin="5" IsEnabled="False" Checked="DiscountChBox_Checked"/>
+        <CheckBox x:Name="DiscountChBox" Content="Применить скидку" Margin="5" IsEnabled="False" Click="DiscountChBox_OnClick"/>
         <DockPanel Margin="5">
             <Button x:Name="SaveButton" DockPanel.Dock="Right" Content="Сохранить" IsDefault="True" Width="65"
                     Margin="5" Click="SaveButton_OnClick"/>

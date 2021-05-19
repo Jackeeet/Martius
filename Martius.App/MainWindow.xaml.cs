@@ -1,4 +1,5 @@
 ﻿using Martius.AppLogic;
+using System.Configuration;
 
 namespace Martius.App
 {
@@ -7,20 +8,21 @@ namespace Martius.App
     /// </summary>
     public partial class MainWindow
     {
-        private readonly LeaseService _leaseService;
-        private readonly TenantService _tenantService;
-        private readonly PropertyService _propertyService;
+        private readonly string _connectionString =
+            ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+        private decimal _discount = new decimal(0.95);
 
 
         public MainWindow()
         {
-            _leaseService = new LeaseService();
-            _tenantService = new TenantService();
-            _propertyService = new PropertyService();
+            var leaseService = new LeaseService(_connectionString);
+            var tenantService = new TenantService(_connectionString);
+            var propertyService = new PropertyService(_connectionString);
             InitializeComponent();
-            LeaseTab.Content = new LeaseControl(_leaseService, _tenantService, _propertyService);
-            TenantTab.Content = new TenantControl(_tenantService);
-            PropertyTab.Content = new PropertyControl(_propertyService);
+            LeaseTab.Content = new LeaseControl(leaseService, tenantService, propertyService, _discount);
+            TenantTab.Content = new TenantControl(tenantService);
+            PropertyTab.Content = new PropertyControl(propertyService);
         }
     }
 }

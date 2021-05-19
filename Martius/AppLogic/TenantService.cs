@@ -8,11 +8,13 @@ namespace Martius.AppLogic
     public class TenantService
     {
         public readonly List<Tenant> AllTenants;
+        private readonly TenantDataManager _dataManager;
         public int MaxId { get; private set; }
 
-        public TenantService()
+        public TenantService(string connectionString)
         {
-            AllTenants = TenantDataManager.GetAllTenants();
+            _dataManager = new TenantDataManager(connectionString);
+            AllTenants = _dataManager.GetAllTenants();
             var lastIndex = AllTenants.Count - 1;
             MaxId = lastIndex == -1 ? 0 : AllTenants[lastIndex].Id;
         }
@@ -27,7 +29,7 @@ namespace Martius.AppLogic
             var person = new Person(surname, name, patronym, dob);
             var tenant = new Tenant(MaxId + 1, person, phone, passport);
 
-            TenantDataManager.AddTenant(tenant);
+            _dataManager.AddTenant(tenant);
             AllTenants.Add(tenant);
             MaxId = tenant.Id;
             return tenant;

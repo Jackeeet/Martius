@@ -74,7 +74,6 @@
   <ItemGroup>
     <Compile Include="AppLogic\LeaseService.cs" />
     <Compile Include="AppLogic\TenantService.cs" />
-    <Compile Include="Domain\Data\ConnectionConfig.cs" />
     <Compile Include="Domain\Data\DataManager.cs" />
     <Compile Include="Domain\Data\LeaseDataManager.cs" />
     <Compile Include="Domain\Data\PropertyDataManager.cs" />
@@ -91,12 +90,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Domain\Data\MartiusDB.mdf" />
-    <Content Include="Domain\Data\MartiusDB_log.ldf">
-      <DependentUpon>MartiusDB.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,16 +4,15 @@ using System.Linq;
 
 namespace Martius.Domain
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     internal class TenantDataManager : DataManager
     {
-        internal static List<Tenant> GetAllTenants() =>
+        internal List<Tenant> GetAllTenants() =>
             GetAllEntities("tenant", BuildTenant).Cast<Tenant>().ToList();
 
-        internal static Tenant GetTenantById(int tenantId) =>
+        internal Tenant GetTenantById(int tenantId) =>
             GetEntityById(tenantId, "tenant", BuildTenant) as Tenant;
 
-        internal static void AddTenant(Tenant tenant)
+        internal void AddTenant(Tenant tenant)
         {
             var tableDesc = "insert into tenant(surname, name, patronym, dob, phone, passport)";
             AddEntity(tenant, tableDesc);
@@ -37,6 +36,10 @@ namespace Martius.Domain
             var patronym = reader.IsDBNull(3) ? null : reader.GetString(3);
             var dob = reader.GetDateTime(4);
             return new Person(surname, name, patronym, dob);
+        }
+
+        protected internal TenantDataManager(string connectionString) : base(connectionString)
+        {
         }
     }
 }

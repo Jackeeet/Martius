@@ -9,11 +9,13 @@ namespace Martius.AppLogic
     public class PropertyService
     {
         public readonly List<Property> AllProperties;
+        private readonly PropertyDataManager _dataManager;
         public int MaxId { get; private set; }
 
-        public PropertyService()
+        public PropertyService(string connectionString)
         {
-            AllProperties = PropertyDataManager.GetAllProperties();
+            _dataManager = new PropertyDataManager(connectionString);
+            AllProperties = _dataManager.GetAllProperties();
             var lastIndex = AllProperties.Count - 1;
             MaxId = lastIndex == -1 ? 0 : AllProperties[lastIndex].Id;
         }
@@ -47,7 +49,7 @@ namespace Martius.AppLogic
             var property = new Property(
                 MaxId + 1, address, roomCount, area, isRes, isFurn, hasPark, price);
 
-            PropertyDataManager.AddProperty(property);
+            _dataManager.AddProperty(property);
             AllProperties.Add(property);
             MaxId = property.Id;
             return property;

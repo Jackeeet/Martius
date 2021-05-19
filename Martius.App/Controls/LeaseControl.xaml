@@ -17,6 +17,8 @@
                    VerticalContentAlignment="Center" />
             <TextBox x:Name="LeaseSearchBox" DockPanel.Dock="Left"
                      Width="75" Margin="10,5" Height="25" Padding="0, 2, 0, 2" />
+            <Button x:Name="NewLeaseButton" Width="125" Content="Новый договор" Margin="10,5" Height="25"
+                    HorizontalAlignment="Right" Click="NewLeaseButton_Click" />
         </DockPanel>
         <Grid x:Name="InnerGrid" Grid.Row="1">
             <Grid.ColumnDefinitions>
