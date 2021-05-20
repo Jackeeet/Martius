@@ -59,6 +59,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -79,7 +83,9 @@
     <Compile Include="Controls\TenantControl.xaml.cs">
       <DependentUpon>TenantControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\SettingsManager.cs" />
     <Compile Include="Utilities\SortAdorner.cs" />
+    <Compile Include="Utilities\AppSettings.cs" />
     <Page Include="Controls\LeaseControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -148,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Martius\Martius.csproj">

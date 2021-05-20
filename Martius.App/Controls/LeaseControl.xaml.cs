@@ -9,9 +9,6 @@ using Martius.Domain;
 
 namespace Martius.App
 {
-    /// <summary>
-    /// Interaction logic for LeaseControl.xaml
-    /// </summary>
     public partial class LeaseControl : UserControl
     {
         private readonly LeaseService _leaseService;
@@ -21,16 +18,16 @@ namespace Martius.App
         private readonly List<Lease> _allLeases;
         private GridViewColumnHeader _sortColumn;
         private SortAdorner _sortAdorner;
+        private readonly AppSettings _appSettings;
 
-        private readonly decimal _discount;
 
         public LeaseControl(LeaseService leaseService, TenantService tenantService, PropertyService propertyService,
-            decimal discount)
+            AppSettings appSettings)
         {
             _leaseService = leaseService;
             _tenantService = tenantService;
             _propertyService = propertyService;
-            _discount = discount;
+            _appSettings = appSettings;
             _allLeases = _leaseService.AllLeases;
             InitializeComponent();
 
@@ -44,7 +41,7 @@ namespace Martius.App
 
         private void NewLeaseButton_Click(object sender, RoutedEventArgs e)
         {
-            _newLeaseWindow = new AddLeaseWindow(_leaseService, _tenantService, _propertyService, _discount);
+            _newLeaseWindow = new AddLeaseWindow(_leaseService, _tenantService, _propertyService, _appSettings);
             _newLeaseWindow.ShowDialog();
             if (_newLeaseWindow.CreatedLease != null)
                 LeaseListView.Items.Refresh();

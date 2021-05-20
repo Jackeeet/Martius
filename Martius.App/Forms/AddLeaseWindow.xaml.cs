@@ -6,28 +6,30 @@ using Martius.Domain;
 
 namespace Martius.App
 {
-    /// <summary>
-    /// Interaction logic for AddLeaseWindow.xaml
-    /// </summary>
     public partial class AddLeaseWindow : Window
     {
-        private readonly LeaseService _leaseService;
-        private readonly decimal _discount;
+        private LeaseService _leaseService;
+        private decimal _discount;
         private decimal _discountAmount = decimal.Zero;
-
-        // todo set minimum lease amount for discount in mainWindow
-        private int minLeaseCount = 1;
+        private int _minLeaseCount;
 
         public Lease CreatedLease { get; private set; }
 
         public AddLeaseWindow(LeaseService leaseService, TenantService tenantService, PropertyService propertyService,
-            decimal discount)
+            AppSettings appSettings)
         {
-            _leaseService = leaseService;
-            _discount = discount;
+            SetupStructure(leaseService, appSettings);
             InitializeComponent();
+
             PropertyCBox.ItemsSource = propertyService.AllProperties;
             TenantCBox.ItemsSource = tenantService.AllTenants;
+        }
+
+        private void SetupStructure(LeaseService leaseService, AppSettings appSettings)
+        {
+            _leaseService = leaseService;
+            _discount = appSettings.DiscountPercentage;
+            _minLeaseCount = appSettings.MinLeaseCount;
         }
 
         private void SaveButton_OnClick(object sender, RoutedEventArgs e)
@@ -62,7 +64,7 @@ namespace Martius.App
         {
             var tenant = (Tenant) TenantCBox.SelectedItem;
             var prop = (Property) PropertyCBox.SelectedItem;
-            _discountAmount = _leaseService.GetDiscountAmount(prop, tenant, minLeaseCount, _discount);
+            _discountAmount = _leaseService.GetDiscountedAmount(prop, tenant, _minLeaseCount, _discount);
             DiscountChBox.IsEnabled = _discountAmount != decimal.Zero;
         }
 

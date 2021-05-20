@@ -3,26 +3,36 @@ using System.Configuration;
 
 namespace Martius.App
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow
     {
         private readonly string _connectionString =
             ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-        private decimal _discount = new decimal(0.95);
-
+        private AppSettings _appSettings;
+        private LeaseService _leaseService;
+        private TenantService _tenantService;
+        private PropertyService _propertyService;
 
         public MainWindow()
         {
-            var leaseService = new LeaseService(_connectionString);
-            var tenantService = new TenantService(_connectionString);
-            var propertyService = new PropertyService(_connectionString);
+            SetupStructure();
             InitializeComponent();
-            LeaseTab.Content = new LeaseControl(leaseService, tenantService, propertyService, _discount);
-            TenantTab.Content = new TenantControl(tenantService);
-            PropertyTab.Content = new PropertyControl(propertyService);
+            SetupControls();
+        }
+
+        private void SetupStructure()
+        {
+            _leaseService = new LeaseService(_connectionString);
+            _tenantService = new TenantService(_connectionString);
+            _propertyService = new PropertyService(_connectionString);
+            _appSettings = SettingsManager.GetUserSettings();
+        }
+
+        private void SetupControls()
+        {
+            LeaseTab.Content = new LeaseControl(_leaseService, _tenantService, _propertyService, _appSettings);
+            TenantTab.Content = new TenantControl(_tenantService);
+            PropertyTab.Content = new PropertyControl(_propertyService);
         }
     }
 }

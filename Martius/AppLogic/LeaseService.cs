@@ -29,10 +29,12 @@ namespace Martius.AppLogic
             return lease;
         }
 
-        public decimal GetDiscountAmount(Property property, Tenant tenant, int minCount, decimal discount)
+        public decimal GetDiscountedAmount(Property property, Tenant tenant, int minCount, decimal discount)
         {
             var leaseCount = _dataManager.GetPropertyLeaseCount(property.Id, tenant.Id);
-            return leaseCount < minCount ? decimal.Zero : property.MonthlyPrice * discount;
+            var multiplier = discount * new decimal(0.01);
+            var actualAmount = property.MonthlyPrice - (property.MonthlyPrice * multiplier);
+            return leaseCount < minCount ? decimal.Zero : actualAmount;
         }
     }
 }
