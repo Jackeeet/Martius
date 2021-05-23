@@ -13,11 +13,8 @@ namespace Martius.App
             _settings = settings;
             InitializeComponent();
 
-            MinLengthBox.Text = _settings.MinLeaseMonths.ToString();
             MinLengthBox.Focus();
-
-            DiscountBox.Text = _settings.DiscountPercentage.ToString(CultureInfo.InvariantCulture);
-            MinCountBox.Text = _settings.MinLeaseCount.ToString();
+            FillSettingsFields();
         }
 
         private void SettingsWindow_OnClosing(object sender, CancelEventArgs e)
@@ -28,14 +25,37 @@ namespace Martius.App
 
         private void SaveButton_OnClick(object sender, RoutedEventArgs e)
         {
-            _settings.MinLeaseMonths = int.Parse(MinLengthBox.Text);
-            decimal.TryParse(DiscountBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out var percent);
-            _settings.DiscountPercentage = percent;
-            _settings.MinLeaseCount = int.Parse(MinCountBox.Text);
+            var monthsParsed = int.TryParse(MinLengthBox.Text, out var months);
+            var discountParsed =
+                decimal.TryParse(DiscountBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out var percent);
+            var countParsed = int.TryParse(MinCountBox.Text, out var count);
 
-            // todo add fallback to default
-            SettingsManager.SetUserSettings(_settings);
-            Close();
+            if (!(monthsParsed && discountParsed && countParsed))
+            {
+                var caption = "Ошибка при вводе данных";
+                var message = "Одно или несколько полей заполнены некорректно. Установить настройки по умолчанию?";
+                if (MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) ==
+                    MessageBoxResult.Yes)
+                {
+                    SettingsManager.SetDefaultSettings();
+                    FillSettingsFields();
+                }
+            }
+            else
+            {
+                _settings.MinLeaseMonths = months;
+                _settings.DiscountPercentage = percent;
+                _settings.MinLeaseCount = count;
+                SettingsManager.SetUserSettings(_settings);
+                FillSettingsFields();
+            }
+        }
+
+        private void FillSettingsFields()
+        {
+            MinLengthBox.Text = _settings.MinLeaseMonths.ToString();
+            DiscountBox.Text = _settings.DiscountPercentage.ToString(CultureInfo.InvariantCulture);
+            MinCountBox.Text = _settings.MinLeaseCount.ToString();
         }
     }
 }

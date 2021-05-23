@@ -23,7 +23,7 @@ namespace Martius.App
             _tenantService = tenantService;
             InitializeComponent();
 
-            var allTenants = _tenantService.AllTenants;
+            var allTenants = _tenantService.Tenants;
             TenantListView.ItemsSource = allTenants;
 
             _view = (CollectionView) CollectionViewSource.GetDefaultView(TenantListView.ItemsSource);
@@ -40,8 +40,9 @@ namespace Martius.App
 
         private void NewTenantButton_Click(object sender, RoutedEventArgs e)
         {
-            _newTenantWindow = new AddTenantWindow(_tenantService);
+            _newTenantWindow = new AddTenantWindow(_tenantService) {Owner = Window.GetWindow(this)};
             _newTenantWindow.ShowDialog();
+
             if (_newTenantWindow.CreatedTenant != null)
                 _view.Refresh();
         }

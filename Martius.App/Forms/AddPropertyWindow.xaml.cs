@@ -38,13 +38,18 @@ namespace Martius.App
 
             if (InputValid(address, roomsParsed, areaParsed, priceParsed) && AmountsValid(roomCount, area, price))
             {
-                CreatedProperty = _propertyService.SaveProperty(address, roomCount, area, res, furn, park, price);
-                Close();
+                try
+                {
+                    CreatedProperty = _propertyService.SaveProperty(address, roomCount, area, res, furn, park, price);
+                    Close();
+                }
+                catch (EntityExistsException ex)
+                {
+                    DisplayError(ex.Message);
+                }
             }
             else
-            {
                 DisplayError("Одно или несколько полей заполнены неверно");
-            }
         }
 
         private static bool InputValid(Address address, bool roomsParsed, bool areaParsed, bool priceParsed)

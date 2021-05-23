@@ -23,7 +23,7 @@ namespace Martius.App
             _propertyService = propertyService;
             InitializeComponent();
 
-            var allProps = _propertyService.AllProperties;
+            var allProps = _propertyService.Properties;
             PropertyListView.ItemsSource = allProps;
             PropertyCityCBox.ItemsSource = _propertyService.AllCities;
 
@@ -33,8 +33,9 @@ namespace Martius.App
 
         private void NewPropertyButton_Click(object sender, RoutedEventArgs e)
         {
-            _newPropWindow = new AddPropertyWindow(_propertyService);
+            _newPropWindow = new AddPropertyWindow(_propertyService) {Owner = Window.GetWindow(this)};
             _newPropWindow.ShowDialog();
+            
             if (_newPropWindow.CreatedProperty != null)
                 _view.Refresh();
         }

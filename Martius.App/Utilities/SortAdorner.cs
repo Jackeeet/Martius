@@ -5,6 +5,7 @@ using System.Windows.Media;
 
 namespace Martius.App
 {
+    // source: https://www.wpf-tutorial.com/listview-control/listview-how-to-column-sorting/
     public class SortAdorner : Adorner
     {
         private static readonly Geometry upGeometry = Geometry.Parse("M 0 4 L 3.5 0 L 7 4 Z");

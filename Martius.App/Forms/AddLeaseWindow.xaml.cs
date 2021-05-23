@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows;
 using Martius.AppLogic;
 using Martius.Domain;
+using Martius.Infrastructure;
 
 namespace Martius.App
 {
@@ -22,8 +23,8 @@ namespace Martius.App
             SetupStructure(leaseService, appSettings);
             InitializeComponent();
 
-            PropertyCBox.ItemsSource = propertyService.AllProperties;
-            TenantCBox.ItemsSource = tenantService.AllTenants;
+            PropertyCBox.ItemsSource = propertyService.Properties;
+            TenantCBox.ItemsSource = tenantService.Tenants;
         }
 
         private void SetupStructure(LeaseService leaseService, AppSettings appSettings)
@@ -48,8 +49,15 @@ namespace Martius.App
 
             if (InputValid(property, tenant, sd, ed, priceParsed))
             {
-                CreatedLease = _leaseService.SaveLease(property, tenant, price, sd, ed);
-                Close();
+                try
+                {
+                    CreatedLease = _leaseService.SaveLease(property, tenant, price, sd, ed);
+                    Close();
+                }
+                catch (EntityExistsException ex)
+                {
+                    DisplayError(ex.Message);
+                }
             }
             else
                 DisplayError("Одно или несколько полей заполнены неверно");

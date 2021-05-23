@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using Martius.AppLogic;
 using Martius.Domain;
+using Martius.Infrastructure;
 
 namespace Martius.App
 {
@@ -30,8 +31,15 @@ namespace Martius.App
 
             if (InputValid(person, passport, phone))
             {
-                CreatedTenant = _tenantService.SaveTenant(person, passport, phone);
-                Close();
+                try
+                {
+                    CreatedTenant = _tenantService.SaveTenant(person, passport, phone);
+                    Close();
+                }
+                catch (EntityExistsException ex)
+                {
+                    DisplayError(ex.Message);
+                }
             }
             else
                 DisplayError("Одно или несколько полей заполнены неверно");

@@ -28,7 +28,7 @@ namespace Martius.App
             _appSettings = appSettings;
             InitializeComponent();
 
-            var allLeases = _leaseService.AllLeases;
+            var allLeases = _leaseService.Leases;
             LeaseListView.ItemsSource = allLeases;
             TenantCBox.ItemsSource = _tenantService.AllPeople;
             CityCBox.ItemsSource = _propertyService.AllCities;
@@ -39,8 +39,11 @@ namespace Martius.App
 
         private void NewLeaseButton_Click(object sender, RoutedEventArgs e)
         {
+            // ReSharper disable once UseObjectOrCollectionInitializer
             _newLeaseWindow = new AddLeaseWindow(_leaseService, _tenantService, _propertyService, _appSettings);
+            _newLeaseWindow.Owner = Window.GetWindow(this);
             _newLeaseWindow.ShowDialog();
+
             if (_newLeaseWindow.CreatedLease != null)
                 _view.Refresh();
         }

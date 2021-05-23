@@ -1,21 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Martius.Domain;
+using Martius.Infrastructure;
 
 namespace Martius.AppLogic
 {
     public class LeaseService
     {
-        public readonly List<Lease> AllLeases;
+        public readonly List<Lease> Leases;
         private readonly LeaseDataManager _dataManager;
         public int MaxId { get; private set; }
 
         public LeaseService(string connectionString)
         {
             _dataManager = new LeaseDataManager(connectionString);
-            AllLeases = _dataManager.GetAllLeases();
-            var lastIndex = AllLeases.Count - 1;
-            MaxId = lastIndex == -1 ? 0 : AllLeases[lastIndex].Id;
+            Leases = _dataManager.GetAllLeases();
+            var lastIndex = Leases.Count - 1;
+            MaxId = lastIndex == -1 ? 0 : Leases[lastIndex].Id;
         }
 
         public Lease SaveLease(Property property, Tenant tenant, decimal price,
@@ -23,14 +25,19 @@ namespace Martius.AppLogic
         {
             var lease = new Lease(MaxId + 1, property, tenant, price, startDate, endDate);
 
+            if (!IsUnique(lease))
+                throw new EntityExistsException("Такая запись уже существует в базе.");
+
             // todo check if property is already taken
             // throw custom exception if it is
-            
+
             _dataManager.AddLease(lease);
-            AllLeases.Add(lease);
+            Leases.Add(lease);
             MaxId = lease.Id;
             return lease;
         }
+
+        private bool IsUnique(Lease lease) => Leases.All(l => !l.Equals(lease));
 
         public decimal GetDiscountedAmount(Property property, Tenant tenant, int minCount, decimal discount)
         {
