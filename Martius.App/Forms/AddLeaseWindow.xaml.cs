@@ -12,6 +12,7 @@ namespace Martius.App
         private decimal _discount;
         private decimal _discountAmount = decimal.Zero;
         private int _minLeaseCount;
+        private int _minLeaseMonths;
 
         public Lease CreatedLease { get; private set; }
 
@@ -30,6 +31,7 @@ namespace Martius.App
             _leaseService = leaseService;
             _discount = appSettings.DiscountPercentage;
             _minLeaseCount = appSettings.MinLeaseCount;
+            _minLeaseMonths = appSettings.MinLeaseMonths;
         }
 
         private void SaveButton_OnClick(object sender, RoutedEventArgs e)
@@ -37,15 +39,26 @@ namespace Martius.App
             var property = (Property) PropertyCBox.SelectedItem;
             var tenant = (Tenant) TenantCBox.SelectedItem;
 
-            var startDate = StartDatePicker.SelectedDate.GetValueOrDefault();
-            var endDate = EndDatePicker.SelectedDate.GetValueOrDefault();
+            var sd = StartDatePicker.SelectedDate.GetValueOrDefault();
+            var ed = EndDatePicker.SelectedDate.GetValueOrDefault();
 
             var priceString = $"{RubBox.Text}.{DecimalBox.Text}";
-            decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out var price);
+            var priceParsed = decimal.TryParse(
+                priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out var price);
 
-            CreatedLease = _leaseService.SaveLease(property, tenant, price, startDate, endDate);
-            Close();
+            if (InputValid(property, tenant, sd, ed, priceParsed))
+            {
+                CreatedLease = _leaseService.SaveLease(property, tenant, price, sd, ed);
+                Close();
+            }
+            else
+            {
+                DisplayError("Одно или несколько полей заполнены неверно");
+            }
         }
+
+        private bool InputValid(Property prop, Tenant tenant, DateTime sd, DateTime ed, bool parsed)
+            => prop != null && tenant != null && (sd.AddMonths(_minLeaseMonths) <= ed) && parsed;
 
         private void PropertyCBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
@@ -84,9 +97,17 @@ namespace Martius.App
         {
             var property = (Property) PropertyCBox.SelectedItem;
             var rub = Math.Truncate(property.MonthlyPrice);
-            var dec = property.MonthlyPrice % 1.0m;
+            var dec = property.MonthlyPrice % 1m;
             RubBox.Text = rub.ToString(CultureInfo.InvariantCulture);
             DecimalBox.Text = dec.ToString(CultureInfo.InvariantCulture);
+        }
+
+        private void DisplayError(string message)
+        {
+            var caption = "Ошибка при вводе данных";
+            var button = MessageBoxButton.OK;
+            var icon = MessageBoxImage.Error;
+            MessageBox.Show(message, caption, button, icon);
         }
     }
 }

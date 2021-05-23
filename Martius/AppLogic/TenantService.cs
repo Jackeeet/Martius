@@ -23,10 +23,9 @@ namespace Martius.AppLogic
 
         public List<Person> AllPeople => AllTenants.Select(t => t.PersonInfo).ToList();
 
-        public Tenant SaveTenant(string surname, string name, string patronym,
-            DateTime dob, string passport, string phone)
+        public Tenant SaveTenant(Person person, string passport, string phone)
         {
-            var person = new Person(surname, name, patronym, dob);
+            //var person = new Person(surname, name, patronym, dob);
             var tenant = new Tenant(MaxId + 1, person, phone, passport);
 
             _dataManager.AddTenant(tenant);

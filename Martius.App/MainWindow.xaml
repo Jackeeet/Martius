@@ -3,16 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Martius.App"
         mc:Ignorable="d"
-        Title="Martius" Height="800" Width="1000" WindowStartupLocation="CenterScreen">
+        Title="Martius" Height="800" Width="1000" WindowStartupLocation="CenterScreen"
+        Loaded="MainWindow_OnLoaded">
     <Grid x:Name="OuterGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" Height="20" VerticalAlignment="Top">
-            <MenuItem Header="Настройки" />
+            <MenuItem x:Name="Settings" Header="Настройки" Click="Settings_OnClick"/>
         </Menu>
         <TabControl x:Name="TabControl" Grid.Row="1">
             <TabItem x:Name="LeaseTab" Header="Договоры"/>

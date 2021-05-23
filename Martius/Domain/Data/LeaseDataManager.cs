@@ -37,6 +37,7 @@ namespace Martius.Domain
         internal int GetPropertyLeaseCount(int propId, int tId)
         {
             // todo prop check should probably be more elaborate, check reqs
+            // in fact it should be
             var count = 0;
             var connection = new SqlConnection(ConnectionString);
             var com = $"select count(id) from lease where property_id = {propId} and tenant_id = {tId}";

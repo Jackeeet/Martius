@@ -83,6 +83,9 @@
     <Compile Include="Controls\TenantControl.xaml.cs">
       <DependentUpon>TenantControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\SettingsManager.cs" />
     <Compile Include="Utilities\SortAdorner.cs" />
     <Compile Include="Utilities\AppSettings.cs" />
@@ -90,6 +93,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Forms\SettingsWindow.xaml" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

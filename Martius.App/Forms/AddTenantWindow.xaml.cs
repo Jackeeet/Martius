@@ -1,28 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Martius.AppLogic;
 using Martius.Domain;
 
 namespace Martius.App
 {
-    /// <summary>
-    /// Interaction logic for NewTenantWindow.xaml
-    /// </summary>
     public partial class AddTenantWindow : Window
     {
         private readonly TenantService _tenantService;
         public Tenant CreatedTenant { get; private set; }
+
+        private readonly Regex _passportRegex = new Regex(@"^\d{4}[ -]?\d{6}$", RegexOptions.Compiled);
+
+        private readonly Regex _phoneRegex =
+            new Regex(@"^\+?\d[ -]?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{2}[ -]?\d{2}$", RegexOptions.Compiled);
 
         public AddTenantWindow(TenantService tenantService)
         {
@@ -32,15 +24,68 @@ namespace Martius.App
 
         private void SaveButton_OnClick(object sender, RoutedEventArgs e)
         {
+            var person = ParsePerson();
+            var passport = ParsePassport();
+            var phone = ParsePhone();
+
+            if (InputValid(person, passport, phone))
+            {
+                CreatedTenant = _tenantService.SaveTenant(person, passport, phone);
+                Close();
+            }
+            else
+                DisplayError("Одно или несколько полей заполнены неверно");
+        }
+
+        private bool InputValid(Person person, string passport, string phone)
+            => person != null && passport != null && phone != null;
+
+        private string ParsePhone()
+        {
+            var match = _phoneRegex.Match(PhoneBox.Text);
+            if (!match.Success)
+                return null;
+
+            var phone = match.Groups[0].ToString();
+            return Regex.Replace(phone, @"[ \-\(\)]", string.Empty);
+        }
+
+        private string ParsePassport()
+        {
+            var match = _passportRegex.Match(PassportBox.Text);
+            if (!match.Success)
+                return null;
+
+            var passport = match.Groups[0].ToString();
+            return Regex.Replace(passport, @"[ \-]", string.Empty);
+        }
+
+        private Person ParsePerson()
+        {
             var surname = SurnameBox.Text;
             var name = NameBox.Text;
             var patronym = PatronymBox.Text;
-            var dob = DobPicker.SelectedDate.GetValueOrDefault();
-            var passport = PassportBox.Text;
-            var phone = PhoneBox.Text;
+            if (string.IsNullOrEmpty(surname) || surname.Length > 50 ||
+                string.IsNullOrEmpty(name) || name.Length > 50 ||
+                patronym.Length > 50)
+            {
+                return null;
+            }
 
-            CreatedTenant = _tenantService.SaveTenant(surname, name, patronym, dob, passport, phone);
-            Close();
+            var dob = DobPicker.SelectedDate.GetValueOrDefault();
+            if (DateTime.Now.AddYears(-14) < dob)
+                return null;
+
+            return new Person(surname, name, patronym, dob);
+        }
+
+
+        private void DisplayError(string message)
+        {
+            var caption = "Ошибка при вводе данных";
+            var button = MessageBoxButton.OK;
+            var icon = MessageBoxImage.Error;
+            MessageBox.Show(message, caption, button, icon);
         }
     }
 }

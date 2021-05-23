@@ -7,9 +7,6 @@ using Martius.Infrastructure;
 
 namespace Martius.App
 {
-    /// <summary>
-    /// Interaction logic for NewPropertyWindow.xaml
-    /// </summary>
     public partial class AddPropertyWindow : Window
     {
         private readonly PropertyService _propertyService;
@@ -74,10 +71,14 @@ namespace Martius.App
                 : new Address(CityBox.Text, StreetBox.Text, building.Number, aptNum, building.Extra);
         }
 
-        // todo figure out why empty AptBox interferes with saving 
-        private bool AddressCorrect(Match bld, Match apt) =>
-            bld.Success && (apt.Success || string.IsNullOrEmpty(AptBox.Text)) &&
-            !string.IsNullOrEmpty(CityBox.Text) && !string.IsNullOrEmpty(StreetBox.Text);
+        private bool AddressCorrect(Match bld, Match apt)
+        {
+            var aptParsed = apt.Success || string.IsNullOrEmpty(AptBox.Text);
+
+            return bld.Success && aptParsed &&
+                   !string.IsNullOrEmpty(CityBox.Text) && CityBox.Text.Length <= 50 &&
+                   !string.IsNullOrEmpty(StreetBox.Text) && StreetBox.Text.Length <= 50;
+        }
 
         private int? ParseApartmentNumber(Match match)
         {

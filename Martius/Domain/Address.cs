@@ -22,7 +22,8 @@ namespace Martius.Domain
 
         public string ToSqlString()
         {
-            return $"N'{City}', N'{Street}', {_buildingNumber}, N'{_buildingExtra}', {ApartmentNumber}";
+            var apt = ApartmentNumber == null ? "null" : ApartmentNumber.ToString();
+            return $"N'{City}', N'{Street}', {_buildingNumber}, N'{_buildingExtra}', {apt}";
         }
 
 

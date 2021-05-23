@@ -23,6 +23,9 @@ namespace Martius.AppLogic
         {
             var lease = new Lease(MaxId + 1, property, tenant, price, startDate, endDate);
 
+            // todo check if property is already taken
+            // throw custom exception if it is
+            
             _dataManager.AddLease(lease);
             AllLeases.Add(lease);
             MaxId = lease.Id;

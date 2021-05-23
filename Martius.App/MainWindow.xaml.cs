@@ -1,5 +1,6 @@
 ﻿using Martius.AppLogic;
 using System.Configuration;
+using System.Windows;
 
 namespace Martius.App
 {
@@ -8,24 +9,30 @@ namespace Martius.App
         private readonly string _connectionString =
             ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-        private AppSettings _appSettings;
+        private readonly SettingsWindow _settingsWindow;
+
+        private readonly AppSettings _appSettings;
         private LeaseService _leaseService;
         private TenantService _tenantService;
         private PropertyService _propertyService;
 
+
         public MainWindow()
         {
-            SetupStructure();
+            _appSettings = SettingsManager.GetUserSettings();
+            _settingsWindow = new SettingsWindow(_appSettings);
+            
+            _leaseService = new LeaseService(_connectionString);
+            _tenantService = new TenantService(_connectionString);
+            _propertyService = new PropertyService(_connectionString);
+
             InitializeComponent();
             SetupControls();
         }
 
-        private void SetupStructure()
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            _leaseService = new LeaseService(_connectionString);
-            _tenantService = new TenantService(_connectionString);
-            _propertyService = new PropertyService(_connectionString);
-            _appSettings = SettingsManager.GetUserSettings();
+            _settingsWindow.Owner = this;
         }
 
         private void SetupControls()
@@ -33,6 +40,11 @@ namespace Martius.App
             LeaseTab.Content = new LeaseControl(_leaseService, _tenantService, _propertyService, _appSettings);
             TenantTab.Content = new TenantControl(_tenantService);
             PropertyTab.Content = new PropertyControl(_propertyService);
+        }
+
+        private void Settings_OnClick(object sender, RoutedEventArgs e)
+        {
+            _settingsWindow.ShowDialog();
         }
     }
 }

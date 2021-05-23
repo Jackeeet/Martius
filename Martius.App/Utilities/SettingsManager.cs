@@ -28,7 +28,10 @@ namespace Martius.App
         {
             var settings = new AppSettings()
             {
-                DiscountPercentage = new decimal(5.0), UserDatabasePath = ""
+                DiscountPercentage = new decimal(5.0),
+                MinLeaseCount = 1,
+                MinLeaseMonths = 1,
+                UserDatabasePath = ""
             };
             File.WriteAllText(_filePath, JsonConvert.SerializeObject(settings));
         }
