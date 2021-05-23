@@ -35,80 +35,20 @@ namespace Martius.App
         {
             _newPropWindow = new AddPropertyWindow(_propertyService) {Owner = Window.GetWindow(this)};
             _newPropWindow.ShowDialog();
-            
+
             if (_newPropWindow.CreatedProperty != null)
                 _view.Refresh();
         }
 
-        private void RentedChBox_OnClick(object sender, RoutedEventArgs e)
+        private void ResetButton_OnClick(object sender, RoutedEventArgs e)
         {
         }
 
-        private void AvailableChBox_OnClick(object sender, RoutedEventArgs e)
+        private void ApplyButton_OnClick(object sender, RoutedEventArgs e)
         {
         }
 
-        private void ResidentialChBox_OnClick(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void NonResidentialChBox_OnClick(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void FurnishedChBox_OnClick(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void NotFurnishedChBox_OnClick(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void ParkingChBox_OnClick(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void NoParkingChBox_OnClick(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void MinAreaTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-        }
-
-        private void MaxAreaTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-        }
-
-        private void Rooms1Button_Checked(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void Rooms2Button_Checked(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void Rooms3Button_Checked(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void Rooms4RButton_Checked(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void Rooms5RButton_Checked(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void PropertyCityCBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
-
-        private void ResidentialChBox_OnChecked(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void ResidentialChBox_OnUnchecked(object sender, RoutedEventArgs e)
+        private void OnFilterChanged(object sender, EventArgs e)
         {
         }
 

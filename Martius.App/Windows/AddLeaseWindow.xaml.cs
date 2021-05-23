@@ -58,6 +58,10 @@ namespace Martius.App
                 {
                     DisplayError(ex.Message);
                 }
+                catch (PropertyRentedException ex2)
+                {
+                    DisplayError(ex2.Message);
+                }
             }
             else
                 DisplayError("Одно или несколько полей заполнены неверно");

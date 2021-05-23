@@ -58,6 +58,33 @@ namespace Martius.Domain
             return count;
         }
 
+        internal List<Lease> GetLeasesWithProperty(Property prop)
+        {
+            var result = new List<IDataEntity>();
+            var connection = new SqlConnection(ConnectionString);
+            var com = $"select * from lease where property_id = {prop.Id}";
+            using (connection)
+            {
+                var command = new SqlCommand(com, connection);
+                try
+                {
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    using (reader)
+                    {
+                        if (reader.HasRows)
+                            FillEntityList(reader, result, BuildEntity);
+                    }
+                }
+                catch (SqlException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+
+            return result.Cast<Lease>().ToList();
+        }
+
         protected internal LeaseDataManager(string connectionString) : base(connectionString)
         {
         }

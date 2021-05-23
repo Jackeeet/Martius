@@ -83,7 +83,10 @@
     <Compile Include="Controls\TenantControl.xaml.cs">
       <DependentUpon>TenantControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SettingsWindow.xaml.cs">
+    <Compile Include="Windows\PropInfoWindow.xaml.cs">
+      <DependentUpon>PropInfoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utilities\SettingsManager.cs" />
@@ -93,7 +96,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\SettingsWindow.xaml" />
+    <Page Include="Windows\PropInfoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SettingsWindow.xaml" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -112,15 +119,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Forms\AddLeaseWindow.xaml">
+    <Page Include="Windows\AddLeaseWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\AddPropertyWindow.xaml">
+    <Page Include="Windows\AddPropertyWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Forms\AddTenantWindow.xaml">
+    <Page Include="Windows\AddTenantWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -134,13 +141,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\AddLeaseWindow.xaml.cs">
+    <Compile Include="Windows\AddLeaseWindow.xaml.cs">
       <DependentUpon>AddLeaseWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AddPropertyWindow.xaml.cs">
+    <Compile Include="Windows\AddPropertyWindow.xaml.cs">
       <DependentUpon>AddPropertyWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AddTenantWindow.xaml.cs">
+    <Compile Include="Windows\AddTenantWindow.xaml.cs">
       <DependentUpon>AddTenantWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">

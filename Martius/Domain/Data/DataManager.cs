@@ -148,7 +148,7 @@ namespace Martius.Domain
             }
         }
 
-        private static void FillEntityList(
+        private protected static void FillEntityList(
             SqlDataReader reader, List<IDataEntity> result, Func<SqlDataReader, IDataEntity> entityBuilder)
         {
             while (reader.Read())

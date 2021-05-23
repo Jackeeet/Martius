@@ -27,6 +27,13 @@ namespace Martius.Domain
             EndDate = endDate;
         }
 
+        public bool ContentEquals(Lease other)
+        {
+            return Property.Equals(other.Property) && Tenant.Equals(other.Tenant) &&
+                   MonthlyPrice == other.MonthlyPrice && StartDate.Equals(other.StartDate) &&
+                   EndDate.Equals(other.EndDate);
+        }
+
         protected bool Equals(Lease other)
         {
             return Property.Equals(other.Property) && Tenant.Equals(other.Tenant) &&
@@ -62,7 +69,7 @@ namespace Martius.Domain
             var tenantId = Tenant.Id;
             var price = MonthlyPrice.ToString(CultureInfo.InvariantCulture);
             return $"{propId}, {tenantId}, {price}, " +
-                   $"'{CastUtils.FormatSqlDate(StartDate)}', '{CastUtils.FormatSqlDate(StartDate)}'";
+                   $"'{CastUtils.FormatSqlDate(StartDate)}', '{CastUtils.FormatSqlDate(EndDate)}'";
         }
 
         public override string ToString()
