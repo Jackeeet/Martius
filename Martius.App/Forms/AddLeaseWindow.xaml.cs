@@ -52,9 +52,7 @@ namespace Martius.App
                 Close();
             }
             else
-            {
                 DisplayError("Одно или несколько полей заполнены неверно");
-            }
         }
 
         private bool InputValid(Property prop, Tenant tenant, DateTime sd, DateTime ed, bool parsed)
@@ -87,7 +85,7 @@ namespace Martius.App
             {
                 var actualPrice = _discountAmount;
                 RubBox.Text = Math.Truncate(actualPrice).ToString(CultureInfo.InvariantCulture);
-                DecimalBox.Text = (actualPrice % 1.0m).ToString(CultureInfo.InvariantCulture);
+                DecimalBox.Text = (actualPrice % 1m).ToString(CultureInfo.InvariantCulture);
             }
             else
                 DisplayDefaultPrice();

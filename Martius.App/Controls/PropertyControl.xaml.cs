@@ -1,6 +1,4 @@
 ﻿using System;
-using Martius.Domain;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,29 +8,27 @@ using Martius.AppLogic;
 
 namespace Martius.App
 {
-    /// <summary>
-    /// Interaction logic for PropertyControl.xaml
-    /// </summary>
     public partial class PropertyControl : UserControl
     {
         private readonly PropertyService _propertyService;
         private AddPropertyWindow _newPropWindow;
-        private readonly List<Property> _allProps;
-        private List<Property> _currentProps;
+
+        // private readonly List<Property> _allProps;
         private GridViewColumnHeader _sortColumn;
         private SortAdorner _sortAdorner;
+        private readonly CollectionView _view;
 
         public PropertyControl(PropertyService propertyService)
         {
             _propertyService = propertyService;
-            _allProps = _propertyService.AllProperties;
             InitializeComponent();
-            PropertyListView.ItemsSource = _allProps;
-            PropertyCityCBox.ItemsSource = _propertyService.AllCities;
-            _currentProps = new List<Property>(_allProps);
 
-            var view = (CollectionView) CollectionViewSource.GetDefaultView(PropertyListView.ItemsSource);
-            view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+            var allProps = _propertyService.AllProperties;
+            PropertyListView.ItemsSource = allProps;
+            PropertyCityCBox.ItemsSource = _propertyService.AllCities;
+
+            _view = (CollectionView) CollectionViewSource.GetDefaultView(PropertyListView.ItemsSource);
+            _view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
         }
 
         private void NewPropertyButton_Click(object sender, RoutedEventArgs e)
@@ -40,67 +36,7 @@ namespace Martius.App
             _newPropWindow = new AddPropertyWindow(_propertyService);
             _newPropWindow.ShowDialog();
             if (_newPropWindow.CreatedProperty != null)
-                PropertyListView.Items.Refresh();
-        }
-
-        // private void ApplySelection(bool chBoxState, Func<Property, bool> selection)
-        // {
-        //     if (chBoxState)
-        //     {
-        //         var matching = _allProps.Where(selection);
-        //         _currentProps.AddRange(matching);
-        //     }
-        //     else
-        //     {
-        //         var predicate = new Predicate<Property>(selection);
-        //         var _ = _currentProps.RemoveAll(predicate);
-        //     }
-        //
-        //     PropertyListView.ItemsSource = _currentProps;
-        //     PropertyListView.Items.Refresh();
-        // }
-
-        private void ApplySelection(bool chBoxState, Func<Property, bool> selection)
-        {
-            var res = ResidentialChBox.IsChecked.GetValueOrDefault();
-            var nonRes = NonResidentialChBox.IsChecked.GetValueOrDefault();
-            var furn = FurnishedChBox.IsChecked.GetValueOrDefault();
-            var notFurn = NotFurnishedChBox.IsChecked.GetValueOrDefault();
-
-            if (!res)
-            {
-                _currentProps.RemoveAll(p => p.IsResidential);
-            }
-
-            if (!nonRes)
-            {
-                _currentProps.RemoveAll(p => !p.IsResidential);
-            }
-
-            if (!furn)
-            {
-                _currentProps.RemoveAll(p => p.IsFurnished);
-            }
-
-            if (!notFurn)
-            {
-                _currentProps.RemoveAll(p => p.IsFurnished);
-            }
-
-
-            // if (chBoxState)
-            // {
-            //     var matching = _allProps.Where(selection);
-            //     _currentProps.AddRange(matching);
-            // }
-            // else
-            // {
-            //     var predicate = new Predicate<Property>(selection);
-            //     var _ = _currentProps.RemoveAll(predicate);
-            // }
-
-            PropertyListView.ItemsSource = _currentProps;
-            PropertyListView.Items.Refresh();
+                _view.Refresh();
         }
 
         private void RentedChBox_OnClick(object sender, RoutedEventArgs e)
@@ -113,32 +49,26 @@ namespace Martius.App
 
         private void ResidentialChBox_OnClick(object sender, RoutedEventArgs e)
         {
-            ApplySelection(ResidentialChBox.IsChecked.GetValueOrDefault(), p => p.IsResidential);
         }
 
         private void NonResidentialChBox_OnClick(object sender, RoutedEventArgs e)
         {
-            ApplySelection(NonResidentialChBox.IsChecked.GetValueOrDefault(), p => !p.IsResidential);
         }
 
         private void FurnishedChBox_OnClick(object sender, RoutedEventArgs e)
         {
-            ApplySelection(FurnishedChBox.IsChecked.GetValueOrDefault(), p => p.IsFurnished);
         }
 
         private void NotFurnishedChBox_OnClick(object sender, RoutedEventArgs e)
         {
-            ApplySelection(NotFurnishedChBox.IsChecked.GetValueOrDefault(), p => !p.IsFurnished);
         }
 
         private void ParkingChBox_OnClick(object sender, RoutedEventArgs e)
         {
-            ApplySelection(ParkingChBox.IsChecked.GetValueOrDefault(), p => p.HasParking);
         }
 
         private void NoParkingChBox_OnClick(object sender, RoutedEventArgs e)
         {
-            ApplySelection(NoParkingChBox.IsChecked.GetValueOrDefault(), p => !p.HasParking);
         }
 
         private void MinAreaTextBox_TextChanged(object sender, TextChangedEventArgs e)

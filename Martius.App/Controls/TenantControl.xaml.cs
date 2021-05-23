@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,27 +10,25 @@ using static System.String;
 
 namespace Martius.App
 {
-    /// <summary>
-    /// Interaction logic for TenantControl.xaml
-    /// </summary>
     public partial class TenantControl : UserControl
     {
         private AddTenantWindow _newTenantWindow;
-        private readonly List<Tenant> _allTenants;
         private readonly TenantService _tenantService;
         private GridViewColumnHeader _sortColumn;
         private SortAdorner _sortAdorner;
+        private readonly CollectionView _view;
 
         public TenantControl(TenantService tenantService)
         {
             _tenantService = tenantService;
-            _allTenants = _tenantService.AllTenants;
             InitializeComponent();
-            TenantListView.ItemsSource = _allTenants;
 
-            var view = (CollectionView) CollectionViewSource.GetDefaultView(TenantListView.ItemsSource);
-            view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
-            view.Filter = TenantFilter;
+            var allTenants = _tenantService.AllTenants;
+            TenantListView.ItemsSource = allTenants;
+
+            _view = (CollectionView) CollectionViewSource.GetDefaultView(TenantListView.ItemsSource);
+            _view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+            _view.Filter = TenantFilter;
         }
 
         private bool TenantFilter(object obj)
@@ -46,7 +43,7 @@ namespace Martius.App
             _newTenantWindow = new AddTenantWindow(_tenantService);
             _newTenantWindow.ShowDialog();
             if (_newTenantWindow.CreatedTenant != null)
-                TenantListView.Items.Refresh();
+                _view.Refresh();
         }
 
         private void ColumnHeader_OnClick(object sender, RoutedEventArgs e)
