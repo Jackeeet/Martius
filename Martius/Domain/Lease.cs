@@ -69,7 +69,7 @@ namespace Martius.Domain
             var tenantId = Tenant.Id;
             var price = MonthlyPrice.ToString(CultureInfo.InvariantCulture);
             return $"{propId}, {tenantId}, {price}, " +
-                   $"'{CastUtils.FormatSqlDate(StartDate)}', '{CastUtils.FormatSqlDate(EndDate)}'";
+                   $"{CastUtils.FormatSqlDate(StartDate)}, {CastUtils.FormatSqlDate(EndDate)}";
         }
 
         public override string ToString()

@@ -37,6 +37,9 @@ namespace Martius.AppLogic
             return lease;
         }
 
+        public List<Lease> GetFilteredLeases(string filter, string join = null) 
+            => _dataManager.GetFilteredLeases(filter, @join);
+
         private bool IsUnique(Lease lease) => Leases.All(l => !l.ContentEquals(lease));
 
         private bool IsAvailable(Property prop, Lease newLease)

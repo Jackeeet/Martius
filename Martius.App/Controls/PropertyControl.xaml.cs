@@ -93,8 +93,8 @@ namespace Martius.App
 
             return
                 $"(({city} is null) or city = {city}) and " +
-                $"(({rented} is null) or lease.end_date >= '{today}') and " +
-                $"(({available} is null) or (lease.end_date < '{today}' or lease.id is null)) and " +
+                $"(({rented} is null) or lease.end_date >= {today}) and " +
+                $"(({available} is null) or (lease.end_date < {today} or lease.id is null)) and " +
                 $"(({res} is null) or residential = {res}) and " +
                 $"(({furn} is null) or furnished = {furn}) and " +
                 $"(({park} is null) or has_parking = {park}) and " +

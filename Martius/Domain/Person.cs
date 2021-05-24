@@ -20,7 +20,7 @@ namespace Martius.Domain
 
         public string ToSqlString()
         {
-            return $"N'{Surname}', N'{Name}', N'{Patronym}', '{CastUtils.FormatSqlDate(DateOfBirth)}'";
+            return $"N'{Surname}', N'{Name}', N'{Patronym}', {CastUtils.FormatSqlDate(DateOfBirth)}";
         }
 
         public override string ToString()

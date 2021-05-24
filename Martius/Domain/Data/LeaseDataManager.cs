@@ -85,6 +85,9 @@ namespace Martius.Domain
             return result.Cast<Lease>().ToList();
         }
 
+        internal List<Lease> GetFilteredLeases(string filter, string join = null)
+            => GetFilteredEntities(_tableName, filter, BuildEntity, join).Cast<Lease>().ToList();
+
         protected internal LeaseDataManager(string connectionString) : base(connectionString)
         {
         }

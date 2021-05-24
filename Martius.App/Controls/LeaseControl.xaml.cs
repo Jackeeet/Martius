@@ -1,9 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using Martius.AppLogic;
+using Martius.Domain;
+using Martius.Infrastructure;
 
 namespace Martius.App
 {
@@ -18,7 +21,6 @@ namespace Martius.App
         private readonly AppSettings _appSettings;
         private readonly CollectionView _view;
 
-
         public LeaseControl(LeaseService leaseService, TenantService tenantService, PropertyService propertyService,
             AppSettings appSettings)
         {
@@ -30,7 +32,7 @@ namespace Martius.App
 
             var allLeases = _leaseService.Leases;
             LeaseListView.ItemsSource = allLeases;
-            TenantCBox.ItemsSource = _tenantService.AllPeople;
+            TenantCBox.ItemsSource = _tenantService.Tenants;
             CityCBox.ItemsSource = _propertyService.AllCities;
 
             _view = (CollectionView) CollectionViewSource.GetDefaultView(LeaseListView.ItemsSource);
@@ -48,12 +50,68 @@ namespace Martius.App
                 _view.Refresh();
         }
 
-        private void CurrentChBox_Checked(object sender, RoutedEventArgs e)
+        private void ResetButton_OnClick(object sender, RoutedEventArgs e)
         {
+            CurrentChBox.IsChecked = null;
+            StartDatePicker.SelectedDate = null;
+            EndDatePicker.SelectedDate = null;
+            TenantCBox.SelectedIndex = -1;
+            CityCBox.SelectedIndex = -1;
+
+            ResetButton.IsEnabled = false;
         }
 
-        private void ExpiredChBox_Checked(object sender, RoutedEventArgs e)
+        private void RentedChBox_OnClick(object sender, RoutedEventArgs e)
         {
+            OnFilterChanged(sender, e);
+            CurrentChBox.Content = CurrentChBox.IsChecked == null ? "текущие/истекшие" :
+                CurrentChBox.IsChecked == true ? "текущие" : "истекшие";
+        }
+
+        private void OnFilterChanged(object sender, EventArgs e)
+        {
+            if (ResetButton.IsEnabled == false)
+                ResetButton.IsEnabled = true;
+
+            var join = " inner join property on property_id = property.id inner join tenant on tenant_id = tenant.id ";
+            var filter = BuildFilter();
+            var list = _leaseService.GetFilteredLeases(filter, join);
+            LeaseListView.ItemsSource = list;
+            _view.Refresh();
+        }
+
+        private string BuildFilter()
+        {
+            var today = CastUtils.FormatSqlDate(DateTime.Now);
+            var current = "null";
+            var expired = "null";
+            if (CurrentChBox.IsChecked == true)
+                current = "1";
+            else if (CurrentChBox.IsChecked == false)
+                expired = "1";
+
+            var sd = string.IsNullOrEmpty(StartDatePicker.Text)
+                ? "null"
+                : CastUtils.FormatSqlDate(Convert.ToDateTime(StartDatePicker.Text));
+            var ed = string.IsNullOrEmpty(EndDatePicker.Text)
+                ? "null"
+                : CastUtils.FormatSqlDate(Convert.ToDateTime(EndDatePicker.Text));
+
+            var city = CityCBox.SelectedIndex == -1 ? "null" : $"N'{CityCBox.SelectedItem}'";
+            var tId = "null";
+            if (TenantCBox.SelectedIndex != -1)
+            {
+                var tenant = (Tenant) TenantCBox.SelectedItem;
+                tId = tenant == null ? "null" : tenant.Id.ToString();
+            }
+
+            return
+                $"(({current} is null) or end_date >= {today}) and " +
+                $"(({expired} is null) or end_date < {today}) and " +
+                $"(({sd} is null) or start_date = {sd}) and " +
+                $"(({ed} is null) or end_date = {ed}) and " +
+                $"(({city} is null) or property.city = {city}) and " +
+                $"(({tId} is null) or tenant.id = {tId})";
         }
 
         private void ColumnHeader_OnClick(object sender, RoutedEventArgs e)
