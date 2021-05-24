@@ -44,6 +44,34 @@ namespace Martius.Domain
             return result;
         }
 
+        private protected List<IDataEntity> GetFilteredEntities(
+            string table, string filter, Func<SqlDataReader, IDataEntity> entityBuilder, string join = null)
+        {
+            var result = new List<IDataEntity>();
+            var connection = new SqlConnection(ConnectionString);
+            var comString = $"select * from {table}{join} where {filter}";
+            using (connection)
+            {
+                var command = new SqlCommand(comString, connection);
+                try
+                {
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    using (reader)
+                    {
+                        if (reader.HasRows)
+                            FillEntityList(reader, result, entityBuilder);
+                    }
+                }
+                catch (SqlException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+
+            return result;
+        }
+
         private protected IDataEntity GetEntityById(
             int id, string table, Func<SqlDataReader, IDataEntity> entityBuilder)
         {

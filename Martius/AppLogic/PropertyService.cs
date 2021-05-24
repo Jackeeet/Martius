@@ -33,6 +33,9 @@ namespace Martius.AppLogic
 
         public List<int> AllIds => Properties.Select(p => p.Id).ToList();
 
+        public List<Property> GetFilteredProperties(string filter, string join = null)
+            => _dataManager.GetFilteredProperties(filter, join);
+
         public Property SaveProperty(
             Address address, int roomCount, double area, bool isRes, bool isFurn, bool hasPark, decimal price)
         {

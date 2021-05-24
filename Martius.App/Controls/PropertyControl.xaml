@@ -7,69 +7,59 @@
              d:DesignHeight="580" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" MinWidth="140" MaxWidth="280" />
+            <ColumnDefinition Width="1*" MinWidth="200" MaxWidth="280" />
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <Button x:Name="NewPropertyButton" Content="Новое помещение"
                         Margin="5, 5, 5, 5" Height="25" Click="NewPropertyButton_Click" />
-                <Button x:Name="ResetButton" Content="Сбросить фильтры" Height="25" Margin="5, 5, 5, 5" IsEnabled="False" Click="ResetButton_OnClick" />
+                <Button x:Name="ResetButton" Content="Сбросить фильтры" Height="25" Margin="5, 5, 5, 5"
+                        IsEnabled="False" Click="ResetButton_OnClick" />
                 <Label Content="Город" />
-                <ComboBox x:Name="PropertyCityCBox" Margin="5"
-                          SelectionChanged="OnFilterChanged" />
+                <ComboBox x:Name="PropCityCBox" Margin="5" SelectionChanged="OnFilterChanged" />
                 <GroupBox Header="Состояние" Margin="5, 5, 5, 0" Padding="0, 5, 0, 0">
-                    <StackPanel>
-                        <CheckBox x:Name="RentedChBox" Content="сданные" IsThreeState="True" IsChecked="{x:Null}"
-                                  Margin="5" Click="OnFilterChanged" />
-                        <CheckBox x:Name="AvailableChBox" Content="свободные" IsThreeState="True" IsChecked="{x:Null}"
-                                  Margin="5" Click="OnFilterChanged" />
+                    <StackPanel x:Name="PropStates">
+                        <CheckBox x:Name="RentedChBox" Content="сданные/свободные" IsThreeState="True" IsChecked="{x:Null}"
+                                  Margin="5"  Click="RentedChBox_OnClick"/>
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Тип помещения" Margin="5, 5, 5, 0" Padding="0, 5, 0, 0">
-                    <StackPanel>
-                        <CheckBox x:Name="ResidentialChBox" Content="жилые" IsThreeState="True" IsChecked="{x:Null}"
-                                  Margin="5" Click="OnFilterChanged" />
-                        <CheckBox x:Name="NonResidentialChBox" Content="нежилые" IsThreeState="True"
-                                  IsChecked="{x:Null}"
-                                  Margin="5" Click="OnFilterChanged" />
-                        <CheckBox x:Name="FurnishedChBox" Content="с мебелью" IsThreeState="True" IsChecked="{x:Null}"
-                                  Margin="5" Click="OnFilterChanged" />
-                        <CheckBox x:Name="NotFurnishedChBox" Content="без мебели" IsThreeState="True" IsChecked="{x:Null}"
-                                  Margin="5" Click="OnFilterChanged" />
-                        <CheckBox x:Name="ParkingChBox" Content="с парковкой" IsThreeState="True" IsChecked="{x:Null}"
-                                  Margin="5" Click="OnFilterChanged" />
-                        <CheckBox x:Name="NoParkingChBox" Content="без парковки" IsThreeState="True" IsChecked="{x:Null}"
-                                  Margin="5" Click="OnFilterChanged" />
+                    <StackPanel x:Name="PropTypes">
+                        <CheckBox x:Name="ResidentialChBox" Content="жилые/нежилые" IsThreeState="True" IsChecked="{x:Null}"
+                                  Margin="5" Click="ResidentialChBox_OnClick" />
+                        <CheckBox x:Name="FurnishedChBox" Content="с мебелью/без мебели" IsThreeState="True" IsChecked="{x:Null}"
+                                  Margin="5" Click="FurnishedChBox_OnClick" />
+                        <CheckBox x:Name="ParkingChBox" Content="с парковкой/без парковки" IsThreeState="True" IsChecked="{x:Null}"
+                                  Margin="5" Click="ParkingChBox_OnClick" />
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Общая площадь (кв.м.)" Margin="5, 5, 5, 0" Padding="0, 5, 0, 0">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="От" />
-                        <TextBox x:Name="MinAreaTextBox" Width="40"
-                                 TextChanged="OnFilterChanged" />
+                        <TextBox x:Name="MinAreaTextBox" Width="40" TextChanged="OnFilterChanged" />
                         <Label Content="до" />
-                        <TextBox x:Name="MaxAreaTextBox" Width="40"
-                                 TextChanged="OnFilterChanged" />
+                        <TextBox x:Name="MaxAreaTextBox" Width="40" TextChanged="OnFilterChanged" />
                     </StackPanel>
                 </GroupBox>
                 <GroupBox Header="Количество комнат" Margin="5, 5, 5, 0" Padding="0, 5, 0, 0">
-                    <StackPanel>
+                    <StackPanel x:Name="RoomsCount" >
                         <RadioButton x:Name="RoomsAnyButton" Content="Любое" IsChecked="True" Margin="5"
-                                     Checked="OnFilterChanged" />
+                                     Click="OnFilterChanged" />
                         <RadioButton x:Name="Rooms1Button" Content="1" Margin="5"
-                                     Checked="OnFilterChanged" />
+                                     Click="OnFilterChanged" />
                         <RadioButton x:Name="Rooms2Button" Content="2" Margin="5"
-                                     Checked="OnFilterChanged" />
+                                     Click="OnFilterChanged" />
                         <RadioButton x:Name="Rooms3Button" Content="3" Margin="5"
-                                     Checked="OnFilterChanged" />
+                                     Click="OnFilterChanged" />
                         <RadioButton x:Name="Rooms4RButton" Content="4" Margin="5"
-                                     Checked="OnFilterChanged" />
+                                     Click="OnFilterChanged" />
                         <RadioButton x:Name="Rooms5RButton" Content="5+" Margin="5"
-                                     Checked="OnFilterChanged" />
+                                     Click="OnFilterChanged" />
                     </StackPanel>
                 </GroupBox>
-                <Button x:Name="ApplyButton" Content="Применить фильтры" Height="25" Margin="5" IsEnabled="False" Click="ApplyButton_OnClick"/>
+                <Button x:Name="ApplyButton" Content="Применить фильтры" Height="25" Margin="5" IsEnabled="False"
+                        Click="ApplyButton_OnClick" />
             </StackPanel>
         </ScrollViewer>
         <ListView x:Name="PropertyListView" Grid.Column="1" Margin="5, 5, 0, 0">

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using Martius.AppLogic;
+using Martius.Infrastructure;
 
 namespace Martius.App
 {
@@ -12,8 +14,6 @@ namespace Martius.App
     {
         private readonly PropertyService _propertyService;
         private AddPropertyWindow _newPropWindow;
-
-        // private readonly List<Property> _allProps;
         private GridViewColumnHeader _sortColumn;
         private SortAdorner _sortAdorner;
         private readonly CollectionView _view;
@@ -23,9 +23,8 @@ namespace Martius.App
             _propertyService = propertyService;
             InitializeComponent();
 
-            var allProps = _propertyService.Properties;
-            PropertyListView.ItemsSource = allProps;
-            PropertyCityCBox.ItemsSource = _propertyService.AllCities;
+            PropertyListView.ItemsSource = _propertyService.Properties;
+            PropCityCBox.ItemsSource = _propertyService.AllCities;
 
             _view = (CollectionView) CollectionViewSource.GetDefaultView(PropertyListView.ItemsSource);
             _view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
@@ -42,14 +41,102 @@ namespace Martius.App
 
         private void ResetButton_OnClick(object sender, RoutedEventArgs e)
         {
+            PropCityCBox.SelectedIndex = -1;
+            foreach (CheckBox option in PropStates.Children)
+                option.IsChecked = null;
+            foreach (CheckBox option in PropTypes.Children)
+                option.IsChecked = null;
+            MinAreaTextBox.Text = "";
+            MaxAreaTextBox.Text = "";
+            RoomsAnyButton.IsChecked = true;
+
+            ResetButton.IsEnabled = false;
+            ApplyButton.IsEnabled = false;
         }
 
         private void ApplyButton_OnClick(object sender, RoutedEventArgs e)
         {
+            var join = " left join lease on property.id = property_id";
+            var list = _propertyService.GetFilteredProperties(BuildFilter(), join).Distinct().ToList();
+            PropertyListView.ItemsSource = list;
+            _view.Refresh();
+
+            ApplyButton.IsEnabled = false;
+        }
+
+        private string BuildFilter()
+        {
+            var city = PropCityCBox.SelectedIndex == -1 ? "null" : $"N'{PropCityCBox.SelectedItem}'";
+            var today = CastUtils.FormatSqlDate(DateTime.Now);
+
+            var rented = "null";
+            var available = "null";
+            if (RentedChBox.IsChecked == true)
+                rented = "1";
+            else if (RentedChBox.IsChecked == false)
+                available = "1";
+
+            var res = ResidentialChBox.IsChecked == null ? "null" :
+                ResidentialChBox.IsChecked == true ? "1" : "0";
+            var furn = FurnishedChBox.IsChecked == null ? "null" :
+                FurnishedChBox.IsChecked == true ? "1" : "0";
+            var park = ParkingChBox.IsChecked == null ? "null" :
+                ParkingChBox.IsChecked == true ? "1" : "0";
+
+            var minArea = string.IsNullOrEmpty(MinAreaTextBox.Text) ? "null" : MinAreaTextBox.Text;
+            var maxArea = string.IsNullOrEmpty(MaxAreaTextBox.Text) ? "null" : MaxAreaTextBox.Text;
+
+            var checkedRb = RoomsCount.Children.OfType<RadioButton>()
+                .FirstOrDefault(r => r.IsChecked.GetValueOrDefault());
+            var rooms = checkedRb?.Name == "RoomsAnyButton" ? "null" :
+                checkedRb?.Name == "Rooms5RButton" ? "or room_count > 5" : checkedRb?.Content;
+
+            return
+                $"(({city} is null) or city = {city}) and " +
+                $"(({rented} is null) or lease.end_date >= '{today}') and " +
+                $"(({available} is null) or (lease.end_date < '{today}' or lease.id is null)) and " +
+                $"(({res} is null) or residential = {res}) and " +
+                $"(({furn} is null) or furnished = {furn}) and " +
+                $"(({park} is null) or has_parking = {park}) and " +
+                $"(({minArea} is null) or area >= {minArea}) and " +
+                $"(({maxArea} is null) or area <= {maxArea}) and " +
+                $"(({rooms} is null) or room_count = {rooms})";
         }
 
         private void OnFilterChanged(object sender, EventArgs e)
         {
+            if (ResetButton.IsEnabled == false)
+                ResetButton.IsEnabled = true;
+            if (ApplyButton.IsEnabled == false)
+                ApplyButton.IsEnabled = true;
+        }
+
+        private void RentedChBox_OnClick(object sender, RoutedEventArgs e)
+        {
+            OnFilterChanged(sender, e);
+            RentedChBox.Content = RentedChBox.IsChecked == null ? "сданные/свободные" :
+                RentedChBox.IsChecked == true ? "сданные" : "свободные";
+        }
+
+        private void ResidentialChBox_OnClick(object sender, RoutedEventArgs e)
+        {
+            OnFilterChanged(sender, e);
+            ResidentialChBox.Content = ResidentialChBox.IsChecked == null ? "жилые/нежилые" :
+                ResidentialChBox.IsChecked == true ? "жилые" : "нежилые";
+        }
+
+        private void FurnishedChBox_OnClick(object sender, RoutedEventArgs e)
+        {
+            OnFilterChanged(sender, e);
+            FurnishedChBox.Content = FurnishedChBox.IsChecked == null ? "с мебелью/без мебели" :
+                FurnishedChBox.IsChecked == true ? "с мебелью" : "без мебели";
+        }
+
+        private void ParkingChBox_OnClick(object sender, RoutedEventArgs e)
+        {
+            OnFilterChanged(sender, e);
+            ParkingChBox.Content = ParkingChBox.IsChecked == null ? "с парковкой/без парковки" :
+                ParkingChBox.IsChecked == true ? "с парковкой" : "без парковки";
         }
 
         private void ColumnHeader_OnClick(object sender, RoutedEventArgs e)
