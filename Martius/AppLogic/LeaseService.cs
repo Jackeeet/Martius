@@ -25,11 +25,11 @@ namespace Martius.AppLogic
         {
             var lease = new Lease(MaxId + 1, property, tenant, price, startDate, endDate);
 
-            if (!IsAvailable(property, lease))
-                throw new PropertyRentedException("Выбранное помещение занято в указанный период времени.");
-
             if (!IsUnique(lease))
                 throw new EntityExistsException("Такая запись уже существует в базе.");
+            
+            if (!IsAvailable(property, lease))
+                throw new PropertyRentedException("Выбранное помещение занято в указанный период времени.");
 
             _dataManager.AddLease(lease);
             Leases.Add(lease);
@@ -37,20 +37,22 @@ namespace Martius.AppLogic
             return lease;
         }
 
-        public List<Lease> GetFilteredLeases(string filter, string join = null) 
-            => _dataManager.GetFilteredLeases(filter, @join);
+        public List<Lease> GetFilteredLeases(string filter, string join = null)
+            => _dataManager.GetFilteredLeases(filter, join);
 
         private bool IsUnique(Lease lease) => Leases.All(l => !l.ContentEquals(lease));
 
         private bool IsAvailable(Property prop, Lease newLease)
         {
             var leases = _dataManager.GetLeasesWithProperty(prop);
-            return leases.All(l
+            var b = leases.All(l
                 => !DatePeriodsOverlap(l.StartDate, l.EndDate, newLease.StartDate, newLease.EndDate));
+            return b;
         }
 
         private bool DatePeriodsOverlap(DateTime sd1, DateTime ed1, DateTime sd2, DateTime ed2)
-            => sd2 > ed1 || sd1 > ed2;
+            => sd2 <= ed1 && sd1 <= ed2;
+            // => !(sd2 > ed1 || sd1 > ed2);
 
         public decimal GetDiscountedAmount(Property property, Tenant tenant, int minCount, decimal discount)
         {
