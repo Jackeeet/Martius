@@ -53,11 +53,14 @@ namespace Martius.App
         private void ResetButton_OnClick(object sender, RoutedEventArgs e)
         {
             CurrentChBox.IsChecked = null;
+            CurrentChBox.Content = "текущие/истекшие";
             StartDatePicker.SelectedDate = null;
             EndDatePicker.SelectedDate = null;
             TenantCBox.SelectedIndex = -1;
             CityCBox.SelectedIndex = -1;
 
+            LeaseListView.ItemsSource = _leaseService.Leases;
+            _view.Refresh();
             ResetButton.IsEnabled = false;
         }
 
@@ -74,9 +77,7 @@ namespace Martius.App
                 ResetButton.IsEnabled = true;
 
             var join = " inner join property on property_id = property.id inner join tenant on tenant_id = tenant.id ";
-            var filter = BuildFilter();
-            var list = _leaseService.GetFilteredLeases(filter, join);
-            LeaseListView.ItemsSource = list;
+            LeaseListView.ItemsSource = _leaseService.GetFilteredLeases(BuildFilter(), join);
             _view.Refresh();
         }
 
@@ -101,8 +102,9 @@ namespace Martius.App
             var tId = "null";
             if (TenantCBox.SelectedIndex != -1)
             {
-                var tenant = (Tenant) TenantCBox.SelectedItem;
-                tId = tenant == null ? "null" : tenant.Id.ToString();
+                tId = (Tenant) TenantCBox.SelectedItem == null
+                    ? "null"
+                    : ((Tenant) TenantCBox.SelectedItem).Id.ToString();
             }
 
             return

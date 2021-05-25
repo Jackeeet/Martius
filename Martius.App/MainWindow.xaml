@@ -16,8 +16,8 @@
         </Menu>
         <TabControl x:Name="TabControl" Grid.Row="1">
             <TabItem x:Name="LeaseTab" Header="Договоры"/>
-            <TabItem x:Name="TenantTab" Header="Арендаторы" />
             <TabItem x:Name="PropertyTab" Header="Помещения"/>
+            <TabItem x:Name="TenantTab" Header="Арендаторы" />
         </TabControl>
     </Grid>
 </Window>

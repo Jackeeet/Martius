@@ -42,26 +42,26 @@ namespace Martius.App
         private void ResetButton_OnClick(object sender, RoutedEventArgs e)
         {
             PropCityCBox.SelectedIndex = -1;
-            foreach (CheckBox option in PropStates.Children)
-                option.IsChecked = null;
-            foreach (CheckBox option in PropTypes.Children)
-                option.IsChecked = null;
+            ResetChBoxes();
             MinAreaTextBox.Text = "";
             MaxAreaTextBox.Text = "";
             RoomsAnyButton.IsChecked = true;
 
+            PropertyListView.ItemsSource = _propertyService.Properties;
+            _view.Refresh();
             ResetButton.IsEnabled = false;
-            ApplyButton.IsEnabled = false;
         }
 
-        private void ApplyButton_OnClick(object sender, RoutedEventArgs e)
+        private void ResetChBoxes()
         {
-            var join = " left join lease on property.id = property_id";
-            var list = _propertyService.GetFilteredProperties(BuildFilter(), join).Distinct().ToList();
-            PropertyListView.ItemsSource = list;
-            _view.Refresh();
-
-            ApplyButton.IsEnabled = false;
+            foreach (CheckBox option in PropStates.Children)
+                option.IsChecked = null;
+            foreach (CheckBox option in PropTypes.Children)
+                option.IsChecked = null;
+            RentedChBox.Content = "сданные/свободные";
+            ResidentialChBox.Content = "жилые/нежилые";
+            FurnishedChBox.Content = "с мебелью/без мебели";
+            ParkingChBox.Content = "с парковкой/без парковки";
         }
 
         private string BuildFilter()
@@ -107,8 +107,11 @@ namespace Martius.App
         {
             if (ResetButton.IsEnabled == false)
                 ResetButton.IsEnabled = true;
-            if (ApplyButton.IsEnabled == false)
-                ApplyButton.IsEnabled = true;
+
+            var join = " left join lease on property.id = property_id";
+            PropertyListView.ItemsSource =
+                _propertyService.GetFilteredProperties(BuildFilter(), join).Distinct().ToList();
+            _view.Refresh();
         }
 
         private void RentedChBox_OnClick(object sender, RoutedEventArgs e)

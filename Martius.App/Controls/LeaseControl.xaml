@@ -11,14 +11,14 @@
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <Button x:Name="NewLeaseButton" Content="Новый договор" Margin="5, 5, 5, 5" Height="25"
+            <StackPanel Background="White">
+                <Button x:Name="NewLeaseButton" Content="Новый договор" Margin="5" Height="25"
                         Click="NewLeaseButton_Click" />
                 <GroupBox Header="Состояние" Margin="5, 5, 5, 0" Padding="0, 5, 0, 0">
                     <CheckBox x:Name="CurrentChBox" Content="текущие/истекшие" Margin="5" IsThreeState="True"
                               IsChecked="{x:Null}" Click="RentedChBox_OnClick" />
                 </GroupBox>
-                <Label Content="Дата начала" />
+                <Label Content="Дата начала" Padding="5" />
                 <DatePicker x:Name="StartDatePicker" Margin="5" SelectedDateChanged="OnFilterChanged" />
                 <Label Content="Дата окончания" />
                 <DatePicker x:Name="EndDatePicker" Margin="5" SelectedDateChanged="OnFilterChanged" />
@@ -26,46 +26,46 @@
                 <ComboBox x:Name="TenantCBox" Margin="5" SelectionChanged="OnFilterChanged" />
                 <Label Content="Город" />
                 <ComboBox x:Name="CityCBox" Margin="5" SelectionChanged="OnFilterChanged" />
-                <Button x:Name="ResetButton" Content="Сбросить фильтры" Height="25" Margin="5, 5, 5, 5"
+                <Button x:Name="ResetButton" Content="Сбросить фильтры" Height="25" Margin="5"
                         IsEnabled="False" Click="ResetButton_OnClick" />
             </StackPanel>
         </ScrollViewer>
         <ListView x:Name="LeaseListView" Grid.Column="1" Margin="5,5,0,0">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
-                    <Setter Property="Height" Value="50" />
+                    <Setter Property="Height" Value="25" />
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Id}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="Id" Click="ColumnHeader_OnClick">№</GridViewColumnHeader>
+                            <GridViewColumnHeader Tag="Id" MinWidth="40" Click="ColumnHeader_OnClick">№</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Address}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="Address" Click="ColumnHeader_OnClick">Адрес</GridViewColumnHeader>
+                            <GridViewColumnHeader Tag="Address" MinWidth="250" Click="ColumnHeader_OnClick">Адрес</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding TenantName}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="TenantName" Click="ColumnHeader_OnClick">Арендатор</GridViewColumnHeader>
+                            <GridViewColumnHeader Tag="TenantName" MinWidth="170" Click="ColumnHeader_OnClick">Арендатор</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding MonthlyPrice}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="MonthlyPrice" Click="ColumnHeader_OnClick">Цена</GridViewColumnHeader>
+                            <GridViewColumnHeader Tag="MonthlyPrice" MinWidth="60" Click="ColumnHeader_OnClick">Цена</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding StartDate}">
+                    <GridViewColumn DisplayMemberBinding="{Binding StartDate, StringFormat={}{0:dd.MM.yyyy}}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="StartDate" Click="ColumnHeader_OnClick">Начало аренды</GridViewColumnHeader>
+                            <GridViewColumnHeader Tag="StartDate" MinWidth="120" Click="ColumnHeader_OnClick">Начало аренды</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding EndDate}">
+                    <GridViewColumn DisplayMemberBinding="{Binding EndDate, StringFormat={}{0:dd.MM.yyyy}}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="EndDate" Click="ColumnHeader_OnClick">Окончание аренды</GridViewColumnHeader>
+                            <GridViewColumnHeader Tag="EndDate" MinWidth="120" Click="ColumnHeader_OnClick">Окончание аренды</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
                 </GridView>

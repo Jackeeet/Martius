@@ -30,17 +30,22 @@ namespace Martius.Domain
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((Tenant) obj);
+            return Equals((Tenant)obj);
         }
 
         public override int GetHashCode() => Id;
 
         public override string ToString()
         {
+            return $"{PersonInfo} ({PassportNumber})";
+        }
+
+        public string ToDebugString()
+        {
             return $"{nameof(Id)}: {Id}," +
-                   $" {nameof(PersonInfo)}: {PersonInfo}, " +
-                   $"{nameof(PhoneNumber)}: {PhoneNumber}, " +
-                   $"{nameof(PassportNumber)}: {PassportNumber}";
+                  $" {nameof(PersonInfo)}: {PersonInfo}, " +
+                  $"{nameof(PhoneNumber)}: {PhoneNumber}, " +
+                  $"{nameof(PassportNumber)}: {PassportNumber}";
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Martius.Domain
         {
             var result = $"{Surname} {Name}";
             if (Patronym != null) result += $" {Patronym}";
-            return result + $" {DateOfBirth}";
+            return result;
         }
 
         protected bool Equals(Person other)

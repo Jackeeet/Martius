@@ -3,57 +3,53 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Martius.App"
              mc:Ignorable="d"
              d:DesignHeight="580" d:DesignWidth="800">
     <Grid x:Name="TenantOuterGrid" Background="White">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*" MinHeight="40" MaxHeight="60" />
-            <RowDefinition Height="10*" />
-        </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0">
-            <Label DockPanel.Dock="Left"
-                   Content="Арендаторы" Width="80" Margin="10,5" Height="25" VerticalAlignment="Center"
-                   HorizontalAlignment="Center" HorizontalContentAlignment="Center"
-                   VerticalContentAlignment="Center" />
-            <Label DockPanel.Dock="Left"
-                   Content="Поиск по ФИО:" Margin="10, 5, 0, 5" Height="25" VerticalAlignment="Center"
-                   HorizontalAlignment="Center" HorizontalContentAlignment="Center"
-                   VerticalContentAlignment="Center" />
-            <TextBox x:Name="SearchBox" DockPanel.Dock="Left"
-                     Width="150" Margin="0,5, 10, 5" Height="25" Padding="0, 2, 0, 2"
-                     TextChanged="TenantSearchBox_OnTextChanged" />
-            <Button x:Name="NewTenantButton"
-                    Width="125"
-                    Content="Новый арендатор" Margin="10,5" Height="25" HorizontalAlignment="Right"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" MinWidth="200" MaxWidth="280" />
+            <ColumnDefinition Width="5*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+            <Button x:Name="NewTenantButton" Content="Новый арендатор" Margin="5" Height="25" 
                     Click="NewTenantButton_Click" />
-        </DockPanel>
-        <ListView x:Name="TenantListView" Grid.Row="1">
+            <Label Content="Поиск"/>
+            <TextBox x:Name="SearchBox" Margin="5" Height="25" Padding="0, 2, 0, 2"
+                   TextChanged="TenantSearchBox_OnTextChanged" />
+            <GroupBox Header="Критерий поиска" Margin="5, 5, 5, 0" Padding="0, 5, 0, 0">
+                <StackPanel>
+                    <RadioButton x:Name="NameRb" Content="ФИО" Margin="5" IsChecked="True" />
+                    <RadioButton x:Name="PhoneRb" Content="Номер телефона" Margin="5" />
+                    <RadioButton x:Name="PassRb" Content="Номер паспорта" Margin="5" />
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+        <ListView x:Name="TenantListView" Grid.Column="1" Margin="5,5,0,0">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
-                    <Setter Property="Height" Value="50" />
+                    <Setter Property="Height" Value="25" />
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="50" DisplayMemberBinding="{Binding Id}">
+                    <GridViewColumn DisplayMemberBinding="{Binding Id}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="Id" Click="ColumnHeader_OnClick">№</GridViewColumnHeader>
+                            <GridViewColumnHeader Tag="Id" MinWidth="40" Click="ColumnHeader_OnClick">№</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
-                    <GridViewColumn Width="250" DisplayMemberBinding="{Binding FullName}">
+                    <GridViewColumn DisplayMemberBinding="{Binding FullName}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="FullName" Click="ColumnHeader_OnClick">Фио</GridViewColumnHeader>
+                            <GridViewColumnHeader Tag="FullName" MinWidth="250" Click="ColumnHeader_OnClick">Фио</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
-                    <GridViewColumn Width="100" DisplayMemberBinding="{Binding PhoneNumber}">
+                    <GridViewColumn DisplayMemberBinding="{Binding PhoneNumber}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="PhoneNumber" Click="ColumnHeader_OnClick">Номер телефона</GridViewColumnHeader>
+                            <GridViewColumnHeader Tag="PhoneNumber" MinWidth="150" Click="ColumnHeader_OnClick">Номер телефона</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
-                    <GridViewColumn Width="100" DisplayMemberBinding="{Binding PassportNumber}">
+                    <GridViewColumn DisplayMemberBinding="{Binding PassportNumber}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="PassportNumber" Click="ColumnHeader_OnClick">Номер паспорта</GridViewColumnHeader>
+                            <GridViewColumnHeader Tag="PassportNumber" MinWidth="150" Click="ColumnHeader_OnClick">Номер паспорта</GridViewColumnHeader>
                         </GridViewColumn.Header>
                     </GridViewColumn>
                 </GridView>

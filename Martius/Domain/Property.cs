@@ -47,7 +47,7 @@ namespace Martius.Domain
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((Property) obj);
+            return Equals((Property)obj);
         }
 
         public override int GetHashCode()
@@ -58,7 +58,9 @@ namespace Martius.Domain
             }
         }
 
-        public override string ToString()
+        public override string ToString() => Address.ToString();
+
+        public string ToDebugString()
         {
             return
                 $"{nameof(Id)}: {Id}," +
