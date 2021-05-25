@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d"
-        Title="Настройки" Height="310" Width="450" ShowInTaskbar="False" WindowStyle="ToolWindow"
+        Title="Настройки" Height="340" Width="450" ShowInTaskbar="False" WindowStyle="ToolWindow"
         ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Closing="SettingsWindow_OnClosing">
     <StackPanel>
         <GroupBox Header="Договоры" Margin="5" Padding="5">
@@ -27,8 +27,13 @@
                 </StackPanel>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="Другое" Margin="5,0,5,5" Padding="5">
-            <StackPanel />
+        <GroupBox Header="Файл базы данных" Margin="5,0,5,5" Padding="0,5, 5,5">
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <Button x:Name="ResetButton" Content="X" Width="20" Margin="0, 0, 5, 0" Click="ResetButton_OnClick" />
+                <TextBox x:Name="FileBox" Width="275" Margin="0, 0, 5, 0" IsReadOnly="True" />
+                <Button x:Name="DbButton" Content="Выбрать..." Width="80" Click="DbButton_OnClick" />
+
+            </StackPanel>
         </GroupBox>
         <DockPanel Margin="5">
             <Button x:Name="SaveButton" DockPanel.Dock="Right" Content="Сохранить" IsDefault="True" Width="65"

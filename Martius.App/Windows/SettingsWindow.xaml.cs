@@ -1,12 +1,14 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
+using Microsoft.Win32;
 
 namespace Martius.App
 {
     public partial class SettingsWindow : Window
     {
         private readonly AppSettings _settings;
+        private string _filePath;
 
         public SettingsWindow(AppSettings settings)
         {
@@ -39,6 +41,7 @@ namespace Martius.App
                 {
                     SettingsManager.SetDefaultSettings();
                     FillSettingsFields();
+                    Close();
                 }
             }
             else
@@ -46,8 +49,11 @@ namespace Martius.App
                 _settings.MinLeaseMonths = months;
                 _settings.DiscountPercentage = percent;
                 _settings.MinLeaseCount = count;
+                _settings.UserDatabasePath = _filePath;
+
                 SettingsManager.SetUserSettings(_settings);
                 FillSettingsFields();
+                Close();
             }
         }
 
@@ -56,6 +62,21 @@ namespace Martius.App
             MinLengthBox.Text = _settings.MinLeaseMonths.ToString();
             DiscountBox.Text = _settings.DiscountPercentage.ToString(CultureInfo.InvariantCulture);
             MinCountBox.Text = _settings.MinLeaseCount.ToString();
+            FileBox.Text = _settings.UserDatabasePath ?? "";
+        }
+
+        private void DbButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var fileDialog = new OpenFileDialog {Filter = "*.mdf|*.mdf"};
+            if (fileDialog.ShowDialog() == true)
+                _filePath = fileDialog.FileName;
+            FileBox.Text = _filePath;
+        }
+
+        private void ResetButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            _filePath = "";
+            FileBox.Text = _filePath;
         }
     }
 }
