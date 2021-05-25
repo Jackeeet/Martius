@@ -18,6 +18,9 @@ namespace Martius.Domain
 
         internal void AddTenant(Tenant tenant) => AddEntity(tenant, _tableName, _tableColumns);
 
+        public List<Tenant> GetFilteredTenants(string filter, string join = null) =>
+            GetFilteredEntities(_tableName, filter, BuildEntity, @join).Cast<Tenant>().ToList();
+
         protected override IDataEntity BuildEntity(SqlDataReader reader)
         {
             var id = reader.GetInt32(0);

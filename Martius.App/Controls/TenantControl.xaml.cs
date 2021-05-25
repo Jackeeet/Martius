@@ -1,12 +1,10 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using Martius.AppLogic;
-using Martius.Domain;
-using static System.String;
 
 namespace Martius.App
 {
@@ -17,6 +15,7 @@ namespace Martius.App
         private GridViewColumnHeader _sortColumn;
         private SortAdorner _sortAdorner;
         private readonly CollectionView _view;
+        private string _filter;
 
         public TenantControl(TenantService tenantService)
         {
@@ -28,14 +27,29 @@ namespace Martius.App
 
             _view = (CollectionView) CollectionViewSource.GetDefaultView(TenantListView.ItemsSource);
             _view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
-            _view.Filter = TenantFilter;
         }
 
-        private bool TenantFilter(object obj)
+        private void SearchBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            var searchTerm = SearchBox.Text;
-            return IsNullOrEmpty(searchTerm) ||
-                   ((Tenant) obj).FullName.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0;
+            SetFilter();
+            var list = _tenantService.GetFilteredTenants(_filter);
+            TenantListView.ItemsSource = list;
+            _view.Refresh();
+        }
+
+        private void SetFilter()
+        {
+            var checkedRb = SearchTerms.Children.OfType<RadioButton>()
+                .FirstOrDefault(r => r.IsChecked.GetValueOrDefault());
+            if (checkedRb?.Name == "NameRb")
+            {
+                _filter =
+                    $"surname like N'%{SearchBox.Text}%' or name like N'%{SearchBox.Text}%' or patronym like N'%{SearchBox.Text}%'";
+            }
+            else if (checkedRb?.Name == "PhoneRb")
+                _filter = $"phone like '%{SearchBox.Text}%'";
+            else
+                _filter = $"passport like '%{SearchBox.Text}%'";
         }
 
         private void NewTenantButton_Click(object sender, RoutedEventArgs e)
@@ -67,11 +81,6 @@ namespace Martius.App
                 AdornerLayer.GetAdornerLayer(_sortColumn)?.Add(_sortAdorner);
                 TenantListView.Items.SortDescriptions.Add(new SortDescription(sortCriteria, newSortDirection));
             }
-        }
-
-        private void TenantSearchBox_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            CollectionViewSource.GetDefaultView(TenantListView.ItemsSource).Refresh();
         }
     }
 }

@@ -11,13 +11,13 @@
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
         <StackPanel>
-            <Button x:Name="NewTenantButton" Content="Новый арендатор" Margin="5" Height="25" 
+            <Button x:Name="NewTenantButton" Content="Новый арендатор" Margin="5" Height="25"
                     Click="NewTenantButton_Click" />
-            <Label Content="Поиск"/>
+            <Label Content="Поиск" />
             <TextBox x:Name="SearchBox" Margin="5" Height="25" Padding="0, 2, 0, 2"
-                   TextChanged="TenantSearchBox_OnTextChanged" />
+                     TextChanged="SearchBox_OnTextChanged" />
             <GroupBox Header="Критерий поиска" Margin="5, 5, 5, 0" Padding="0, 5, 0, 0">
-                <StackPanel>
+                <StackPanel x:Name="SearchTerms">
                     <RadioButton x:Name="NameRb" Content="ФИО" Margin="5" IsChecked="True" />
                     <RadioButton x:Name="PhoneRb" Content="Номер телефона" Margin="5" />
                     <RadioButton x:Name="PassRb" Content="Номер паспорта" Margin="5" />
