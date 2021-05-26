@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using Martius.AppLogic;
+using Martius.Domain;
 
 namespace Martius.App
 {
@@ -60,6 +61,17 @@ namespace Martius.App
             if (_newTenantWindow.CreatedTenant != null)
                 _view.Refresh();
         }
+
+        private void InfoButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (((FrameworkElement) sender).DataContext is Tenant tenant)
+            {
+                // todo handle info window
+                // var info = 
+            }
+        }
+
+        private void OnInfoChanged() => _view.Refresh();
 
         private void ColumnHeader_OnClick(object sender, RoutedEventArgs e)
         {

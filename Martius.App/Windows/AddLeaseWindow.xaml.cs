@@ -64,7 +64,7 @@ namespace Martius.App
                 }
             }
             else
-                DisplayError("Одно или несколько полей заполнены неверно");
+                DisplayError("Одно или несколько полей заполнены неверно.");
         }
 
         private bool InputValid(Property prop, Tenant tenant, DateTime sd, DateTime ed, bool parsed)

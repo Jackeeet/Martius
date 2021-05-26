@@ -34,6 +34,8 @@ namespace Martius.AppLogic
         public List<Property> GetFilteredProperties(string filter, string join = null)
             => _dataManager.GetFilteredProperties(filter, join);
 
+        public void UpdateProperty(Property property) => _dataManager.UpdateProperty(property);
+
         public Property SaveProperty(
             Address address, int roomCount, double area, bool isRes, bool isFurn, bool hasPark, decimal price)
         {

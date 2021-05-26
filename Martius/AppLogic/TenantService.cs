@@ -22,6 +22,8 @@ namespace Martius.AppLogic
         public List<Tenant> GetFilteredTenants(string filter, string join = null)
             => _dataManager.GetFilteredTenants(filter, join);
 
+        public void UpdateTenant(Tenant tenant) => _dataManager.UpdateTenant(tenant);
+
         public Tenant SaveTenant(Person person, string passport, string phone)
         {
             var tenant = new Tenant(_maxId + 1, person, phone, passport);

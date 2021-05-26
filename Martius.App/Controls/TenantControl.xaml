@@ -55,6 +55,13 @@
                                                   Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Редактировать" Width="90" Click="InfoButton_OnClick" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

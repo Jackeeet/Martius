@@ -26,6 +26,8 @@ namespace Martius.Domain
         internal List<Property> GetFilteredProperties(string filter, string join = null) =>
             GetEntities(_tableName, BuildEntity, filter, join).Cast<Property>().ToList();
 
+        internal void UpdateProperty(Property property) => UpdateEntity(property, _tableName, _tableColumns);
+
         protected override IDataEntity BuildEntity(SqlDataReader reader)
         {
             var id = reader.GetInt32(0);

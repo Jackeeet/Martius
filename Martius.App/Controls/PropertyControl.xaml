@@ -92,25 +92,17 @@
                             <GridViewColumnHeader Content="Площадь" Tag="Area" Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding IsResidential}">
-                        <GridViewColumn.Header>
-                            <GridViewColumnHeader Content="Жилое" Tag="IsResidential" Click="ColumnHeader_OnClick" />
-                        </GridViewColumn.Header>
-                    </GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding IsFurnished}">
-                        <GridViewColumn.Header>
-                            <GridViewColumnHeader Content="С мебелью" Tag="IsFurnished" Click="ColumnHeader_OnClick" />
-                        </GridViewColumn.Header>
-                    </GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding HasParking}">
-                        <GridViewColumn.Header>
-                            <GridViewColumnHeader Content="С парковкой" Tag="HasParking" Click="ColumnHeader_OnClick" />
-                        </GridViewColumn.Header>
-                    </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding MonthlyPrice, StringFormat={}{0:0.00}}">
                         <GridViewColumn.Header>
                             <GridViewColumnHeader Content="Цена" Tag="MonthlyPrice" Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Редактировать" Width="90" Click="InfoButton_OnClick" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>

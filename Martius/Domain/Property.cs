@@ -6,7 +6,7 @@ namespace Martius.Domain
     public class Property : IDataEntity
     {
         public int Id { get; }
-        public Address Address { get; }
+        public Address Address { get; set; }
         public int RoomCount { get; set; }
         public double Area { get; set; }
         public bool IsResidential { get; set; }
@@ -47,7 +47,7 @@ namespace Martius.Domain
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((Property)obj);
+            return Equals((Property) obj);
         }
 
         public override int GetHashCode()

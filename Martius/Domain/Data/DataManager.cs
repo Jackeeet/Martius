@@ -101,24 +101,6 @@ namespace Martius.Domain
             return sb.ToString();
         }
 
-        private protected void DeleteById(int id, string table)
-        {
-            var com = $"delete from {table} where id = {id}";
-            var connection = new SqlConnection(ConnectionString);
-            using (connection)
-            {
-                var command = new SqlCommand(com, connection);
-                try
-                {
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }
-                catch (SqlException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-        }
 
         private static void FillEntityList(
             SqlDataReader reader, List<IDataEntity> result, Func<SqlDataReader, IDataEntity> entityBuilder)
