@@ -4,62 +4,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d"
-         Title="" Height="380" Width="480" WindowStartupLocation="CenterOwner">
+        Title="" Height="380" Width="480" WindowStartupLocation="CenterOwner" ResizeMode="CanMinimize">
     <StackPanel>
         <DockPanel Margin="5">
-            <Label Content="Помещение №" DockPanel.Dock="Left" Margin="5" />
-            <Label x:Name="IdLabel" Content="" DockPanel.Dock="Left" Width="20" Margin="0,5,5,5"
-                   Background="CornflowerBlue" />
+            <Label x:Name="IdLabel" Content="Арендатор № " DockPanel.Dock="Left" Margin="5,5,5,0" />
             <Button x:Name="EditButton" DockPanel.Dock="Right" HorizontalAlignment="Right" Content="Редактировать"
                     Width="90" Margin="5" Click="EditButton_OnClick" />
             <Button x:Name="ApplyButton" DockPanel.Dock="Right" HorizontalAlignment="Right" Content="Сохранить"
                     Width="90" Margin="5" IsEnabled="False" Click="ApplyButton_OnClick" />
         </DockPanel>
-        <GroupBox Header="Адрес" Margin="5" Padding="5">
+        <GroupBox Header="Данные" Margin="5" Padding="5">
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
-                    <Label Content="Город" Width="70" Margin="5,5,0,5" />
-                    <TextBox x:Name="CityBox" Width="80" TextAlignment="Center" VerticalContentAlignment="Center"
-                             Padding="2" IsReadOnly="True" />
-                    <Label Content="Улица" Width="70" Margin="5,5,0,5" />
-                    <TextBox x:Name="StreetBox" Width="80" TextAlignment="Center" VerticalContentAlignment="Center"
+                    <Label Content="Фамилия" Width="120" Margin="5,5,0,5" />
+                    <TextBox x:Name="SurnameBox" Width="200" TextAlignment="Center" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
-                    <Label Content="Дом" Width="70" Margin="5,5,0,5" />
-                    <TextBox x:Name="BuildingBox" Width="80" TextAlignment="Center" VerticalContentAlignment="Center"
+                    <Label Content="Имя" Width="120" Margin="5,5,0,5" />
+                    <TextBox x:Name="NameBox" Width="200" TextAlignment="Center" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
-                    <Label Content="Квартира" Width="70" Margin="5,5,0,5" />
-                    <TextBox x:Name="AptBox" Width="80" TextAlignment="Center" VerticalContentAlignment="Center"
-                             Padding="2" IsReadOnly="True" />
-                </StackPanel>
-            </StackPanel>
-        </GroupBox>
-        <GroupBox Header="Характеристики помещения" Margin="5" Padding="5">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="5">
-                    <Label Content="Общая площадь" Width="100" Margin="5,5,0,5" />
-                    <TextBox x:Name="AreaBox" Width="80" TextAlignment="Center" VerticalContentAlignment="Center"
-                             Padding="2" IsReadOnly="True" />
-                    <Label Content="Количество комнат" Width="120" Margin="5,5,0,5" />
-                    <TextBox x:Name="RoomBox" Width="80" TextAlignment="Center" VerticalContentAlignment="Center"
-                             Padding="2" IsReadOnly="True" />
-                </StackPanel>
-                <StackPanel x:Name="ChBoxes" Orientation="Horizontal" Margin="5">
-                    <CheckBox x:Name="ResChBox" Content="Жилое" Margin="5" VerticalAlignment="Center" IsEnabled="False" />
-                    <CheckBox x:Name="FurnChBox" Content="С мебелью" Margin="5" VerticalAlignment="Center"
-                              IsEnabled="False" />
-                    <CheckBox x:Name="ParkChBox" Content="С парковкой" Margin="5" VerticalAlignment="Center"
-                              IsEnabled="False" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
-                    <Label Content="Стоимость:" Margin="5,0,0,0" />
-                    <TextBox x:Name="RubBox" Width="40" TextAlignment="Center" VerticalContentAlignment="Center"
+                    <Label Content="Отчество" Width="120" Margin="5,5,0,5" />
+                    <TextBox x:Name="PatrBox" Width="200" TextAlignment="Center" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
-                    <Label Content="руб." />
-                    <TextBox x:Name="DecBox" Width="40" TextAlignment="Center" VerticalContentAlignment="Center"
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content="Дата рождения" Width="120" Margin="5,5,0,5" />
+                    <DatePicker Name="DobPicker" FirstDayOfWeek="Monday" Width="200" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content="Номер паспорта" Width="120" Margin="5,5,0,5" />
+                    <TextBox x:Name="PassBox" Width="200" TextAlignment="Center" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
-                    <Label Content="коп." />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Label Content="Номер телефона" Width="120" Margin="5,5,0,5" />
+                    <TextBox x:Name="PhoneBox" Width="200" TextAlignment="Center" VerticalContentAlignment="Center"
+                             Padding="2" IsReadOnly="True" />
                 </StackPanel>
             </StackPanel>
         </GroupBox>

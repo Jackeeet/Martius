@@ -4,12 +4,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d"
-        Title="" Height="380" Width="480" WindowStartupLocation="CenterOwner">
+        Title="" Height="380" Width="480" WindowStartupLocation="CenterOwner" ResizeMode="CanMinimize">
     <StackPanel>
         <DockPanel Margin="5">
-            <Label Content="Помещение №" DockPanel.Dock="Left" Margin="5" />
-            <Label x:Name="IdLabel" Content="" DockPanel.Dock="Left" Width="20" Margin="0,5,5,5"
-                   Background="CornflowerBlue" />
+            <Label x:Name="IdLabel" Content="Помещение № " DockPanel.Dock="Left" Margin="5" />
             <Button x:Name="EditButton" DockPanel.Dock="Right" HorizontalAlignment="Right" Content="Редактировать"
                     Width="90" Margin="5" Click="EditButton_OnClick" />
             <Button x:Name="ApplyButton" DockPanel.Dock="Right" HorizontalAlignment="Right" Content="Сохранить"

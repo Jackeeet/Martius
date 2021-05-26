@@ -24,7 +24,7 @@ namespace Martius.App
 
         private void InitFields(Property prop)
         {
-            IdLabel.Content = prop.Id;
+            IdLabel.Content += prop.Id.ToString();
             CityBox.Text = prop.Address.City;
             StreetBox.Text = prop.Address.Street;
             BuildingBox.Text = prop.Address.Building;
@@ -54,7 +54,7 @@ namespace Martius.App
             var priceParsed =
                 decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out var price);
 
-            if (InputValid(address, roomsParsed, areaParsed, priceParsed) && AmountsValid(roomCount, area, price))
+            if (PropInputValid(address, roomsParsed, areaParsed, priceParsed) && PropAmountsValid(roomCount, area, price))
             {
                 _prop.Address = address;
                 _prop.RoomCount = roomCount;

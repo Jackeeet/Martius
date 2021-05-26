@@ -1,3 +1,4 @@
+using System;
 using System.Text.RegularExpressions;
 using Martius.Domain;
 using Martius.Infrastructure;
@@ -8,15 +9,57 @@ namespace Martius.App
     {
         private static readonly Regex bldNumRegex = new Regex(@"^(\d{1,5})(\D*)$", RegexOptions.Compiled);
         private static readonly Regex aptNumRegex = new Regex(@"^(\d{1,5})$", RegexOptions.Compiled);
+        private static readonly Regex passportRegex = new Regex(@"^\d{4}[ -]?\d{6}$", RegexOptions.Compiled);
+        private static readonly Regex phoneRegex =
+            new Regex(@"^\+?\d[ -]?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{2}[ -]?\d{2}$", RegexOptions.Compiled);
 
-        internal static bool InputValid(Address address, bool roomsParsed, bool areaParsed, bool priceParsed)
+
+        internal static bool PropInputValid(Address address, bool roomsParsed, bool areaParsed, bool priceParsed)
         {
             return address != null && roomsParsed && areaParsed && priceParsed;
         }
 
-        internal static bool AmountsValid(int roomCount, double area, decimal price)
+        internal static bool PropAmountsValid(int roomCount, double area, decimal price)
         {
             return roomCount > 0 && area > 0.0d && price > decimal.Zero;
+        }
+
+        internal static bool InputValid(Person person, string passport, string phone)
+        {
+            return person != null && passport != null && phone != null;
+        }
+
+        internal static string ParsePhone(string phoneNum)
+        {
+            var match = phoneRegex.Match(phoneNum);
+            if (!match.Success)
+                return null;
+
+            var phone = match.Groups[0].ToString();
+            return Regex.Replace(phone, @"[ \-\(\)]", string.Empty);
+        }
+
+        internal static string ParsePassport(string passNum)
+        {
+            var match = passportRegex.Match(passNum);
+            if (!match.Success)
+                return null;
+
+            var passport = match.Groups[0].ToString();
+            return Regex.Replace(passport, @"[ \-]", string.Empty);
+        }
+
+        internal static Person ParsePerson(string surname, string name, string patronym, DateTime dob)
+        {
+            if (DateTime.Now.AddYears(-14) < dob ||
+                string.IsNullOrEmpty(surname) || surname.Length > 50 ||
+                string.IsNullOrEmpty(name) || name.Length > 50 ||
+                patronym.Length > 50)
+            {
+                return null;
+            }
+
+            return new Person(surname, name, patronym, dob);
         }
 
         internal static Address ParseAddress(string city, string street, string bld, string apt)

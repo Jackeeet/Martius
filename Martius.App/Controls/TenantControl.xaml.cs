@@ -66,8 +66,9 @@ namespace Martius.App
         {
             if (((FrameworkElement) sender).DataContext is Tenant tenant)
             {
-                // todo handle info window
-                // var info = 
+                var info = new TenantInfoWindow(tenant, _tenantService) {Owner = Window.GetWindow(this)};
+                info.InfoChanged += OnInfoChanged;
+                info.Show();
             }
         }
 

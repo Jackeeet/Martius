@@ -34,7 +34,7 @@ namespace Martius.App
             var priceParsed =
                 decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out var price);
 
-            if (InputValid(address, roomsParsed, areaParsed, priceParsed) && AmountsValid(roomCount, area, price))
+            if (PropInputValid(address, roomsParsed, areaParsed, priceParsed) && PropAmountsValid(roomCount, area, price))
             {
                 try
                 {
