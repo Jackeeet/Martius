@@ -83,9 +83,6 @@
     <Compile Include="Controls\TenantControl.xaml.cs">
       <DependentUpon>TenantControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\PropInfoWindow.xaml.cs">
-      <DependentUpon>PropInfoWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -93,10 +90,6 @@
     <Compile Include="Utilities\SortAdorner.cs" />
     <Compile Include="Utilities\AppSettings.cs" />
     <Page Include="Controls\LeaseControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\PropInfoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -184,15 +177,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="MartiusDB.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="MartiusDB_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>MartiusDB.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

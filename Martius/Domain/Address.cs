@@ -67,12 +67,8 @@ namespace Martius.Domain
                 return 1;
 
             if (obj is Address otherAddress)
-            {
-                // todo implement actual comparison
-                return string.Compare(this.City, otherAddress.City, StringComparison.Ordinal);
-            }
-            else
-                throw new ArgumentException("obj is not an Address");
+                return string.Compare(this.ToString(), otherAddress.ToString(), StringComparison.Ordinal);
+            throw new ArgumentException("obj is not an Address");
         }
     }
 }

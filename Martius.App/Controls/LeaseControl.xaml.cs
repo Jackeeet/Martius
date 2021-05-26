@@ -35,7 +35,7 @@ namespace Martius.App
             TenantCBox.ItemsSource = _tenantService.Tenants;
             CityCBox.ItemsSource = _propertyService.AllCities;
 
-            _view = (CollectionView) CollectionViewSource.GetDefaultView(LeaseListView.ItemsSource);
+            _view = (CollectionView)CollectionViewSource.GetDefaultView(LeaseListView.ItemsSource);
             _view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
         }
 
@@ -102,9 +102,9 @@ namespace Martius.App
             var tId = "null";
             if (TenantCBox.SelectedIndex != -1)
             {
-                tId = (Tenant) TenantCBox.SelectedItem == null
+                tId = (Tenant)TenantCBox.SelectedItem == null
                     ? "null"
-                    : ((Tenant) TenantCBox.SelectedItem).Id.ToString();
+                    : ((Tenant)TenantCBox.SelectedItem).Id.ToString();
             }
 
             return

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="580" d:DesignWidth="800">
-    <Grid x:Name="TenantOuterGrid" Background="White">
+    <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" MinWidth="200" MaxWidth="280" />
             <ColumnDefinition Width="5*" />
@@ -14,8 +14,8 @@
             <Button x:Name="NewTenantButton" Content="Новый арендатор" Margin="5" Height="25"
                     Click="NewTenantButton_Click" />
             <Label Content="Поиск" />
-            <TextBox x:Name="SearchBox" Margin="5" Height="25" Padding="0, 2, 0, 2"
-                     TextChanged="SearchBox_OnTextChanged" />
+            <TextBox x:Name="SearchBox" Margin="5" Height="25" TextAlignment="Left" Padding="2"
+                     VerticalContentAlignment="Center" TextChanged="SearchBox_OnTextChanged" />
             <GroupBox Header="Критерий поиска" Margin="5, 5, 5, 0" Padding="0, 5, 0, 0">
                 <StackPanel x:Name="SearchTerms">
                     <RadioButton x:Name="NameRb" Content="ФИО" Margin="5" IsChecked="True" />
@@ -34,22 +34,25 @@
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Id}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="Id" MinWidth="40" Click="ColumnHeader_OnClick">№</GridViewColumnHeader>
+                            <GridViewColumnHeader Content="№" Tag="Id" MinWidth="40" Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding FullName}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="FullName" MinWidth="250" Click="ColumnHeader_OnClick">Фио</GridViewColumnHeader>
+                            <GridViewColumnHeader Content="ФИО" Tag="FullName" MinWidth="250"
+                                                  Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding PhoneNumber}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="PhoneNumber" MinWidth="150" Click="ColumnHeader_OnClick">Номер телефона</GridViewColumnHeader>
+                            <GridViewColumnHeader Content="Номер телефона" Tag="PhoneNumber" MinWidth="150"
+                                                  Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding PassportNumber}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="PassportNumber" MinWidth="150" Click="ColumnHeader_OnClick">Номер паспорта</GridViewColumnHeader>
+                            <GridViewColumnHeader Content="Номер паспорта" Tag="PassportNumber" MinWidth="150"
+                                                  Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
                 </GridView>

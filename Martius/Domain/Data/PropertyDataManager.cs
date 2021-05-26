@@ -16,14 +16,15 @@ namespace Martius.Domain
             "city, street, building, building_extra, apt_number, " +
             "room_count, area, residential, furnished, has_parking, monthly_price";
 
-        internal List<Property> GetAllProperties() => GetAllEntities(_tableName, BuildEntity).Cast<Property>().ToList();
+        internal List<Property> GetAllProperties() => GetEntities(_tableName, BuildEntity).Cast<Property>().ToList();
 
-        internal Property GetPropertyById(int propId) => GetEntityById(propId, _tableName, BuildEntity) as Property;
+        internal Property GetPropertyById(int propId) =>
+            GetEntities(_tableName, BuildEntity, $"where id = {propId}").FirstOrDefault() as Property;
 
         internal void AddProperty(Property prop) => AddEntity(prop, _tableName, _tableColumns);
 
-        internal List<Property> GetFilteredProperties(string filter, string join = null) 
-            => GetFilteredEntities(_tableName, filter, BuildEntity, join).Cast<Property>().ToList();
+        internal List<Property> GetFilteredProperties(string filter, string join = null) =>
+            GetEntities(_tableName, BuildEntity, filter, join).Cast<Property>().ToList();
 
         protected override IDataEntity BuildEntity(SqlDataReader reader)
         {

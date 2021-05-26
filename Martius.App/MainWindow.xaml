@@ -4,19 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Martius" Height="800" Width="1000" WindowStartupLocation="CenterScreen"
+        Title="Martius" Height="768" Width="1024" WindowStartupLocation="CenterScreen"
         Loaded="MainWindow_OnLoaded">
-    <Grid x:Name="OuterGrid">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" Height="20" VerticalAlignment="Top">
-            <MenuItem x:Name="Settings" Header="Настройки" Click="Settings_OnClick"/>
+            <MenuItem Header="Настройки" Click="Settings_OnClick" />
         </Menu>
-        <TabControl x:Name="TabControl" Grid.Row="1">
-            <TabItem x:Name="LeaseTab" Header="Договоры"/>
-            <TabItem x:Name="PropertyTab" Header="Помещения"/>
+        <TabControl Grid.Row="1">
+            <TabItem x:Name="LeaseTab" Header="Договоры" />
+            <TabItem x:Name="PropertyTab" Header="Помещения" />
             <TabItem x:Name="TenantTab" Header="Арендаторы" />
         </TabControl>
     </Grid>

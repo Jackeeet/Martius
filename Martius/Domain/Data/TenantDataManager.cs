@@ -12,14 +12,15 @@ namespace Martius.Domain
         private string _tableName = "tenant";
         private string _tableColumns = "surname, name, patronym, dob, phone, passport";
 
-        internal List<Tenant> GetAllTenants() => GetAllEntities(_tableName, BuildEntity).Cast<Tenant>().ToList();
+        internal List<Tenant> GetAllTenants() => GetEntities(_tableName, BuildEntity).Cast<Tenant>().ToList();
 
-        internal Tenant GetTenantById(int tenantId) => GetEntityById(tenantId, _tableName, BuildEntity) as Tenant;
+        internal Tenant GetTenantById(int tenantId) =>
+            GetEntities(_tableName, BuildEntity, $"where id = {tenantId}").FirstOrDefault() as Tenant;
 
         internal void AddTenant(Tenant tenant) => AddEntity(tenant, _tableName, _tableColumns);
 
         public List<Tenant> GetFilteredTenants(string filter, string join = null) =>
-            GetFilteredEntities(_tableName, filter, BuildEntity, @join).Cast<Tenant>().ToList();
+            GetEntities(_tableName, BuildEntity, filter, join).Cast<Tenant>().ToList();
 
         protected override IDataEntity BuildEntity(SqlDataReader reader)
         {

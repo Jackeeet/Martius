@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="580" d:DesignWidth="800">
-    <Grid>
+    <Grid Background="White">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" MinWidth="200" MaxWidth="280" />
             <ColumnDefinition Width="5*" />
@@ -35,9 +35,11 @@
                 <GroupBox Header="Общая площадь" Margin="5, 5, 5, 0" Padding="0, 5, 0, 0">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="От" />
-                        <TextBox x:Name="MinAreaTextBox" Width="40" TextChanged="OnFilterChanged" />
+                        <TextBox x:Name="MinAreaTextBox" Width="40" TextAlignment="Center" Padding="2"
+                                 VerticalContentAlignment="Center" TextChanged="OnFilterChanged" />
                         <Label Content="до" />
-                        <TextBox x:Name="MaxAreaTextBox" Width="40" TextChanged="OnFilterChanged" />
+                        <TextBox x:Name="MaxAreaTextBox" Width="40" TextAlignment="Center" Padding="2"
+                                 VerticalContentAlignment="Center" TextChanged="OnFilterChanged" />
                         <Label Content="кв.м." />
                     </StackPanel>
                 </GroupBox>
@@ -71,42 +73,43 @@
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding Id}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="Id" MinWidth="40" Click="ColumnHeader_OnClick">№</GridViewColumnHeader>
+                            <GridViewColumnHeader Content="№" Tag="Id" MinWidth="40" Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Address}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="Address" MinWidth="250" Click="ColumnHeader_OnClick">Адрес</GridViewColumnHeader>
+                            <GridViewColumnHeader Content="Адрес" Tag="Address" MinWidth="250"
+                                                  Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding RoomCount}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="RoomCount" Click="ColumnHeader_OnClick">Комнаты</GridViewColumnHeader>
+                            <GridViewColumnHeader Content="Комнаты" Tag="RoomCount" Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Area}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="Area" Click="ColumnHeader_OnClick">Площадь</GridViewColumnHeader>
+                            <GridViewColumnHeader Content="Площадь" Tag="Area" Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding IsResidential}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="IsResidential" Click="ColumnHeader_OnClick">Жилое</GridViewColumnHeader>
+                            <GridViewColumnHeader Content="Жилое" Tag="IsResidential" Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding IsFurnished}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="IsFurnished" Click="ColumnHeader_OnClick">С мебелью</GridViewColumnHeader>
+                            <GridViewColumnHeader Content="С мебелью" Tag="IsFurnished" Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding HasParking}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="HasParking" Click="ColumnHeader_OnClick">С парковкой</GridViewColumnHeader>
+                            <GridViewColumnHeader Content="С парковкой" Tag="HasParking" Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding MonthlyPrice}">
+                    <GridViewColumn DisplayMemberBinding="{Binding MonthlyPrice, StringFormat={}{0:0.00}}">
                         <GridViewColumn.Header>
-                            <GridViewColumnHeader Tag="MonthlyPrice" Click="ColumnHeader_OnClick">Цена</GridViewColumnHeader>
+                            <GridViewColumnHeader Content="Цена" Tag="MonthlyPrice" Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
                 </GridView>

@@ -26,13 +26,13 @@ namespace Martius.App
             PropertyListView.ItemsSource = _propertyService.Properties;
             PropCityCBox.ItemsSource = _propertyService.AllCities;
 
-            _view = (CollectionView) CollectionViewSource.GetDefaultView(PropertyListView.ItemsSource);
+            _view = (CollectionView)CollectionViewSource.GetDefaultView(PropertyListView.ItemsSource);
             _view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
         }
 
         private void NewPropertyButton_Click(object sender, RoutedEventArgs e)
         {
-            _newPropWindow = new AddPropertyWindow(_propertyService) {Owner = Window.GetWindow(this)};
+            _newPropWindow = new AddPropertyWindow(_propertyService) { Owner = Window.GetWindow(this) };
             _newPropWindow.ShowDialog();
 
             if (_newPropWindow.CreatedProperty != null)

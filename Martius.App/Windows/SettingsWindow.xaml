@@ -11,7 +11,7 @@
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Label Content="Минимальная длительность договора (в месяцах)" Width="300" />
-                    <TextBox x:Name="MinLengthBox" Width="80" />
+                    <TextBox x:Name="MinLengthBox" Width="80" Padding="2" VerticalContentAlignment="Center" />
                 </StackPanel>
             </StackPanel>
         </GroupBox>
@@ -19,11 +19,11 @@
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Label Content="Процент скидки" Width="300" />
-                    <TextBox x:Name="DiscountBox" Width="80" />
+                    <TextBox x:Name="DiscountBox" Width="80" Padding="2" VerticalContentAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Label Content="Минимальное количество договоров для скидки" Width="300" />
-                    <TextBox x:Name="MinCountBox" Width="80" />
+                    <TextBox x:Name="MinCountBox" Width="80" Padding="2" VerticalContentAlignment="Center" />
                 </StackPanel>
             </StackPanel>
         </GroupBox>

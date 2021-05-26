@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -13,11 +12,15 @@ namespace Martius.Domain
         private string _tableName = "lease";
         private string _tableColumns = "property_id, tenant_id, monthly_price, start_date, end_date";
 
-        internal List<Lease> GetAllLeases() => GetAllEntities(_tableName, BuildEntity).Cast<Lease>().ToList();
+        internal List<Lease> GetAllLeases() => GetEntities(_tableName, BuildEntity).Cast<Lease>().ToList();
 
-        internal Lease GetLeaseById(int leaseId) => GetEntityById(leaseId, _tableName, BuildEntity) as Lease;
+        internal Lease GetLeaseById(int leaseId) =>
+            GetEntities(_tableName, BuildEntity, $"where id = {leaseId}").FirstOrDefault() as Lease;
 
         internal void AddLease(Lease lease) => AddEntity(lease, _tableName, _tableColumns);
+
+        internal List<Lease> GetFilteredLeases(string filter, string join = null) =>
+            GetEntities(_tableName, BuildEntity, filter, join).Cast<Lease>().ToList();
 
         protected override IDataEntity BuildEntity(SqlDataReader reader)
         {
@@ -33,60 +36,6 @@ namespace Martius.Domain
 
             return new Lease(id, prop, tenant, monthlyPrice, startDate, endDate);
         }
-
-        internal int GetPropertyLeaseCount(int propId, int tId)
-        {
-            // todo prop check should probably be more elaborate, check reqs
-            // in fact it should be
-            var count = 0;
-            var connection = new SqlConnection(ConnectionString);
-            var com = $"select count(id) from lease where property_id = {propId} and tenant_id = {tId}";
-            using (connection)
-            {
-                var command = new SqlCommand(com, connection);
-                try
-                {
-                    connection.Open();
-                    count = (int) command.ExecuteScalar();
-                }
-                catch (SqlException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-
-            return count;
-        }
-
-        internal List<Lease> GetLeasesWithProperty(Property prop)
-        {
-            var result = new List<IDataEntity>();
-            var connection = new SqlConnection(ConnectionString);
-            var com = $"select * from lease where property_id = {prop.Id}";
-            using (connection)
-            {
-                var command = new SqlCommand(com, connection);
-                try
-                {
-                    connection.Open();
-                    var reader = command.ExecuteReader();
-                    using (reader)
-                    {
-                        if (reader.HasRows)
-                            FillEntityList(reader, result, BuildEntity);
-                    }
-                }
-                catch (SqlException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-
-            return result.Cast<Lease>().ToList();
-        }
-
-        internal List<Lease> GetFilteredLeases(string filter, string join = null)
-            => GetFilteredEntities(_tableName, filter, BuildEntity, join).Cast<Lease>().ToList();
 
         protected internal LeaseDataManager(string connectionString) : base(connectionString)
         {

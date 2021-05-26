@@ -16,12 +16,15 @@ namespace Martius.Domain
 
         protected abstract IDataEntity BuildEntity(SqlDataReader reader);
 
-        private protected List<IDataEntity> GetAllEntities(
-            string table, Func<SqlDataReader, IDataEntity> entityBuilder)
+        private protected List<IDataEntity> GetEntities(string table, Func<SqlDataReader, IDataEntity> entityBuilder,
+            string filter = null, string join = null)
         {
             var result = new List<IDataEntity>();
             var connection = new SqlConnection(ConnectionString);
-            var comString = $"select * from {table}";
+
+            if (filter != null && !filter.StartsWith("where "))
+                filter = "where " + filter;
+            var comString = $"select * from {table} {join} {filter}";
             using (connection)
             {
                 var command = new SqlCommand(comString, connection);
@@ -42,65 +45,6 @@ namespace Martius.Domain
             }
 
             return result;
-        }
-
-        private protected List<IDataEntity> GetFilteredEntities(
-            string table, string filter, Func<SqlDataReader, IDataEntity> entityBuilder, string join = null)
-        {
-            var result = new List<IDataEntity>();
-            var connection = new SqlConnection(ConnectionString);
-            var comString = $"select * from {table}{join} where {filter}";
-            using (connection)
-            {
-                var command = new SqlCommand(comString, connection);
-                try
-                {
-                    connection.Open();
-                    var reader = command.ExecuteReader();
-                    using (reader)
-                    {
-                        if (reader.HasRows)
-                            FillEntityList(reader, result, entityBuilder);
-                    }
-                }
-                catch (SqlException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-
-            return result;
-        }
-
-        private protected IDataEntity GetEntityById(
-            int id, string table, Func<SqlDataReader, IDataEntity> entityBuilder)
-        {
-            IDataEntity entity = null;
-            var cmd = $"select * from {table} where id = {id}";
-            var connection = new SqlConnection(ConnectionString);
-            using (connection)
-            {
-                var command = new SqlCommand(cmd, connection);
-                try
-                {
-                    connection.Open();
-                    var reader = command.ExecuteReader();
-                    using (reader)
-                    {
-                        if (reader.HasRows)
-                        {
-                            reader.Read();
-                            entity = entityBuilder(reader);
-                        }
-                    }
-                }
-                catch (SqlException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-
-            return entity;
         }
 
         private protected void AddEntity(IDataEntity entity, string table, string columns)
@@ -176,7 +120,7 @@ namespace Martius.Domain
             }
         }
 
-        private protected static void FillEntityList(
+        private static void FillEntityList(
             SqlDataReader reader, List<IDataEntity> result, Func<SqlDataReader, IDataEntity> entityBuilder)
         {
             while (reader.Read())

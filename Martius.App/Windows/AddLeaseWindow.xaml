@@ -12,20 +12,23 @@
         <Label Content="Арендатор" Margin="5,5,5,0" />
         <ComboBox x:Name="TenantCBox" Margin="5,5,5,0" SelectionChanged="TenantCBox_SelectionChanged" />
         <Label Content="Дата начала аренды" Margin="5,5,5,0" />
-        <DatePicker x:Name="StartDatePicker" Margin="5,5,5,0" />
+        <DatePicker x:Name="StartDatePicker" Margin="5,5,5,0" FirstDayOfWeek="Monday" />
         <Label Content="Дата окончания аренды" Margin="5,5,5,0" />
-        <DatePicker x:Name="EndDatePicker" Margin="5,5,5,0" />
+        <DatePicker x:Name="EndDatePicker" Margin="5,5,5,0" FirstDayOfWeek="Monday" />
         <Label Content="Месячная стоимость аренды" Margin="5,5,5,0" />
         <StackPanel Orientation="Horizontal" Margin="5,5,5,5">
-            <TextBox x:Name="RubBox" IsReadOnly="True" Width="50" Margin="5,5,5,0" />
-            <Label Content="руб." Margin="5,5,5,0" />
-            <TextBox x:Name="DecimalBox" IsReadOnly="True" Width="50" Margin="5,5,0,0" />
-            <Label Content="коп." Margin="5,5,5,0" />
+            <TextBox x:Name="RubBox" IsReadOnly="True" Width="50" Height="22"
+                     Margin="5,5,5,0" Padding="2" TextAlignment="Center" VerticalAlignment="Center" />
+            <Label Content="руб." Margin="5,5,5,0" VerticalAlignment="Center" />
+            <TextBox x:Name="DecimalBox" IsReadOnly="True" Width="50" Height="22"
+                     Margin="5,5,0,0" Padding="2" TextAlignment="Center" VerticalAlignment="Center" />
+            <Label Content="коп." Margin="5,5,5,0" VerticalAlignment="Center" />
         </StackPanel>
-        <CheckBox x:Name="DiscountChBox" Content="Применить скидку" Margin="5" IsEnabled="False" Click="DiscountChBox_OnClick"/>
+        <CheckBox x:Name="DiscountChBox" Content="Применить скидку" Margin="5" IsEnabled="False"
+                  VerticalContentAlignment="Center" Click="DiscountChBox_OnClick" />
         <DockPanel Margin="5">
             <Button x:Name="SaveButton" DockPanel.Dock="Right" Content="Сохранить" IsDefault="True" Width="65"
-                    Margin="5" Click="SaveButton_OnClick"/>
+                    Margin="5" Click="SaveButton_OnClick" />
             <Button x:Name="CancelButton" Content="Отмена" IsCancel="True" Width="65" Margin="5"
                     HorizontalAlignment="Right" />
         </DockPanel>

@@ -10,18 +10,16 @@ namespace Martius.App
             ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         private readonly SettingsWindow _settingsWindow;
-
         private readonly AppSettings _appSettings;
-        private LeaseService _leaseService;
-        private TenantService _tenantService;
-        private PropertyService _propertyService;
-
+        private readonly LeaseService _leaseService;
+        private readonly TenantService _tenantService;
+        private readonly PropertyService _propertyService;
 
         public MainWindow()
         {
             _appSettings = SettingsManager.GetUserSettings();
             _settingsWindow = new SettingsWindow(_appSettings);
-            
+
             _leaseService = new LeaseService(_connectionString);
             _tenantService = new TenantService(_connectionString);
             _propertyService = new PropertyService(_connectionString);
