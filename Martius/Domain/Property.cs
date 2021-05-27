@@ -52,28 +52,9 @@ namespace Martius.Domain
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return (Id * 397) ^ (Address != null ? Address.GetHashCode() : 0);
-            }
+            return Id;
         }
 
         public override string ToString() => Address.ToString();
-
-        public string ToDebugString()
-        {
-            return
-                $"{nameof(Id)}: {Id}," +
-                $" {nameof(Address)}: {Address}, " +
-                $"{nameof(RoomCount)}: {RoomCount}, " +
-                $"{nameof(Area)}: {Area}, " +
-                $"{nameof(IsResidential)}: " +
-                $"{IsResidential}, " +
-                $"{nameof(IsFurnished)}: " +
-                $"{IsFurnished}," +
-                $" {nameof(HasParking)}:" +
-                $" {HasParking}, " +
-                $"{nameof(MonthlyPrice)}: {MonthlyPrice}";
-        }
     }
 }

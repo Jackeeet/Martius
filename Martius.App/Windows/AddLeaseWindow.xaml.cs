@@ -14,6 +14,7 @@ namespace Martius.App
         private decimal _discountAmount = decimal.Zero;
         private int _minLeaseCount;
         private int _minLeaseMonths;
+        private string _errCaption = "Ошибка при вводе данных";
 
         public Lease CreatedLease { get; private set; }
 
@@ -114,10 +115,7 @@ namespace Martius.App
 
         private void DisplayError(string message)
         {
-            var caption = "Ошибка при вводе данных";
-            var button = MessageBoxButton.OK;
-            var icon = MessageBoxImage.Error;
-            MessageBox.Show(message, caption, button, icon);
+            MessageBox.Show(message, _errCaption, MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

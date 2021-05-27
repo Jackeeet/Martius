@@ -7,14 +7,16 @@ namespace Martius.App
 {
     public partial class SettingsWindow : Window
     {
-        private readonly AppSettings _settings;
+        private AppSettings _settings;
         private string _filePath;
+        private string _defaultDbMsg = "Встроенная база данных";
+        private string _errCaption = "Ошибка при вводе данных";
+        private string _errMsg = "Одно или несколько полей заполнены некорректно. Установить настройки по умолчанию?";
 
         public SettingsWindow(AppSettings settings)
         {
             _settings = settings;
             InitializeComponent();
-
             MinLengthBox.Focus();
             FillSettingsFields();
         }
@@ -30,31 +32,37 @@ namespace Martius.App
             var monthsParsed = int.TryParse(MinLengthBox.Text, out var months);
             var discountParsed =
                 decimal.TryParse(DiscountBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out var percent);
-            var countParsed = int.TryParse(MinCountBox.Text, out var count);
+            var countParsed = int.TryParse(MinCountBox.Text, out var minLeaseCount);
 
-            if (!(monthsParsed && discountParsed && countParsed))
+            if (!(monthsParsed && discountParsed && countParsed && AmountsValid(months, percent, minLeaseCount)))
             {
-                var caption = "Ошибка при вводе данных";
-                var message = "Одно или несколько полей заполнены некорректно. Установить настройки по умолчанию?";
-                if (MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) ==
+                if (MessageBox.Show(_errMsg, _errCaption, MessageBoxButton.YesNo, MessageBoxImage.Question) ==
                     MessageBoxResult.Yes)
                 {
-                    SettingsManager.SetDefaultSettings();
-                    FillSettingsFields();
-                    Close();
+                    _settings = SettingsManager.SetDefaultSettings();
                 }
             }
             else
             {
-                _settings.MinLeaseMonths = months;
-                _settings.DiscountPercentage = percent;
-                _settings.MinLeaseCount = count;
-                _settings.UserDatabasePath = _filePath;
-
-                SettingsManager.SetUserSettings(_settings);
-                FillSettingsFields();
-                Close();
+                UpdateSettings(months, percent, minLeaseCount);
+                MessageBox.Show("Изменения сохранены.");
             }
+
+            FillSettingsFields();
+        }
+
+        private void UpdateSettings(int months, decimal percent, int minLeaseCount)
+        {
+            _settings.MinLeaseMonths = months;
+            _settings.DiscountPercentage = percent;
+            _settings.MinLeaseCount = minLeaseCount;
+            _settings.UserDatabasePath = _filePath;
+            SettingsManager.SetUserSettings(_settings);
+        }
+
+        private bool AmountsValid(int months, decimal discount, int leaseCount)
+        {
+            return months >= 1 && discount > 0 && discount < 100 && leaseCount >= 0;
         }
 
         private void FillSettingsFields()
@@ -62,7 +70,9 @@ namespace Martius.App
             MinLengthBox.Text = _settings.MinLeaseMonths.ToString();
             DiscountBox.Text = _settings.DiscountPercentage.ToString(CultureInfo.InvariantCulture);
             MinCountBox.Text = _settings.MinLeaseCount.ToString();
-            FileBox.Text = _settings.UserDatabasePath ?? "";
+            FileBox.Text = string.IsNullOrEmpty(_settings.UserDatabasePath)
+                ? _defaultDbMsg
+                : _settings.UserDatabasePath;
         }
 
         private void DbButton_OnClick(object sender, RoutedEventArgs e)
@@ -76,7 +86,7 @@ namespace Martius.App
         private void ResetButton_OnClick(object sender, RoutedEventArgs e)
         {
             _filePath = "";
-            FileBox.Text = _filePath;
+            FileBox.Text = _defaultDbMsg;
         }
     }
 }

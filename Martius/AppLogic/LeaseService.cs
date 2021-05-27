@@ -56,12 +56,17 @@ namespace Martius.AppLogic
         {
             var multiplier = discount * new decimal(0.01);
             var actualAmount = property.MonthlyPrice - (property.MonthlyPrice * multiplier);
-            
+            var validLeaseCount = GetValidLeaseCount(property, tenant, minCount);
+
+            return validLeaseCount < minCount ? decimal.Zero : actualAmount;
+        }
+
+        private int GetValidLeaseCount(Property property, Tenant tenant, int minCount)
+        {
             var tenantLeases = _dataManager.GetFilteredLeases($"tenant_id = {tenant.Id}");
             var lastLeases = tenantLeases.OrderByDescending(l => l.EndDate).Take(minCount);
             var validLeaseCount = lastLeases.Count(l => l.Property.Id == property.Id);
-           
-            return validLeaseCount < minCount ? decimal.Zero : actualAmount;
+            return validLeaseCount;
         }
     }
 }

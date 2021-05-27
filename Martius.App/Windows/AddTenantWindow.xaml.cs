@@ -9,6 +9,7 @@ namespace Martius.App
     public partial class AddTenantWindow : Window
     {
         private readonly TenantService _tenantService;
+        private string _errCaption = "Ошибка при вводе данных";
         public Tenant CreatedTenant { get; private set; }
 
         public AddTenantWindow(TenantService tenantService)
@@ -42,10 +43,7 @@ namespace Martius.App
 
         private void DisplayError(string message)
         {
-            var caption = "Ошибка при вводе данных";
-            var button = MessageBoxButton.OK;
-            var icon = MessageBoxImage.Error;
-            MessageBox.Show(message, caption, button, icon);
+            MessageBox.Show(message, _errCaption, MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d"
-        Title="" Height="380" Width="480" WindowStartupLocation="CenterOwner" ResizeMode="CanMinimize">
+        Title="" Height="400" Width="400" WindowStartupLocation="CenterOwner" ResizeMode="CanMinimize">
     <StackPanel>
         <DockPanel Margin="5">
             <Label x:Name="IdLabel" Content="Арендатор № " DockPanel.Dock="Left" Margin="5,5,5,0" />
@@ -17,31 +17,31 @@
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Label Content="Фамилия" Width="120" Margin="5,5,0,5" />
-                    <TextBox x:Name="SurnameBox" Width="200" TextAlignment="Center" VerticalContentAlignment="Center"
+                    <TextBox x:Name="SurnameBox" Width="200" Height="25" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Label Content="Имя" Width="120" Margin="5,5,0,5" />
-                    <TextBox x:Name="NameBox" Width="200" TextAlignment="Center" VerticalContentAlignment="Center"
+                    <TextBox x:Name="NameBox" Width="200" Height="25" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Label Content="Отчество" Width="120" Margin="5,5,0,5" />
-                    <TextBox x:Name="PatrBox" Width="200" TextAlignment="Center" VerticalContentAlignment="Center"
+                    <TextBox x:Name="PatrBox" Width="200" Height="25" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Label Content="Дата рождения" Width="120" Margin="5,5,0,5" />
-                    <DatePicker Name="DobPicker" FirstDayOfWeek="Monday" Width="200" />
+                    <DatePicker Name="DobPicker" FirstDayOfWeek="Monday" Height="25" Width="200" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Label Content="Номер паспорта" Width="120" Margin="5,5,0,5" />
-                    <TextBox x:Name="PassBox" Width="200" TextAlignment="Center" VerticalContentAlignment="Center"
+                    <TextBox x:Name="PassBox" Width="200" Height="25" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Label Content="Номер телефона" Width="120" Margin="5,5,0,5" />
-                    <TextBox x:Name="PhoneBox" Width="200" TextAlignment="Center" VerticalContentAlignment="Center"
+                    <TextBox x:Name="PhoneBox" Width="200" Height="25" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
                 </StackPanel>
             </StackPanel>

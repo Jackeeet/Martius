@@ -39,13 +39,5 @@ namespace Martius.Domain
         {
             return $"{PersonInfo} ({PassportNumber})";
         }
-
-        public string ToDebugString()
-        {
-            return $"{nameof(Id)}: {Id}," +
-                  $" {nameof(PersonInfo)}: {PersonInfo}, " +
-                  $"{nameof(PhoneNumber)}: {PhoneNumber}, " +
-                  $"{nameof(PassportNumber)}: {PassportNumber}";
-        }
     }
 }

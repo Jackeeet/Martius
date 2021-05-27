@@ -100,7 +100,7 @@
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Редактировать" Width="90" Click="InfoButton_OnClick" />
+                                <Button Content="Редактировать" Width="90" Click="InfoButton_OnClick" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF233E83" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

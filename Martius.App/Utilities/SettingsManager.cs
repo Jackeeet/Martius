@@ -24,16 +24,18 @@ namespace Martius.App
             File.WriteAllText(_filePath, JsonConvert.SerializeObject(settings));
         }
 
-        internal static void SetDefaultSettings()
+        internal static AppSettings SetDefaultSettings()
         {
-            var settings = new AppSettings()
+            var defaultSettings = new AppSettings()
             {
                 DiscountPercentage = new decimal(5.0),
-                MinLeaseCount = 1,
+                MinLeaseCount = 5,
                 MinLeaseMonths = 1,
                 UserDatabasePath = ""
             };
-            File.WriteAllText(_filePath, JsonConvert.SerializeObject(settings));
+
+            File.WriteAllText(_filePath, JsonConvert.SerializeObject(defaultSettings));
+            return defaultSettings;
         }
     }
 }

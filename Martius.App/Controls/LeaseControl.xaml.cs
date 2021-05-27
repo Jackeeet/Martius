@@ -12,15 +12,15 @@ namespace Martius.App
 {
     public partial class LeaseControl : UserControl
     {
+        private readonly AppSettings _appSettings;
         private readonly LeaseService _leaseService;
         private readonly TenantService _tenantService;
         private readonly PropertyService _propertyService;
         private AddLeaseWindow _newLeaseWindow;
-        private GridViewColumnHeader _sortColumn;
         private SortAdorner _sortAdorner;
-        private readonly AppSettings _appSettings;
         private readonly CollectionView _view;
-
+        private GridViewColumnHeader _sortColumn;
+        
         public LeaseControl(LeaseService leaseService, TenantService tenantService, PropertyService propertyService,
             AppSettings appSettings)
         {

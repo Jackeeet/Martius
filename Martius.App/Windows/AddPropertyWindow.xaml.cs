@@ -11,6 +11,7 @@ namespace Martius.App
     public partial class AddPropertyWindow : Window
     {
         private readonly PropertyService _propertyService;
+        private string _errCaption = "Ошибка при вводе данных";
         public Property CreatedProperty { get; private set; }
 
         public AddPropertyWindow(PropertyService propertyService)
@@ -34,7 +35,8 @@ namespace Martius.App
             var priceParsed =
                 decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out var price);
 
-            if (PropInputValid(address, roomsParsed, areaParsed, priceParsed) && PropAmountsValid(roomCount, area, price))
+            if (PropInputValid(address, roomsParsed, areaParsed, priceParsed) &&
+                PropAmountsValid(roomCount, area, price))
             {
                 try
                 {
@@ -52,10 +54,7 @@ namespace Martius.App
 
         private void DisplayError(string message)
         {
-            var caption = "Ошибка при вводе данных";
-            var button = MessageBoxButton.OK;
-            var icon = MessageBoxImage.Error;
-            MessageBox.Show(message, caption, button, icon);
+            MessageBox.Show(message, _errCaption, MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

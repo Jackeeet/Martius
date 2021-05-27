@@ -17,10 +17,10 @@
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Label Content="Город" Width="70" Margin="5,5,0,5" />
-                    <TextBox x:Name="CityBox" Width="80" TextAlignment="Center" VerticalContentAlignment="Center"
+                    <TextBox x:Name="CityBox" Width="120" TextAlignment="Center" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
                     <Label Content="Улица" Width="70" Margin="5,5,0,5" />
-                    <TextBox x:Name="StreetBox" Width="80" TextAlignment="Center" VerticalContentAlignment="Center"
+                    <TextBox x:Name="StreetBox" Width="150" TextAlignment="Center" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
@@ -36,26 +36,27 @@
         <GroupBox Header="Характеристики помещения" Margin="5" Padding="5">
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
-                    <Label Content="Общая площадь" Width="100" Margin="5,5,0,5" />
-                    <TextBox x:Name="AreaBox" Width="80" TextAlignment="Center" VerticalContentAlignment="Center"
+                    <Label Content="Общая площадь:" Width="105" Margin="5,5,0,5" />
+                    <TextBox x:Name="AreaBox" Width="70" TextAlignment="Center" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
+                    <Label Content="кв. м." Margin="5,5,0,5" />
                     <Label Content="Количество комнат" Width="120" Margin="5,5,0,5" />
-                    <TextBox x:Name="RoomBox" Width="80" TextAlignment="Center" VerticalContentAlignment="Center"
+                    <TextBox x:Name="RoomBox" Width="70" TextAlignment="Center" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
                 </StackPanel>
                 <StackPanel x:Name="ChBoxes" Orientation="Horizontal" Margin="5">
-                    <CheckBox x:Name="ResChBox" Content="Жилое" Margin="5" VerticalAlignment="Center" IsEnabled="False" />
-                    <CheckBox x:Name="FurnChBox" Content="С мебелью" Margin="5" VerticalAlignment="Center"
+                    <CheckBox x:Name="ResChBox" Content="Жилое" Margin="5" VerticalContentAlignment="Center" IsEnabled="False" />
+                    <CheckBox x:Name="FurnChBox" Content="С мебелью" Margin="5" VerticalContentAlignment="Center"
                               IsEnabled="False" />
-                    <CheckBox x:Name="ParkChBox" Content="С парковкой" Margin="5" VerticalAlignment="Center"
+                    <CheckBox x:Name="ParkChBox" Content="С парковкой" Margin="5" VerticalContentAlignment="Center"
                               IsEnabled="False" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Label Content="Стоимость:" Margin="5,0,0,0" />
-                    <TextBox x:Name="RubBox" Width="40" TextAlignment="Center" VerticalContentAlignment="Center"
+                    <TextBox x:Name="RubBox" Width="60" TextAlignment="Center" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
                     <Label Content="руб." />
-                    <TextBox x:Name="DecBox" Width="40" TextAlignment="Center" VerticalContentAlignment="Center"
+                    <TextBox x:Name="DecBox" Width="60" TextAlignment="Center" VerticalContentAlignment="Center"
                              Padding="2" IsReadOnly="True" />
                     <Label Content="коп." />
                 </StackPanel>

@@ -7,7 +7,6 @@ namespace Martius.App
     public partial class MainWindow
     {
         private readonly string _connectionString;
-
         private readonly SettingsWindow _settingsWindow;
         private readonly AppSettings _appSettings;
         private readonly LeaseService _leaseService;
@@ -20,7 +19,6 @@ namespace Martius.App
             _connectionString = string.IsNullOrEmpty(_appSettings.UserDatabasePath)
                 ? ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString
                 : $"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={_appSettings.UserDatabasePath};Integrated Security=True;Connect Timeout=30";
-
             _settingsWindow = new SettingsWindow(_appSettings);
 
             _leaseService = new LeaseService(_connectionString);
