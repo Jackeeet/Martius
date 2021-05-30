@@ -9,6 +9,7 @@ namespace Martius.App
         private static readonly Regex passportRegex = new Regex(@"^\d{4}[ -]?\d{6}$", RegexOptions.Compiled);
         private static readonly Regex phoneRegex =
             new Regex(@"^\+?\d[ -]?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{2}[ -]?\d{2}$", RegexOptions.Compiled);
+        private const int MinAge = 14;
 
         internal static bool InputValid(Person person, string passport, string phone)
         {
@@ -37,7 +38,7 @@ namespace Martius.App
 
         internal static Person ParsePerson(string surname, string name, string patronym, DateTime dob)
         {
-            if (DateTime.Now.AddYears(-14) < dob ||
+            if (DateTime.Now.AddYears(-MinAge) < dob ||
                 string.IsNullOrEmpty(surname) || surname.Length > 50 ||
                 string.IsNullOrEmpty(name) || name.Length > 50 ||
                 patronym.Length > 50)

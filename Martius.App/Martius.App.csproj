@@ -189,10 +189,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\MartiusDB.mdf">
+    <Content Include="MartiusDB.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="App_Data\MartiusDB_log.ldf">
+    <Content Include="MartiusDB_log.ldf">
       <DependentUpon>MartiusDB.mdf</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

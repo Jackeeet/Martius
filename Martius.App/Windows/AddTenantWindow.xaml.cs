@@ -38,7 +38,7 @@ namespace Martius.App
                 }
             }
             else
-                DisplayError("Одно или несколько полей заполнены неверно");
+                DisplayError("Одно или несколько полей заполнены неверно.");
         }
 
         private void DisplayError(string message)

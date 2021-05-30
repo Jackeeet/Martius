@@ -7,7 +7,7 @@ namespace Martius.App
     {
         private static readonly string _filePath = @"userSettings.json";
 
-        private static readonly AppSettings defaultSettings = new AppSettings()
+        private static readonly AppSettings _defaultSettings = new AppSettings()
         {
             DiscountPercentage = new decimal(5.0),
             MinLeaseCount = 5,
@@ -17,11 +17,19 @@ namespace Martius.App
 
         internal static AppSettings GetUserSettings()
         {
-            AppSettings settings = null;
-            using (var file = File.OpenText(_filePath))
+            AppSettings settings;
+
+            try
             {
-                var serializer = new JsonSerializer();
-                settings = (AppSettings) serializer.Deserialize(file, typeof(AppSettings));
+                using (var file = File.OpenText(_filePath))
+                {
+                    var serializer = new JsonSerializer();
+                    settings = (AppSettings) serializer.Deserialize(file, typeof(AppSettings));
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                settings = SetDefaultSettings();
             }
 
             return settings;
@@ -34,8 +42,8 @@ namespace Martius.App
 
         internal static AppSettings SetDefaultSettings()
         {
-            File.WriteAllText(_filePath, JsonConvert.SerializeObject(defaultSettings));
-            return defaultSettings;
+            File.WriteAllText(_filePath, JsonConvert.SerializeObject(_defaultSettings));
+            return _defaultSettings;
         }
     }
 }
