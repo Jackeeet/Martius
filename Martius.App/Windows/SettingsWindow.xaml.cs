@@ -17,7 +17,7 @@ namespace Martius.App
         {
             _settings = settings;
             _filePath = string.IsNullOrEmpty(_settings.UserDatabasePath) ? "" : _settings.UserDatabasePath;
-            
+
             InitializeComponent();
             MinLengthBox.Focus();
             FillSettingsFields();
@@ -48,20 +48,25 @@ namespace Martius.App
             }
             else
             {
-                UpdateSettings(months, percent, minLeaseCount);
-                MessageBox.Show("Изменения сохранены.");
+                var dbChanged = UpdateSettings(months, percent, minLeaseCount);
+                var msg = dbChanged
+                    ? "Изменения сохранены. Перезапустите программу, чтобы отобразить изменения."
+                    : "Изменения сохранены.";
+                MessageBox.Show(msg);
             }
 
             FillSettingsFields();
         }
 
-        private void UpdateSettings(int months, decimal percent, int minLeaseCount)
+        private bool UpdateSettings(int months, decimal percent, int minLeaseCount)
         {
             _settings.MinLeaseMonths = months;
             _settings.DiscountPercentage = percent;
             _settings.MinLeaseCount = minLeaseCount;
+            var dbChanged = _settings.UserDatabasePath != _filePath;
             _settings.UserDatabasePath = _filePath;
             SettingsManager.SetUserSettings(_settings);
+            return dbChanged;
         }
 
         private bool AmountsValid(int months, decimal discount, int leaseCount)
