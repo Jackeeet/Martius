@@ -87,7 +87,7 @@
     <Compile Include="AppLogic\PropertyService.cs" />
     <Compile Include="Infrastructure\CastUtils.cs" />
     <Compile Include="Infrastructure\EntityExistsException.cs" />
-    <Compile Include="Infrastructure\PropertyRentedException.cs" />
+    <Compile Include="Infrastructure\DbAccessException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

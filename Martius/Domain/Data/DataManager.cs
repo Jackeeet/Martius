@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
+using Martius.Infrastructure;
 
 namespace Martius.Domain
 {
@@ -16,15 +17,14 @@ namespace Martius.Domain
 
         protected abstract IDataEntity BuildEntity(SqlDataReader reader);
 
-        private protected List<IDataEntity> GetEntities(string table, Func<SqlDataReader, IDataEntity> entityBuilder,
-            string filter = null, string join = null)
+        private protected List<IDataEntity> GetEntities(string table, string filter = null, string join = null)
         {
             var result = new List<IDataEntity>();
             var connection = new SqlConnection(ConnectionString);
-
             if (filter != null && !filter.StartsWith("where "))
                 filter = "where " + filter;
             var comString = $"select * from {table} {join} {filter}";
+            
             using (connection)
             {
                 var command = new SqlCommand(comString, connection);
@@ -35,12 +35,12 @@ namespace Martius.Domain
                     using (reader)
                     {
                         if (reader.HasRows)
-                            FillEntityList(reader, result, entityBuilder);
+                            FillEntityList(reader, result);
                     }
                 }
                 catch (SqlException e)
                 {
-                    Console.WriteLine(e.Message);
+                    throw new DbAccessException(e.Message, e);
                 }
             }
 
@@ -61,7 +61,7 @@ namespace Martius.Domain
                 }
                 catch (SqlException e)
                 {
-                    Console.WriteLine(e.Message);
+                    throw new DbAccessException(e.Message, e);
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace Martius.Domain
                 }
                 catch (SqlException e)
                 {
-                    Console.WriteLine(e.Message);
+                    throw new DbAccessException(e.Message, e);
                 }
             }
         }
@@ -102,13 +102,11 @@ namespace Martius.Domain
         }
 
 
-        private static void FillEntityList(
-            SqlDataReader reader, List<IDataEntity> result, Func<SqlDataReader, IDataEntity> entityBuilder)
+        private void FillEntityList(SqlDataReader reader, List<IDataEntity> result)
         {
             while (reader.Read())
             {
-                var item = entityBuilder(reader);
-                result.Add(item);
+                result.Add(BuildEntity(reader));
             }
         }
     }

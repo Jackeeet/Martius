@@ -4,7 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using Martius.AppLogic;
 using Martius.Domain;
-using static Martius.App.InputValidator;
+using static Martius.App.PropInputParser;
+using static Martius.Infrastructure.CastUtils;
 
 namespace Martius.App
 {
@@ -19,6 +20,7 @@ namespace Martius.App
             _prop = prop;
             _service = service;
             InitializeComponent();
+            DataContext = _prop;
             InitFields(_prop);
         }
 
@@ -29,13 +31,8 @@ namespace Martius.App
             StreetBox.Text = prop.Address.Street;
             BuildingBox.Text = prop.Address.Building;
             AptBox.Text = prop.Address.ApartmentNumber.ToString();
-            AreaBox.Text = prop.Area.ToString(CultureInfo.InvariantCulture);
-            RoomBox.Text = prop.RoomCount.ToString();
             RubBox.Text = Math.Truncate(prop.MonthlyPrice).ToString(CultureInfo.InvariantCulture);
-            DecBox.Text = (prop.MonthlyPrice % 1m).ToString(CultureInfo.InvariantCulture);
-            ResChBox.IsChecked = prop.IsResidential;
-            FurnChBox.IsChecked = prop.IsFurnished;
-            ParkChBox.IsChecked = prop.HasParking;
+            DecBox.Text = GetDecimalPoints(prop.MonthlyPrice).ToString(CultureInfo.InvariantCulture);
         }
 
         private void EditButton_OnClick(object sender, RoutedEventArgs e) => SetInputState(false);
@@ -54,7 +51,8 @@ namespace Martius.App
             var priceParsed =
                 decimal.TryParse(priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out var price);
 
-            if (PropInputValid(address, roomsParsed, areaParsed, priceParsed) && PropAmountsValid(roomCount, area, price))
+            if (PropInputValid(address, roomsParsed, areaParsed, priceParsed) &&
+                PropAmountsValid(roomCount, area, price))
             {
                 _prop.Address = address;
                 _prop.RoomCount = roomCount;
@@ -65,8 +63,7 @@ namespace Martius.App
                 _prop.MonthlyPrice = price;
                 _service.UpdateProperty(_prop);
                 MessageBox.Show("Изменения сохранены.");
-                if (InfoChanged != null)
-                    InfoChanged();
+                InfoChanged?.Invoke();
 
                 SetInputState(true);
             }

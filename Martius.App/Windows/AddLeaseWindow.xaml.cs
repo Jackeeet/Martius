@@ -4,6 +4,7 @@ using System.Windows;
 using Martius.AppLogic;
 using Martius.Domain;
 using Martius.Infrastructure;
+using static Martius.Infrastructure.CastUtils;
 
 namespace Martius.App
 {
@@ -38,8 +39,8 @@ namespace Martius.App
 
         private void SaveButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var property = (Property) PropertyCBox.SelectedItem;
-            var tenant = (Tenant) TenantCBox.SelectedItem;
+            var property = (Property)PropertyCBox.SelectedItem;
+            var tenant = (Tenant)TenantCBox.SelectedItem;
 
             var sd = StartDatePicker.SelectedDate.GetValueOrDefault();
             var ed = EndDatePicker.SelectedDate.GetValueOrDefault();
@@ -59,7 +60,7 @@ namespace Martius.App
                 {
                     DisplayError(ex.Message);
                 }
-                catch (PropertyRentedException ex2)
+                catch (InvalidOperationException ex2)
                 {
                     DisplayError(ex2.Message);
                 }
@@ -86,8 +87,8 @@ namespace Martius.App
 
         private void CheckEnableDcb()
         {
-            var tenant = (Tenant) TenantCBox.SelectedItem;
-            var prop = (Property) PropertyCBox.SelectedItem;
+            var tenant = (Tenant)TenantCBox.SelectedItem;
+            var prop = (Property)PropertyCBox.SelectedItem;
             _discountAmount = _leaseService.GetDiscountedAmount(prop, tenant, _minLeaseCount, _discount);
             DiscountChBox.IsEnabled = _discountAmount != decimal.Zero;
         }
@@ -98,7 +99,7 @@ namespace Martius.App
             {
                 var actualPrice = _discountAmount;
                 RubBox.Text = Math.Truncate(actualPrice).ToString(CultureInfo.InvariantCulture);
-                DecimalBox.Text = (actualPrice % 1m).ToString(CultureInfo.InvariantCulture);
+                DecimalBox.Text = GetDecimalPoints(actualPrice).ToString(CultureInfo.InvariantCulture);
             }
             else
                 DisplayDefaultPrice();
@@ -106,9 +107,9 @@ namespace Martius.App
 
         private void DisplayDefaultPrice()
         {
-            var property = (Property) PropertyCBox.SelectedItem;
+            var property = (Property)PropertyCBox.SelectedItem;
             var rub = Math.Truncate(property.MonthlyPrice);
-            var dec = property.MonthlyPrice % 1m;
+            var dec = GetDecimalPoints(property.MonthlyPrice);
             RubBox.Text = rub.ToString(CultureInfo.InvariantCulture);
             DecimalBox.Text = dec.ToString(CultureInfo.InvariantCulture);
         }

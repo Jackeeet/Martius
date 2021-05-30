@@ -18,6 +18,9 @@ namespace Martius.App
         private GridViewColumnHeader _sortColumn;
         private SortAdorner _sortAdorner;
         private readonly CollectionView _view;
+        private const string SqlTrue = "1";
+        private const string SqlFalse = "0";
+        private const string SqlNull = "null";
 
         public PropertyControl(PropertyService propertyService)
         {
@@ -67,30 +70,30 @@ namespace Martius.App
 
         private string BuildFilter()
         {
-            var city = PropCityCBox.SelectedIndex == -1 ? "null" : $"N'{PropCityCBox.SelectedItem}'";
+            var city = PropCityCBox.SelectedIndex == -1 ? SqlNull : $"N'{PropCityCBox.SelectedItem}'";
             var today = CastUtils.FormatSqlDate(DateTime.Now);
 
-            var rented = "null";
-            var available = "null";
+            var rented = SqlNull;
+            var available = SqlNull;
             if (RentedChBox.IsChecked == true)
-                rented = "1";
+                rented = SqlTrue;
             else if (RentedChBox.IsChecked == false)
-                available = "1";
+                available = SqlTrue;
 
-            var res = ResidentialChBox.IsChecked == null ? "null" :
-                ResidentialChBox.IsChecked == true ? "1" : "0";
-            var furn = FurnishedChBox.IsChecked == null ? "null" :
-                FurnishedChBox.IsChecked == true ? "1" : "0";
-            var park = ParkingChBox.IsChecked == null ? "null" :
-                ParkingChBox.IsChecked == true ? "1" : "0";
+            var res = ResidentialChBox.IsChecked == null ? SqlNull :
+                ResidentialChBox.IsChecked == true ? SqlTrue : SqlFalse;
+            var furn = FurnishedChBox.IsChecked == null ? SqlNull :
+                FurnishedChBox.IsChecked == true ? SqlTrue : SqlFalse;
+            var park = ParkingChBox.IsChecked == null ? SqlNull :
+                ParkingChBox.IsChecked == true ? SqlTrue : SqlFalse;
 
-            var minArea = string.IsNullOrEmpty(MinAreaTextBox.Text) ? "null" : MinAreaTextBox.Text;
-            var maxArea = string.IsNullOrEmpty(MaxAreaTextBox.Text) ? "null" : MaxAreaTextBox.Text;
+            var minArea = string.IsNullOrEmpty(MinAreaTextBox.Text) ? SqlNull : MinAreaTextBox.Text;
+            var maxArea = string.IsNullOrEmpty(MaxAreaTextBox.Text) ? SqlNull : MaxAreaTextBox.Text;
 
             var checkedRb = RoomsCount.Children.OfType<RadioButton>()
                 .FirstOrDefault(r => r.IsChecked.GetValueOrDefault());
-            var rooms = checkedRb?.Name == "RoomsAnyButton" ? "null" :
-                checkedRb?.Name == "Rooms5RButton" ? "or room_count > 5" : checkedRb?.Content;
+            var rooms = BuildRoomCountString(checkedRb);
+            var maxRooms = checkedRb?.Name == "Rooms5RButton" ? "5" : SqlNull;
 
             return
                 $"(({city} is null) or city = {city}) and " +
@@ -101,7 +104,15 @@ namespace Martius.App
                 $"(({park} is null) or has_parking = {park}) and " +
                 $"(({minArea} is null) or area >= {minArea}) and " +
                 $"(({maxArea} is null) or area <= {maxArea}) and " +
-                $"(({rooms} is null) or room_count = {rooms})";
+                $"(({rooms} is null) or room_count = {rooms}) and " +
+                $"(({maxRooms} is null) or room_count >= {maxRooms})";
+        }
+
+        private string BuildRoomCountString(RadioButton checkedRb)
+        {
+            if (checkedRb?.Name == "RoomsAnyButton" || checkedRb?.Name == "Rooms5RButton")
+                return SqlNull;
+            return checkedRb?.Content.ToString();
         }
 
         private void OnFilterChanged(object sender, EventArgs e)

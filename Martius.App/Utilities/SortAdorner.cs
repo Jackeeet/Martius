@@ -10,8 +10,9 @@ namespace Martius.App
     {
         private static readonly Geometry upGeometry = Geometry.Parse("M 0 4 L 3.5 0 L 7 4 Z");
         private static readonly Geometry downGeometry = Geometry.Parse("M 0 0 L 3.5 4 L 7 0 Z");
+        private const int MinFieldWidth = 20;
 
-        public ListSortDirection SortDirection { get; private set; }
+        public ListSortDirection SortDirection { get; }
 
         public SortAdorner(UIElement adornedElement, ListSortDirection sortDirection) : base(adornedElement)
         {
@@ -21,7 +22,7 @@ namespace Martius.App
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
-            if (AdornedElement.RenderSize.Width >= 20)
+            if (AdornedElement.RenderSize.Width >= MinFieldWidth)
             {
                 var transform = new TranslateTransform
                 (

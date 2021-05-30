@@ -7,6 +7,14 @@ namespace Martius.App
     {
         private static readonly string _filePath = @"userSettings.json";
 
+        private static readonly AppSettings defaultSettings = new AppSettings()
+        {
+            DiscountPercentage = new decimal(5.0),
+            MinLeaseCount = 5,
+            MinLeaseMonths = 1,
+            UserDatabasePath = ""
+        };
+
         internal static AppSettings GetUserSettings()
         {
             AppSettings settings = null;
@@ -26,14 +34,6 @@ namespace Martius.App
 
         internal static AppSettings SetDefaultSettings()
         {
-            var defaultSettings = new AppSettings()
-            {
-                DiscountPercentage = new decimal(5.0),
-                MinLeaseCount = 5,
-                MinLeaseMonths = 1,
-                UserDatabasePath = ""
-            };
-
             File.WriteAllText(_filePath, JsonConvert.SerializeObject(defaultSettings));
             return defaultSettings;
         }

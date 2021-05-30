@@ -2,7 +2,7 @@ using System;
 using System.Windows;
 using Martius.AppLogic;
 using Martius.Domain;
-using static Martius.App.InputValidator;
+using static Martius.App.TenantInputParser;
 
 namespace Martius.App
 {
@@ -43,8 +43,7 @@ namespace Martius.App
                 _tenant.PhoneNumber = phone;
                 _service.UpdateTenant(_tenant);
                 MessageBox.Show("Изменения сохранены.");
-                if (InfoChanged != null)
-                    InfoChanged();
+                InfoChanged?.Invoke();
                 SetInputState(true);
             }
             else

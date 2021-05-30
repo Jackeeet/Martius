@@ -7,8 +7,8 @@ namespace Martius.Domain
     public class Lease : IDataEntity
     {
         public int Id { get; }
-        public readonly Property Property;
-        public readonly Tenant Tenant;
+        public Property Property { get; }
+        public Tenant Tenant { get; }
         public decimal MonthlyPrice { get; }
         public DateTime StartDate { get; }
         public DateTime EndDate { get; }

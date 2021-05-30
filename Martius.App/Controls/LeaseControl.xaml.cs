@@ -20,7 +20,9 @@ namespace Martius.App
         private SortAdorner _sortAdorner;
         private readonly CollectionView _view;
         private GridViewColumnHeader _sortColumn;
-        
+        private const string SqlTrue = "1";
+        private const string SqlNull = "null";
+
         public LeaseControl(LeaseService leaseService, TenantService tenantService, PropertyService propertyService,
             AppSettings appSettings)
         {
@@ -35,7 +37,7 @@ namespace Martius.App
             TenantCBox.ItemsSource = _tenantService.Tenants;
             CityCBox.ItemsSource = _propertyService.AllCities;
 
-            _view = (CollectionView)CollectionViewSource.GetDefaultView(LeaseListView.ItemsSource);
+            _view = (CollectionView) CollectionViewSource.GetDefaultView(LeaseListView.ItemsSource);
             _view.SortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
         }
 
@@ -84,27 +86,27 @@ namespace Martius.App
         private string BuildFilter()
         {
             var today = CastUtils.FormatSqlDate(DateTime.Now);
-            var current = "null";
-            var expired = "null";
+            var current = SqlNull;
+            var expired = SqlNull;
             if (CurrentChBox.IsChecked == true)
-                current = "1";
+                current = SqlTrue;
             else if (CurrentChBox.IsChecked == false)
-                expired = "1";
+                expired = SqlTrue;
 
             var sd = string.IsNullOrEmpty(StartDatePicker.Text)
-                ? "null"
+                ? SqlNull
                 : CastUtils.FormatSqlDate(Convert.ToDateTime(StartDatePicker.Text));
             var ed = string.IsNullOrEmpty(EndDatePicker.Text)
-                ? "null"
+                ? SqlNull
                 : CastUtils.FormatSqlDate(Convert.ToDateTime(EndDatePicker.Text));
 
-            var city = CityCBox.SelectedIndex == -1 ? "null" : $"N'{CityCBox.SelectedItem}'";
-            var tId = "null";
+            var city = CityCBox.SelectedIndex == -1 ? SqlNull : $"N'{CityCBox.SelectedItem}'";
+            var tId = SqlNull;
             if (TenantCBox.SelectedIndex != -1)
             {
-                tId = (Tenant)TenantCBox.SelectedItem == null
-                    ? "null"
-                    : ((Tenant)TenantCBox.SelectedItem).Id.ToString();
+                tId = (Tenant) TenantCBox.SelectedItem == null
+                    ? SqlNull
+                    : ((Tenant) TenantCBox.SelectedItem).Id.ToString();
             }
 
             return

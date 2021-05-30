@@ -11,20 +11,19 @@ namespace Martius.Domain
     internal class PropertyDataManager : DataManager
     {
         private string _tableName = "property";
-
         private string _tableColumns =
             "city, street, building, building_extra, apt_number, " +
             "room_count, area, residential, furnished, has_parking, monthly_price";
 
-        internal List<Property> GetAllProperties() => GetEntities(_tableName, BuildEntity).Cast<Property>().ToList();
+        internal List<Property> GetAllProperties() => GetEntities(_tableName).Cast<Property>().ToList();
 
         internal Property GetPropertyById(int propId) =>
-            GetEntities(_tableName, BuildEntity, $"where id = {propId}").FirstOrDefault() as Property;
+            GetEntities(_tableName, $"where id = {propId}").FirstOrDefault() as Property;
 
         internal void AddProperty(Property prop) => AddEntity(prop, _tableName, _tableColumns);
 
         internal List<Property> GetFilteredProperties(string filter, string join = null) =>
-            GetEntities(_tableName, BuildEntity, filter, join).Cast<Property>().ToList();
+            GetEntities(_tableName, filter, join).Cast<Property>().ToList();
 
         internal void UpdateProperty(Property property) => UpdateEntity(property, _tableName, _tableColumns);
 

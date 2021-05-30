@@ -2,7 +2,7 @@
 using Martius.AppLogic;
 using Martius.Domain;
 using Martius.Infrastructure;
-using static Martius.App.InputValidator;
+using static Martius.App.TenantInputParser;
 
 namespace Martius.App
 {

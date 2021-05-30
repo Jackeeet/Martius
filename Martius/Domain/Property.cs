@@ -50,10 +50,7 @@ namespace Martius.Domain
             return Equals((Property) obj);
         }
 
-        public override int GetHashCode()
-        {
-            return Id;
-        }
+        public override int GetHashCode() => Id;
 
         public override string ToString() => Address.ToString();
     }

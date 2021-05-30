@@ -38,18 +38,19 @@
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Label Content="Общая площадь:" Width="105" Margin="5,5,0,5" />
                     <TextBox x:Name="AreaBox" Width="70" TextAlignment="Center" VerticalContentAlignment="Center"
-                             Padding="2" IsReadOnly="True" />
+                             Padding="2" IsReadOnly="True" Text="{Binding Area}" />
                     <Label Content="кв. м." Margin="5,5,0,5" />
                     <Label Content="Количество комнат" Width="120" Margin="5,5,0,5" />
                     <TextBox x:Name="RoomBox" Width="70" TextAlignment="Center" VerticalContentAlignment="Center"
-                             Padding="2" IsReadOnly="True" />
+                             Padding="2" IsReadOnly="True" Text="{Binding RoomCount}" />
                 </StackPanel>
                 <StackPanel x:Name="ChBoxes" Orientation="Horizontal" Margin="5">
-                    <CheckBox x:Name="ResChBox" Content="Жилое" Margin="5" VerticalContentAlignment="Center" IsEnabled="False" />
+                    <CheckBox x:Name="ResChBox" Content="Жилое" Margin="5" VerticalContentAlignment="Center"
+                              IsEnabled="False" IsChecked="{Binding IsResidential}" />
                     <CheckBox x:Name="FurnChBox" Content="С мебелью" Margin="5" VerticalContentAlignment="Center"
-                              IsEnabled="False" />
+                              IsEnabled="False" IsChecked="{Binding IsFurnished}" />
                     <CheckBox x:Name="ParkChBox" Content="С парковкой" Margin="5" VerticalContentAlignment="Center"
-                              IsEnabled="False" />
+                              IsEnabled="False" IsChecked="{Binding HasParking}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Label Content="Стоимость:" Margin="5,0,0,0" />

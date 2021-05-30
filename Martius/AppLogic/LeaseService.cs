@@ -29,7 +29,7 @@ namespace Martius.AppLogic
                 throw new EntityExistsException("Такая запись уже существует в базе.");
 
             if (!IsAvailable(property, lease))
-                throw new PropertyRentedException("Выбранное помещение занято в указанный период времени.");
+                throw new InvalidOperationException("Выбранное помещение занято в указанный период времени.");
 
             _dataManager.AddLease(lease);
             Leases.Add(lease);

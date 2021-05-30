@@ -1,4 +1,5 @@
-﻿using Martius.AppLogic;
+﻿using System;
+using Martius.AppLogic;
 using System.Configuration;
 using System.Windows;
 
@@ -6,7 +7,6 @@ namespace Martius.App
 {
     public partial class MainWindow
     {
-        private readonly string _connectionString;
         private readonly SettingsWindow _settingsWindow;
         private readonly AppSettings _appSettings;
         private readonly LeaseService _leaseService;
@@ -15,18 +15,26 @@ namespace Martius.App
 
         public MainWindow()
         {
+            AppDomain.CurrentDomain.UnhandledException += ProcessException;
+
             _appSettings = SettingsManager.GetUserSettings();
-            _connectionString = string.IsNullOrEmpty(_appSettings.UserDatabasePath)
+            var connectionString = string.IsNullOrEmpty(_appSettings.UserDatabasePath)
                 ? ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString
                 : $"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={_appSettings.UserDatabasePath};Integrated Security=True;Connect Timeout=30";
             _settingsWindow = new SettingsWindow(_appSettings);
 
-            _leaseService = new LeaseService(_connectionString);
-            _tenantService = new TenantService(_connectionString);
-            _propertyService = new PropertyService(_connectionString);
+            _leaseService = new LeaseService(connectionString);
+            _tenantService = new TenantService(connectionString);
+            _propertyService = new PropertyService(connectionString);
 
             InitializeComponent();
             SetupControls();
+        }
+
+        private void ProcessException(object sender, UnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show((e.ExceptionObject as Exception)?.Message);
+            Environment.Exit(1);
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)

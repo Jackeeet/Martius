@@ -12,15 +12,12 @@ namespace Martius.Domain
         private string _tableName = "lease";
         private string _tableColumns = "property_id, tenant_id, monthly_price, start_date, end_date";
 
-        internal List<Lease> GetAllLeases() => GetEntities(_tableName, BuildEntity).Cast<Lease>().ToList();
-
-        internal Lease GetLeaseById(int leaseId) =>
-            GetEntities(_tableName, BuildEntity, $"where id = {leaseId}").FirstOrDefault() as Lease;
+        internal List<Lease> GetAllLeases() => GetEntities(_tableName).Cast<Lease>().ToList();
 
         internal void AddLease(Lease lease) => AddEntity(lease, _tableName, _tableColumns);
 
         internal List<Lease> GetFilteredLeases(string filter, string join = null) =>
-            GetEntities(_tableName, BuildEntity, filter, join).Cast<Lease>().ToList();
+            GetEntities(_tableName, filter, join).Cast<Lease>().ToList();
 
         protected override IDataEntity BuildEntity(SqlDataReader reader)
         {

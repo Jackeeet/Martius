@@ -83,7 +83,8 @@
     <Compile Include="Controls\TenantControl.xaml.cs">
       <DependentUpon>TenantControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\InputValidator.cs" />
+    <Compile Include="Utilities\PropInputParser.cs" />
+    <Compile Include="Utilities\TenantInputParser.cs" />
     <Compile Include="Windows\PropertyInfoWindow.xaml.cs">
       <DependentUpon>PropertyInfoWindow.xaml</DependentUpon>
     </Compile>
