@@ -16,6 +16,8 @@ namespace Martius.App
         public SettingsWindow(AppSettings settings)
         {
             _settings = settings;
+            _filePath = string.IsNullOrEmpty(_settings.UserDatabasePath) ? "" : _settings.UserDatabasePath;
+            
             InitializeComponent();
             MinLengthBox.Focus();
             FillSettingsFields();
@@ -24,6 +26,8 @@ namespace Martius.App
         private void SettingsWindow_OnClosing(object sender, CancelEventArgs e)
         {
             e.Cancel = true;
+            FillSettingsFields();
+            _filePath = _settings.UserDatabasePath;
             Hide();
         }
 
