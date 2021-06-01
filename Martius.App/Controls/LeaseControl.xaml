@@ -57,6 +57,12 @@
                                                   Click="ColumnHeader_OnClick" />
                         </GridViewColumn.Header>
                     </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding FullPrice, StringFormat={}{0:0.00}}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Общая стоимость" Tag="FullPrice" MinWidth="60"
+                                                  Click="ColumnHeader_OnClick" />
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding MonthlyPrice, StringFormat={}{0:0.00}}">
                         <GridViewColumn.Header>
                             <GridViewColumnHeader Content="Цена" Tag="MonthlyPrice" MinWidth="60"

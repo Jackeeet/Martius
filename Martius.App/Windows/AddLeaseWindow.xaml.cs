@@ -27,6 +27,7 @@ namespace Martius.App
 
             PropertyCBox.ItemsSource = propertyService.Properties;
             TenantCBox.ItemsSource = tenantService.Tenants;
+            MonthsBox.Text = _minLeaseMonths.ToString();
         }
 
         private void SetupStructure(LeaseService leaseService, AppSettings appSettings)
@@ -43,14 +44,15 @@ namespace Martius.App
             var tenant = (Tenant)TenantCBox.SelectedItem;
 
             var sd = StartDatePicker.SelectedDate.GetValueOrDefault();
-            var ed = EndDatePicker.SelectedDate.GetValueOrDefault();
+            int.TryParse(MonthsBox.Text, out var monthCount);
 
             var priceString = $"{RubBox.Text}.{DecimalBox.Text}";
             var priceParsed = decimal.TryParse(
                 priceString, NumberStyles.Any, CultureInfo.InvariantCulture, out var price);
 
-            if (InputValid(property, tenant, sd, ed, priceParsed))
+            if (InputValid(property, tenant, monthCount, priceParsed))
             {
+                var ed = sd.AddMonths(monthCount);
                 try
                 {
                     CreatedLease = _leaseService.SaveLease(property, tenant, price, sd, ed);
@@ -69,8 +71,8 @@ namespace Martius.App
                 DisplayError("Одно или несколько полей заполнены неверно.");
         }
 
-        private bool InputValid(Property prop, Tenant tenant, DateTime sd, DateTime ed, bool parsed)
-            => prop != null && tenant != null && (sd.AddMonths(_minLeaseMonths) <= ed) && parsed;
+        private bool InputValid(Property prop, Tenant tenant, int months, bool priceParsed)
+            => prop != null && tenant != null && months >= _minLeaseMonths && priceParsed;
 
         private void PropertyCBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {

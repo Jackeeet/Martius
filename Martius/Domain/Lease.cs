@@ -15,6 +15,8 @@ namespace Martius.Domain
 
         public Address Address => Property.Address;
         public string TenantName => Tenant.FullName;
+        public decimal FullPrice => MonthlyPrice * _months;
+        private readonly int _months;
 
         public Lease(int id, Property property, Tenant tenant, decimal monthlyPrice, DateTime startDate,
             DateTime endDate)
@@ -25,6 +27,12 @@ namespace Martius.Domain
             MonthlyPrice = monthlyPrice;
             StartDate = startDate;
             EndDate = endDate;
+            _months = CalculateMonths();
+        }
+
+        private int CalculateMonths()
+        {
+            return Math.Abs(12 * (StartDate.Year - EndDate.Year) + StartDate.Month - EndDate.Month);
         }
 
         public bool ContentEquals(Lease other)
@@ -46,7 +54,7 @@ namespace Martius.Domain
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((Lease) obj);
+            return Equals((Lease)obj);
         }
 
         public override int GetHashCode()
