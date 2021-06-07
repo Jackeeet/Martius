@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="Martius.App.LeaseControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="580" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" MinWidth="200" MaxWidth="280" />
+            <ColumnDefinition Width="5*" />
+        </Grid.ColumnDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Background="White">
+                <Button x:Name="NewLeaseButton" Content="Новый договор" Margin="5" Height="25"
+                        Click="NewLeaseButton_Click" />
+                <GroupBox Header="Состояние" Margin="5, 5, 5, 0" Padding="0, 5, 0, 0">
+                    <CheckBox x:Name="CurrentChBox" Content="текущие/истекшие" Margin="5" IsThreeState="True"
+                              IsChecked="{x:Null}" Click="RentedChBox_OnClick" />
+                </GroupBox>
+                <Label Content="Дата начала" Padding="5" />
+                <DatePicker x:Name="StartDatePicker" Margin="5" SelectedDateChanged="OnFilterChanged"
+                            FirstDayOfWeek="Monday" />
+                <Label Content="Дата окончания" />
+                <DatePicker x:Name="EndDatePicker" Margin="5" SelectedDateChanged="OnFilterChanged"
+                            FirstDayOfWeek="Monday" />
+                <Label Content="Арендатор" />
+                <ComboBox x:Name="TenantCBox" Margin="5" SelectionChanged="OnFilterChanged" />
+                <Label Content="Город" />
+                <ComboBox x:Name="CityCBox" Margin="5" SelectionChanged="OnFilterChanged" />
+                <Button x:Name="ResetButton" Content="Сбросить фильтры" Height="25" Margin="5"
+                        IsEnabled="False" Click="ResetButton_OnClick" />
+            </StackPanel>
+        </ScrollViewer>
+        <ListView x:Name="LeaseListView" Grid.Column="1" Margin="5,5,0,0">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Height" Value="25" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Id}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="Id" Content="№" MinWidth="40" Click="ColumnHeader_OnClick" />
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Address}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Tag="Address" Content="Адрес" MinWidth="250"
+                                                  Click="ColumnHeader_OnClick" />
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding TenantName}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Арендатор" Tag="TenantName" MinWidth="170"
+                                                  Click="ColumnHeader_OnClick" />
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding FullPrice, StringFormat={}{0:0.00}}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Общая стоимость" Tag="FullPrice" MinWidth="60"
+                                                  Click="ColumnHeader_OnClick" />
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding MonthlyPrice, StringFormat={}{0:0.00}}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Цена" Tag="MonthlyPrice" MinWidth="60"
+                                                  Click="ColumnHeader_OnClick" />
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding StartDate, StringFormat={}{0:dd.MM.yyyy}}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Начало аренды" Tag="StartDate" MinWidth="120"
+                                                  Click="ColumnHeader_OnClick" />
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding EndDate, StringFormat={}{0:dd.MM.yyyy}}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Окончание аренды" Tag="EndDate" MinWidth="120"
+                                                  Click="ColumnHeader_OnClick" />
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

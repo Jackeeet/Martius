@@ -1,0 +1,36 @@
+﻿<Window x:Class="Martius.App.AddLeaseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Новый договор" Height="420" Width="300" ShowInTaskbar="False" WindowStyle="ToolWindow"
+        ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+    <StackPanel>
+        <Label Content="Помещение" Margin="5,5,5,0" />
+        <ComboBox x:Name="PropertyCBox" Margin="5,5,5,0" SelectionChanged="PropertyCBox_SelectionChanged" />
+        <Label Content="Арендатор" Margin="5,5,5,0" />
+        <ComboBox x:Name="TenantCBox" Margin="5,5,5,0" SelectionChanged="TenantCBox_SelectionChanged" />
+        <Label Content="Дата начала аренды" Margin="5,5,5,0" />
+        <DatePicker x:Name="StartDatePicker" Margin="5,5,5,0" FirstDayOfWeek="Monday" />
+        <Label Content="Длительность аренды (в месяцах)" Margin="5,5,5,0" />
+        <TextBox x:Name="MonthsBox" Margin="5,5,5,0" Height="22" Padding="2" VerticalContentAlignment="Center" />
+        <Label Content="Месячная стоимость аренды" Margin="5,5,5,0" />
+        <StackPanel Orientation="Horizontal" Margin="5,5,5,5">
+            <TextBox x:Name="RubBox" IsReadOnly="True" Width="50" Height="22"
+                     Margin="5,5,5,0" Padding="2" TextAlignment="Center" VerticalAlignment="Center" />
+            <Label Content="руб." Margin="5,5,5,0" VerticalAlignment="Center" />
+            <TextBox x:Name="DecimalBox" IsReadOnly="True" Width="50" Height="22"
+                     Margin="5,5,0,0" Padding="2" TextAlignment="Center" VerticalAlignment="Center" />
+            <Label Content="коп." Margin="5,5,5,0" VerticalAlignment="Center" />
+        </StackPanel>
+        <CheckBox x:Name="DiscountChBox" Content="Применить скидку" Margin="5" IsEnabled="False"
+                  VerticalContentAlignment="Center" Click="DiscountChBox_OnClick" />
+        <DockPanel Margin="5">
+            <Button x:Name="SaveButton" DockPanel.Dock="Right" Content="Сохранить" IsDefault="True" Width="65"
+                    Margin="5" Click="SaveButton_OnClick" />
+            <Button x:Name="CancelButton" Content="Отмена" IsCancel="True" Width="65" Margin="5"
+                    HorizontalAlignment="Right" />
+        </DockPanel>
+    </StackPanel>
+</Window>

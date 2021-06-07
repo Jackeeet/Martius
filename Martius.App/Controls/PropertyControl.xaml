@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="Martius.App.PropertyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="580" d:DesignWidth="800">
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" MinWidth="200" MaxWidth="280" />
+            <ColumnDefinition Width="5*" />
+        </Grid.ColumnDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Button x:Name="NewPropertyButton" Content="Новое помещение"
+                        Margin="5, 5, 5, 5" Height="25" Click="NewPropertyButton_Click" />
+                <Label Content="Город" />
+                <ComboBox x:Name="PropCityCBox" Margin="5" SelectionChanged="OnFilterChanged" />
+                <GroupBox Header="Состояние" Margin="5, 5, 5, 0" Padding="0, 5, 0, 0">
+                    <StackPanel x:Name="PropStates">
+                        <CheckBox x:Name="RentedChBox" Content="сданные/свободные" IsThreeState="True"
+                                  IsChecked="{x:Null}" Margin="5" Click="RentedChBox_OnClick" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Тип помещения" Margin="5, 5, 5, 0" Padding="0, 5, 0, 0">
+                    <StackPanel x:Name="PropTypes">
+                        <CheckBox x:Name="ResidentialChBox" Content="жилые/нежилые" IsThreeState="True"
+                                  IsChecked="{x:Null}" Margin="5" Click="ResidentialChBox_OnClick" />
+                        <CheckBox x:Name="FurnishedChBox" Content="с мебелью/без мебели" IsThreeState="True"
+                                  IsChecked="{x:Null}" Margin="5" Click="FurnishedChBox_OnClick" />
+                        <CheckBox x:Name="ParkingChBox" Content="с парковкой/без парковки" IsThreeState="True"
+                                  IsChecked="{x:Null}" Margin="5" Click="ParkingChBox_OnClick" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Общая площадь" Margin="5, 5, 5, 0" Padding="0, 5, 0, 0">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="От" />
+                        <TextBox x:Name="MinAreaTextBox" Width="40" TextAlignment="Center" Padding="2"
+                                 VerticalContentAlignment="Center" TextChanged="OnFilterChanged" />
+                        <Label Content="до" />
+                        <TextBox x:Name="MaxAreaTextBox" Width="40" TextAlignment="Center" Padding="2"
+                                 VerticalContentAlignment="Center" TextChanged="OnFilterChanged" />
+                        <Label Content="кв.м." />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Количество комнат" Margin="5, 5, 5, 0" Padding="0, 5, 0, 0">
+                    <StackPanel x:Name="RoomsCount">
+                        <RadioButton x:Name="RoomsAnyButton" Content="Любое" IsChecked="True" Margin="5"
+                                     Click="OnFilterChanged" />
+                        <RadioButton x:Name="Rooms1Button" Content="1" Margin="5"
+                                     Click="OnFilterChanged" />
+                        <RadioButton x:Name="Rooms2Button" Content="2" Margin="5"
+                                     Click="OnFilterChanged" />
+                        <RadioButton x:Name="Rooms3Button" Content="3" Margin="5"
+                                     Click="OnFilterChanged" />
+                        <RadioButton x:Name="Rooms4RButton" Content="4" Margin="5"
+                                     Click="OnFilterChanged" />
+                        <RadioButton x:Name="Rooms5RButton" Content="5+" Margin="5"
+                                     Click="OnFilterChanged" />
+                    </StackPanel>
+                </GroupBox>
+                <Button x:Name="ResetButton" Content="Сбросить фильтры" Height="25" Margin="5" IsEnabled="False"
+                        Click="ResetButton_OnClick" />
+            </StackPanel>
+        </ScrollViewer>
+        <ListView x:Name="PropertyListView" Grid.Column="1" Margin="5, 5, 0, 0">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Height" Value="25" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Id}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="№" Tag="Id" MinWidth="40" Click="ColumnHeader_OnClick" />
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Address}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Адрес" Tag="Address" MinWidth="250"
+                                                  Click="ColumnHeader_OnClick" />
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding RoomCount}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Комнаты" Tag="RoomCount" Click="ColumnHeader_OnClick" />
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Area}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Площадь" Tag="Area" Click="ColumnHeader_OnClick" />
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding MonthlyPrice, StringFormat={}{0:0.00}}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Цена" Tag="MonthlyPrice" Click="ColumnHeader_OnClick" />
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Редактировать" Width="90" Click="InfoButton_OnClick" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF233E83" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>
