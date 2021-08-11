@@ -2,12 +2,11 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("LibTestProject")]
+using Martius.Infrastructure;
 
 namespace Martius.Domain
 {
-    internal class TenantDataManager : DataManager
+    internal class TenantDataMapper : DataMapper
     {
         private string _tableName = "tenant";
         private string _tableColumns = "surname, name, patronym, dob, phone, passport";
@@ -44,7 +43,7 @@ namespace Martius.Domain
             return new Person(surname, name, patronym, dob);
         }
 
-        protected internal TenantDataManager(string connectionString) : base(connectionString)
+        protected internal TenantDataMapper(IDbConnectionFactory connectionFactory) : base(connectionFactory)
         {
         }
     }

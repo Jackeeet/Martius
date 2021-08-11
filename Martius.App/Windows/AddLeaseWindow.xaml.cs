@@ -91,7 +91,7 @@ namespace Martius.App
         {
             var tenant = (Tenant)TenantCBox.SelectedItem;
             var prop = (Property)PropertyCBox.SelectedItem;
-            _discountAmount = _leaseService.GetDiscountedAmount(prop, tenant, _minLeaseCount, _discount);
+            _discountAmount = _leaseService.GetDiscountedPrice(prop, tenant, _minLeaseCount, _discount);
             DiscountChBox.IsEnabled = _discountAmount != decimal.Zero;
         }
 

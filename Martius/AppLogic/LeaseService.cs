@@ -9,13 +9,13 @@ namespace Martius.AppLogic
     public class LeaseService
     {
         public readonly List<Lease> Leases;
-        private readonly LeaseDataManager _dataManager;
+        private readonly LeaseDataMapper _dataMapper;
         private int _maxId;
 
-        public LeaseService(string connectionString)
+        public LeaseService(IDbConnectionFactory connectionFactory)
         {
-            _dataManager = new LeaseDataManager(connectionString);
-            Leases = _dataManager.GetAllLeases();
+            _dataMapper = new LeaseDataMapper(connectionFactory);
+            Leases = _dataMapper.GetAllLeases();
             var lastIndex = Leases.Count - 1;
             _maxId = lastIndex == -1 ? 0 : Leases[lastIndex].Id;
         }
@@ -31,20 +31,20 @@ namespace Martius.AppLogic
             if (!IsAvailable(property, lease))
                 throw new InvalidOperationException("Выбранное помещение занято в указанный период времени.");
 
-            _dataManager.AddLease(lease);
+            _dataMapper.AddLease(lease);
             Leases.Add(lease);
             _maxId = lease.Id;
             return lease;
         }
 
         public List<Lease> GetFilteredLeases(string filter, string join = null)
-            => _dataManager.GetFilteredLeases(filter, join);
+            => _dataMapper.GetFilteredLeases(filter, join);
 
         private bool IsUnique(Lease lease) => Leases.All(l => !l.ContentEquals(lease));
 
         private bool IsAvailable(Property prop, Lease newLease)
         {
-            var leases = _dataManager.GetFilteredLeases($"property_id = {prop.Id}");
+            var leases = _dataMapper.GetFilteredLeases($"property_id = {prop.Id}");
             return leases.All(l
                 => !DatePeriodsOverlap(l.StartDate, l.EndDate, newLease.StartDate, newLease.EndDate));
         }
@@ -52,18 +52,18 @@ namespace Martius.AppLogic
         private bool DatePeriodsOverlap(DateTime sd1, DateTime ed1, DateTime sd2, DateTime ed2)
             => sd2 <= ed1 && sd1 <= ed2;
 
-        public decimal GetDiscountedAmount(Property property, Tenant tenant, int minCount, decimal discount)
+        public decimal GetDiscountedPrice(Property property, Tenant tenant, int minCount, decimal discount)
         {
             var multiplier = discount * new decimal(0.01);
-            var actualAmount = property.MonthlyPrice - (property.MonthlyPrice * multiplier);
+            var actualPrice = property.MonthlyPrice - (property.MonthlyPrice * multiplier);
             var validLeaseCount = GetValidLeaseCount(property, tenant, minCount);
 
-            return validLeaseCount < minCount ? decimal.Zero : actualAmount;
+            return validLeaseCount < minCount ? decimal.Zero : actualPrice;
         }
 
         private int GetValidLeaseCount(Property property, Tenant tenant, int minCount)
         {
-            var tenantLeases = _dataManager.GetFilteredLeases($"tenant_id = {tenant.Id}");
+            var tenantLeases = _dataMapper.GetFilteredLeases($"tenant_id = {tenant.Id}");
             var lastLeases = tenantLeases.OrderByDescending(l => l.EndDate).Take(minCount);
             var validLeaseCount = lastLeases.Count(l => l.Property.Id == property.Id);
             return validLeaseCount;

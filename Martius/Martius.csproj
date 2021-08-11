@@ -74,10 +74,10 @@
   <ItemGroup>
     <Compile Include="AppLogic\LeaseService.cs" />
     <Compile Include="AppLogic\TenantService.cs" />
-    <Compile Include="Domain\Data\DataManager.cs" />
-    <Compile Include="Domain\Data\LeaseDataManager.cs" />
-    <Compile Include="Domain\Data\PropertyDataManager.cs" />
-    <Compile Include="Domain\Data\TenantDataManager.cs" />
+    <Compile Include="Domain\DataMappers\DataMapper.cs" />
+    <Compile Include="Domain\DataMappers\LeaseDataMapper.cs" />
+    <Compile Include="Domain\DataMappers\PropertyDataMapper.cs" />
+    <Compile Include="Domain\DataMappers\TenantDataMapper.cs" />
     <Compile Include="Domain\IDataEntity.cs" />
     <Compile Include="Domain\Address.cs" />
     <Compile Include="Domain\Lease.cs" />
@@ -88,6 +88,8 @@
     <Compile Include="Infrastructure\CastUtils.cs" />
     <Compile Include="Infrastructure\EntityExistsException.cs" />
     <Compile Include="Infrastructure\DbAccessException.cs" />
+    <Compile Include="Infrastructure\IDbConnectionFactory.cs" />
+    <Compile Include="Infrastructure\SqlConnectionFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

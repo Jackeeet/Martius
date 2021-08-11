@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Martius.Infrastructure;
 
-[assembly: InternalsVisibleTo("LibTestProject")]
+[assembly: InternalsVisibleTo("Martius.Tests")]
 
 namespace Martius.Domain
 {
-    internal class LeaseDataManager : DataManager
+    internal class LeaseDataMapper : DataMapper
     {
         private string _tableName = "lease";
         private string _tableColumns = "property_id, tenant_id, monthly_price, start_date, end_date";
@@ -28,13 +29,13 @@ namespace Martius.Domain
             var startDate = reader.GetDateTime(4);
             var endDate = reader.GetDateTime(5);
 
-            var prop = new PropertyDataManager(ConnectionString).GetPropertyById(propId);
-            var tenant = new TenantDataManager(ConnectionString).GetTenantById(tenantId);
+            var prop = new PropertyDataMapper(ConnectionFactory).GetPropertyById(propId);
+            var tenant = new TenantDataMapper(ConnectionFactory).GetTenantById(tenantId);
 
             return new Lease(id, prop, tenant, monthlyPrice, startDate, endDate);
         }
 
-        protected internal LeaseDataManager(string connectionString) : base(connectionString)
+        protected internal LeaseDataMapper(IDbConnectionFactory connectionFactory) : base(connectionFactory)
         {
         }
     }
