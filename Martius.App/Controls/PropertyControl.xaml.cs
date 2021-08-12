@@ -71,7 +71,7 @@ namespace Martius.App
         private string BuildFilter()
         {
             var city = PropCityCBox.SelectedIndex == -1 ? SqlNull : $"N'{PropCityCBox.SelectedItem}'";
-            var today = CastUtils.FormatSqlDate(DateTime.Now);
+            var today = CastUtils.GetSqlRepresentation(DateTime.Now);
 
             var rented = SqlNull;
             var available = SqlNull;

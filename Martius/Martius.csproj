@@ -88,7 +88,10 @@
     <Compile Include="Infrastructure\CastUtils.cs" />
     <Compile Include="Infrastructure\EntityExistsException.cs" />
     <Compile Include="Infrastructure\DbAccessException.cs" />
+    <Compile Include="Infrastructure\Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\DecimalExtensions.cs" />
     <Compile Include="Infrastructure\IDbConnectionFactory.cs" />
+    <Compile Include="Infrastructure\ObjectCopier.cs" />
     <Compile Include="Infrastructure\SqlConnectionFactory.cs" />
   </ItemGroup>
   <ItemGroup>

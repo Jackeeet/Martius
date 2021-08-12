@@ -85,7 +85,7 @@ namespace Martius.App
 
         private string BuildFilter()
         {
-            var today = CastUtils.FormatSqlDate(DateTime.Now);
+            var today = CastUtils.GetSqlRepresentation(DateTime.Now);
             var current = SqlNull;
             var expired = SqlNull;
             if (CurrentChBox.IsChecked == true)
@@ -95,10 +95,10 @@ namespace Martius.App
 
             var sd = string.IsNullOrEmpty(StartDatePicker.Text)
                 ? SqlNull
-                : CastUtils.FormatSqlDate(Convert.ToDateTime(StartDatePicker.Text));
+                : CastUtils.GetSqlRepresentation(Convert.ToDateTime(StartDatePicker.Text));
             var ed = string.IsNullOrEmpty(EndDatePicker.Text)
                 ? SqlNull
-                : CastUtils.FormatSqlDate(Convert.ToDateTime(EndDatePicker.Text));
+                : CastUtils.GetSqlRepresentation(Convert.ToDateTime(EndDatePicker.Text));
 
             var city = CityCBox.SelectedIndex == -1 ? SqlNull : $"N'{CityCBox.SelectedItem}'";
             var tId = SqlNull;

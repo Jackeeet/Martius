@@ -1,5 +1,6 @@
 using System;
 using Martius.Infrastructure;
+using Martius.Infrastructure.Extensions;
 
 namespace Martius.Domain
 {
@@ -20,7 +21,7 @@ namespace Martius.Domain
 
         public string ToSqlString()
         {
-            return $"N'{Surname}', N'{Name}', N'{Patronym}', {CastUtils.FormatSqlDate(DateOfBirth)}";
+            return $"N'{Surname}', N'{Name}', N'{Patronym}', {DateOfBirth.GetSqlRepresentation()}";
         }
 
         public override string ToString()

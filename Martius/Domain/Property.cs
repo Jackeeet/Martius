@@ -3,6 +3,7 @@ using System.Globalization;
 
 namespace Martius.Domain
 {
+    [Serializable]
     public class Property : IDataEntity
     {
         public int Id { get; }

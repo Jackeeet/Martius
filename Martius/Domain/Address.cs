@@ -2,6 +2,7 @@ using System;
 
 namespace Martius.Domain
 {
+    [Serializable]
     public class Address : IComparable
     {
         private readonly int _buildingNumber;
@@ -43,9 +44,18 @@ namespace Martius.Domain
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
             return Equals((Address) obj);
         }
 

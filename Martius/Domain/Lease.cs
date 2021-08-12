@@ -1,6 +1,6 @@
 using System;
 using System.Globalization;
-using Martius.Infrastructure;
+using Martius.Infrastructure.Extensions;
 
 namespace Martius.Domain
 {
@@ -27,12 +27,7 @@ namespace Martius.Domain
             MonthlyPrice = monthlyPrice;
             StartDate = startDate;
             EndDate = endDate;
-            _months = CalculateMonths();
-        }
-
-        private int CalculateMonths()
-        {
-            return Math.Abs(12 * (StartDate.Year - EndDate.Year) + StartDate.Month - EndDate.Month);
+            _months = StartDate.CalculateMonthsUntil(EndDate);
         }
 
         public bool ContentEquals(Lease other)
@@ -54,7 +49,7 @@ namespace Martius.Domain
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((Lease)obj);
+            return Equals((Lease) obj);
         }
 
         public override int GetHashCode()
@@ -77,7 +72,7 @@ namespace Martius.Domain
             var tenantId = Tenant.Id;
             var price = MonthlyPrice.ToString(CultureInfo.InvariantCulture);
             return $"{propId}, {tenantId}, {price}, " +
-                   $"{CastUtils.FormatSqlDate(StartDate)}, {CastUtils.FormatSqlDate(EndDate)}";
+                   $"{StartDate.GetSqlRepresentation()}, {EndDate.GetSqlRepresentation()}";
         }
 
         public override string ToString()
