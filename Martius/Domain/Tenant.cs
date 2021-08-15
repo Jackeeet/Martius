@@ -1,5 +1,8 @@
+using System;
+
 namespace Martius.Domain
 {
+    [Serializable]
     public class Tenant : IDataEntity
     {
         public int Id { get; }

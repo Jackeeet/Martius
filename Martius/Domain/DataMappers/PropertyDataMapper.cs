@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Martius.Infrastructure;
-using static Martius.Infrastructure.CastUtils;
+using Martius.Infrastructure.Extensions;
 
 namespace Martius.Domain
 {
     internal class PropertyDataMapper : DataMapper
     {
         private string _tableName = "property";
+
         private string _tableColumns =
             "city, street, building, building_extra, apt_number, " +
             "room_count, area, residential, furnished, has_parking, monthly_price";
@@ -45,7 +45,8 @@ namespace Martius.Domain
             var street = reader.GetString(2);
             var building = reader.GetInt32(3);
             var buildExtra = reader.IsDBNull(11) ? null : reader.GetString(11);
-            var aptNumber = reader.IsDBNull(4) ? null : ToNullableInt(reader.GetInt32(4).ToString());
+            // var aptNumber = reader.IsDBNull(4) ? null : ToNullableInt(reader.GetInt32(4).ToString());
+            var aptNumber = reader.IsDBNull(4) ? null : reader.GetInt32(4).ToString().ToNullableInt();
             return new Address(city, street, building, aptNumber, buildExtra);
         }
 

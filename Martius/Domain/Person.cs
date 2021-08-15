@@ -4,6 +4,7 @@ using Martius.Infrastructure.Extensions;
 
 namespace Martius.Domain
 {
+    [Serializable]
     public class Person
     {
         public readonly string Surname;

@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using Martius.Domain;
 using Martius.Infrastructure;
+using Martius.Infrastructure.Extensions;
 
 namespace Martius.App
 {
@@ -46,7 +47,8 @@ namespace Martius.App
         private static int? ParseApartmentNumber(Match match)
         {
             var numGroup = match.Groups[1].ToString();
-            return CastUtils.ToNullableInt(numGroup);
+            // return CastUtils.ToNullableInt(numGroup);
+            return numGroup.ToNullableInt();
         }
 
         private static BuildingNumber ParseBuildingNumber(Match match)

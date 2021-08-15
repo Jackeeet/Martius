@@ -1,3 +1,4 @@
+using System.Globalization;
 using FluentAssertions;
 using Martius.Domain;
 using Martius.Infrastructure;
@@ -9,14 +10,19 @@ namespace Martius.Tests.Models.Tests
     [TestFixture]
     public class PropertyTests
     {
-        private static readonly Address defaultAddress = new Address("city", "street", 1, 1);
-        private static readonly Address anotherAddress = new Address("city", "street", 2, 2);
+        private Address _defaultAddress;
+        private Address _anotherAddress;
+        private Property _defaultProperty;
+        private Property _anotherProperty;
 
-        private readonly Property _defaultProperty =
-            new Property(1, defaultAddress, 1, 30.0, false, false, false, Zero);
-
-        private readonly Property _anotherProperty =
-            new Property(2, anotherAddress, 1, 30.0, false, false, false, decimal.Zero);
+        [SetUp]
+        public void SetUp()
+        {
+            _defaultAddress = new Address("city", "street", 1, 1);
+            _anotherAddress = new Address("city", "street", 2, 2);
+            _defaultProperty = new Property(1, _defaultAddress, 1, 30.0, false, false, false, Zero);
+            _anotherProperty = new Property(2, _anotherAddress, 1, 30.0, false, false, false, Zero);
+        }
 
         [Test]
         public void Should_GenerateSameHashCode_ForSameObject()
@@ -70,9 +76,24 @@ namespace Martius.Tests.Models.Tests
         public void Should_ReturnAddressToString_WhenCallingToString()
         {
             var stringRepresentation = _defaultProperty.ToString();
-            var addressRepresentation = defaultAddress.ToString();
-            
+            var addressRepresentation = _defaultAddress.ToString();
+
             stringRepresentation.Should().Be(addressRepresentation);
+        }
+
+        [Test]
+        public void Should_ProvideSqlRepresentation()
+        {
+            var representation = _defaultProperty.ToSqlString();
+
+            representation.Should().ContainAll(
+                _defaultProperty.Address.ToSqlString(),
+                _defaultProperty.RoomCount.ToString(),
+                _defaultProperty.Area.ToString(CultureInfo.InvariantCulture),
+                _defaultProperty.IsResidential ? "1" : "0",
+                _defaultProperty.IsFurnished ? "1" : "0",
+                _defaultProperty.HasParking ? "1" : "0",
+                _defaultProperty.MonthlyPrice.ToString(CultureInfo.InvariantCulture));
         }
     }
 }

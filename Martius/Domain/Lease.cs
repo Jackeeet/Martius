@@ -4,6 +4,7 @@ using Martius.Infrastructure.Extensions;
 
 namespace Martius.Domain
 {
+    [Serializable]
     public class Lease : IDataEntity
     {
         public int Id { get; }
@@ -30,7 +31,7 @@ namespace Martius.Domain
             _months = StartDate.CalculateMonthsUntil(EndDate);
         }
 
-        public bool ContentEquals(Lease other)
+        public bool EqualsWithoutId(Lease other)
         {
             return Property.Equals(other.Property) && Tenant.Equals(other.Tenant) &&
                    MonthlyPrice == other.MonthlyPrice && StartDate.Equals(other.StartDate) &&

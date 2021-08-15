@@ -85,11 +85,11 @@
     <Compile Include="Domain\Property.cs" />
     <Compile Include="Domain\Tenant.cs" />
     <Compile Include="AppLogic\PropertyService.cs" />
-    <Compile Include="Infrastructure\CastUtils.cs" />
-    <Compile Include="Infrastructure\EntityExistsException.cs" />
-    <Compile Include="Infrastructure\DbAccessException.cs" />
+    <Compile Include="Infrastructure\Exceptions\DbAccessException.cs" />
+    <Compile Include="Infrastructure\Exceptions\EntityExistsException.cs" />
     <Compile Include="Infrastructure\Extensions\DateTimeExtensions.cs" />
     <Compile Include="Infrastructure\Extensions\DecimalExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\StringExtensions.cs" />
     <Compile Include="Infrastructure\IDbConnectionFactory.cs" />
     <Compile Include="Infrastructure\ObjectCopier.cs" />
     <Compile Include="Infrastructure\SqlConnectionFactory.cs" />

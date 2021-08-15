@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using FluentAssertions;
 using Martius.Domain;
 using Martius.Infrastructure;
@@ -9,14 +10,29 @@ namespace Martius.Tests.Models.Tests
     [TestFixture]
     public class AddressTests
     {
-        private readonly Address _defaultAddress = new Address("city", "street", 1, 1);
-        private readonly Address _anotherAddress = new Address("city", "street", 2, 2);
+        private Address _defaultAddress;
+        private Address _anotherAddress;
+        private FieldInfo _buildingNumberInfo;
+        private FieldInfo _buildingExtraInfo;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _defaultAddress = new Address("city", "street", 1, 1);
+            _anotherAddress = new Address("city", "street", 2, 2);
+
+            var defaultBuildingType = _defaultAddress.GetType();
+            _buildingNumberInfo =
+                defaultBuildingType.GetField("_buildingNumber", BindingFlags.NonPublic | BindingFlags.Instance);
+            _buildingExtraInfo =
+                defaultBuildingType.GetField("_buildingExtra", BindingFlags.NonPublic | BindingFlags.Instance);
+        }
 
         [Test]
         public void Should_GenerateSameHashCode_ForSameObject()
         {
             var defaultAddressCopy = ObjectCopier.DeepCopy(_defaultAddress);
-            
+
             var defaultHashCode = _defaultAddress.GetHashCode();
             var copyHashCode = defaultAddressCopy.GetHashCode();
 
@@ -44,7 +60,7 @@ namespace Martius.Tests.Models.Tests
             var result = _defaultAddress.Equals(_anotherAddress);
             result.Should().BeFalse();
         }
-        
+
         [Test]
         public void Should_NotBeEqualToAnotherType()
         {
@@ -85,6 +101,23 @@ namespace Martius.Tests.Models.Tests
             _defaultAddress.Invoking(m => m.CompareTo("string"))
                 .Should().Throw<ArgumentException>()
                 .WithMessage("obj is not an Address");
+        }
+
+        [Test]
+        public void Should_ProvideSqlRepresentation()
+        {
+            var buildNumber = _buildingNumberInfo.GetValue(_defaultAddress).ToString();
+            var buildExtra = _buildingExtraInfo.GetValue(_defaultAddress)?.ToString();
+
+            var representation = _defaultAddress.ToSqlString();
+            representation.Should().Contain("N'", AtLeast.Twice())
+                .And.ContainAll(
+                    _defaultAddress.City,
+                    _defaultAddress.Street,
+                    _defaultAddress.Building,
+                    buildNumber,
+                    buildExtra,
+                    _defaultAddress.ApartmentNumber.ToString());
         }
     }
 }
